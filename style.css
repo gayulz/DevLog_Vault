@@ -786,7 +786,9 @@ body#tt-body-guestbook .ad-list { display: none !important; }
 .prop-k {
   display: flex; align-items: center; gap: 6px;
   width: 104px; flex: none; color: var(--text-faint);
-  padding-top: 1px;
+  /* 위쪽 여백을 주면 오른쪽 값보다 라벨이 그만큼 내려가 모든 줄이 어긋난다.
+     아이콘은 align-items: center 로 이미 가운데에 온다. */
+  line-height: 1.6;
 }
 .prop-v {
   color: var(--text-muted); min-width: 0;
@@ -1397,7 +1399,9 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 /* 티스토리가 태그 사이에 넣는 쉼표를 감춘다 (알약 모양 사이에 쉼표가 끼면 지저분하다).
    되살리려면 아래 두 줄을 지우면 됩니다. */
 .post-tags { font-size: 0; }
-.post-tags a { font-size: 12px; }
+/* 알약의 줄상자 높이(12 x 1.8 = 21.6px)를 왼쪽 라벨의 줄상자와 똑같이 맞춘다.
+   높이가 다르면 글자 가운데가 서로 어긋난다. */
+.post-tags a { font-size: 12px; line-height: 1.8; }
 
 /* ==========================================================================
    10. 우측 사이드바
