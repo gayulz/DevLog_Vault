@@ -7,7 +7,30 @@
 왼쪽은 파일 탐색기 같은 카테고리, 가운데는 글, 오른쪽은 달력과 개요.
 개발 블로그 쓰다가 "옵시디언에서 글 쓰던 그 화면이었으면" 싶어서 만들었습니다.
 
+<img src="https://img.shields.io/badge/%EB%AC%B4%EB%A3%8C%20%EB%B0%B0%ED%8F%AC-0%EC%9B%90-8b6cef?style=flat-square" alt="무료 배포">
+<img src="https://img.shields.io/badge/%EA%B0%9C%EC%9D%B8%20%EC%82%AC%EC%9A%A9-OK-3aa76d?style=flat-square" alt="개인 사용 OK">
+<img src="https://img.shields.io/badge/%EC%9E%AC%EB%B0%B0%ED%8F%AC%20%C2%B7%20%ED%8C%90%EB%A7%A4-%EA%B8%88%EC%A7%80-e05252?style=flat-square" alt="재배포 · 판매 금지">
+<a href="https://github.com/gayulz/DevLog_Vault/stargazers"><img src="https://img.shields.io/github/stars/gayulz/DevLog_Vault?style=flat-square&color=d6a72a&label=Star" alt="Star"></a>
+
 <img src="docs/images/home-dark.jpg" alt="DevLog Vault 홈 화면 (다크 모드)" width="820">
+
+<table align="center">
+<tr><td align="center" width="620">
+
+&nbsp;
+
+🌱 &nbsp; **0원입니다.** 개인 블로그라면 누구든 그냥 가져다 쓰세요
+
+🎨 &nbsp; 색이든 서체든 **내 블로그에 맞게 고쳐 쓰는 것도 자유**예요
+
+🙅 &nbsp; 다만 **재수정 배포 · 재배포 · 유료 판매는 안 됩니다**
+
+⭐ &nbsp; 쓰다가 좋으셨다면 **Star** 하나만요. 그게 다음 버전 만드는 힘이 됩니다
+
+&nbsp;
+
+</td></tr>
+</table>
 
 </div>
 
