@@ -783,6 +783,11 @@ body#tt-body-guestbook .ad-list { display: none !important; }
   padding-bottom: 14px; margin-bottom: 22px;
 }
 .prop { display: flex; align-items: flex-start; gap: 8px; padding: 3px 0; font-size: 13.5px; }
+/* 태그 줄만 여백을 더 준다.
+   태그는 알약 배경이 글자보다 위아래로 넓고 두 줄까지 늘어나서,
+   다른 줄과 같은 3px 여백으로는 date · read 줄에 달라붙어 보인다.
+   위아래를 함께 늘려야 라벨과 값이 같이 내려가 정렬이 틀어지지 않는다. */
+.prop:has(> .post-tags) { padding: 9px 0; }
 .prop-k {
   display: flex; align-items: center; gap: 6px;
   width: 104px; flex: none; color: var(--text-faint);

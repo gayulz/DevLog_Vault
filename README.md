@@ -130,7 +130,7 @@ preview1600.jpg    (1600×1200)
 
 ```bash
 python3 build_release.py
-# → dist/DevLog-Vault-v3.8.5.zip
+# → dist/DevLog-Vault-v3.8.6.zip
 ```
 
 다만 이미 쓰고 있는 스킨을 업데이트하는 거라면 이 방법은 피하세요.
