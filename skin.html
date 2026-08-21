@@ -293,12 +293,13 @@
 
         <!-- =============================================================
              ① 북마크 — HTML을 고칠 필요가 없습니다.
-             관리자 > 꾸미기 > 스킨 편집 의 "북마크 1~4" 에서
+             관리자 > 꾸미기 > 스킨 편집 의 "북마크 1~8" 에서
              제목 · 부제목 · 링크 주소 · 이미지 · 배경색을 직접 설정하세요.
 
              · 링크 주소를 비워두면 그 카드는 화면에 나오지 않습니다.
              · 이미지를 고르지 않으면 배경색 위에 제목 글자만 표시됩니다.
-             · 4장을 모두 비우면 "북마크" 영역 자체가 사라집니다.
+             · 한 줄에 4장씩, 최대 8장(두 줄)까지 놓입니다.
+             · 8장을 모두 비우면 "북마크" 영역 자체가 사라집니다.
              ============================================================= -->
         <div class="sec home-only" id="bmSec">
           <svg class="ic"><use href="#i-book"/></svg><h2>북마크</h2>
@@ -372,6 +373,74 @@
           </a>
           </s_if_var_bm4-url>
           </s_if_var_bm4-on>
+
+          <s_if_var_bm5-on>
+          <s_if_var_bm5-url>
+          <a class="bm-card" href="[##_var_bm5-url_##]">
+            <s_if_var_bm5-image>
+              <span class="bm-img"><img src="[##_var_bm5-image_##]" alt="[##_var_bm5-title_##]" loading="lazy"></span>
+            </s_if_var_bm5-image>
+            <s_not_var_bm5-image>
+              <span class="bm-img" style="background:[##_var_bm5-color_##]">[##_var_bm5-title_##]</span>
+            </s_not_var_bm5-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm5-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm5-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm5-url>
+          </s_if_var_bm5-on>
+
+          <s_if_var_bm6-on>
+          <s_if_var_bm6-url>
+          <a class="bm-card" href="[##_var_bm6-url_##]">
+            <s_if_var_bm6-image>
+              <span class="bm-img"><img src="[##_var_bm6-image_##]" alt="[##_var_bm6-title_##]" loading="lazy"></span>
+            </s_if_var_bm6-image>
+            <s_not_var_bm6-image>
+              <span class="bm-img" style="background:[##_var_bm6-color_##]">[##_var_bm6-title_##]</span>
+            </s_not_var_bm6-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm6-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm6-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm6-url>
+          </s_if_var_bm6-on>
+
+          <s_if_var_bm7-on>
+          <s_if_var_bm7-url>
+          <a class="bm-card" href="[##_var_bm7-url_##]">
+            <s_if_var_bm7-image>
+              <span class="bm-img"><img src="[##_var_bm7-image_##]" alt="[##_var_bm7-title_##]" loading="lazy"></span>
+            </s_if_var_bm7-image>
+            <s_not_var_bm7-image>
+              <span class="bm-img" style="background:[##_var_bm7-color_##]">[##_var_bm7-title_##]</span>
+            </s_not_var_bm7-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm7-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm7-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm7-url>
+          </s_if_var_bm7-on>
+
+          <s_if_var_bm8-on>
+          <s_if_var_bm8-url>
+          <a class="bm-card" href="[##_var_bm8-url_##]">
+            <s_if_var_bm8-image>
+              <span class="bm-img"><img src="[##_var_bm8-image_##]" alt="[##_var_bm8-title_##]" loading="lazy"></span>
+            </s_if_var_bm8-image>
+            <s_not_var_bm8-image>
+              <span class="bm-img" style="background:[##_var_bm8-color_##]">[##_var_bm8-title_##]</span>
+            </s_not_var_bm8-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm8-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm8-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm8-url>
+          </s_if_var_bm8-on>
         </div>
 
         <!-- =============================================================

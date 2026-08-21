@@ -297,7 +297,10 @@ VARS = {
     'bg-primary': '#1e1e1e',
     'bg-secondary': '#161616',
 
-    'bm1-on': 'true', 'bm2-on': 'true', 'bm3-on': 'true', 'bm4-on': '',
+    # 북마크 — 최대 8장(한 줄에 4장씩 두 줄). 8번은 링크를 비워 "안 나오는 카드"를 확인한다
+    'bm1-on': 'true', 'bm2-on': 'true', 'bm3-on': 'true', 'bm4-on': 'true',
+    'bm5-on': 'true', 'bm6-on': 'true', 'bm7-on': 'true', 'bm8-on': '',
+
     'bm1-title': 'GitHub', 'bm1-desc': 'Study 기록 보관용',
     'bm1-url': 'https://github.com/', 'bm1-image': '', 'bm1-color': '#24292f',
 
@@ -309,7 +312,20 @@ VARS = {
     'bm3-url': '/category/Framework', 'bm3-image': '', 'bm3-color': '#4f7a35',
 
     'bm4-title': '오늘의 학습', 'bm4-desc': '매일 쌓는 짧은 기록',
-    'bm4-url': '', 'bm4-image': '', 'bm4-color': '#5b4b8a',
+    'bm4-url': '/category/Diary', 'bm4-image': '', 'bm4-color': '#5b4b8a',
+
+    'bm5-title': '알고리즘 노트', 'bm5-desc': '풀이와 삽질 기록',
+    'bm5-url': '/category/Algorithm', 'bm5-image': _img('Algorithm', '#8a5b4b'),
+    'bm5-color': '#8a5b4b',
+
+    'bm6-title': 'DevOps', 'bm6-desc': '배포 · 인프라 삽질',
+    'bm6-url': '/category/DevOps', 'bm6-image': '', 'bm6-color': '#3a7d7a',
+
+    'bm7-title': '읽은 책', 'bm7-desc': '기술서 정리',
+    'bm7-url': '/category/Book', 'bm7-image': '', 'bm7-color': '#8a6f2f',
+
+    'bm8-title': '준비 중', 'bm8-desc': '아직 링크를 안 넣은 카드',
+    'bm8-url': '', 'bm8-image': '', 'bm8-color': '#7a3f52',
 }
 
 

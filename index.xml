@@ -2,7 +2,7 @@
 <skin>
   <information>
     <name>DevLog Vault</name>
-    <version>3.8.7</version>
+    <version>3.9.0</version>
     <description>Obsidian 스타일 3컬럼 개발자 블로그 스킨 — 파일 탐색기형 카테고리, 탭 바, 프로퍼티, 콜아웃, 백링크, 개요(TOC), 다크/라이트 모드. 홈 북마크·고정글·기술 스택·외부 연동을 모두 스킨 편집에서 설정합니다. HTML을 고칠 필요가 없습니다.</description>
     <license>All Rights Reserved</license>
   </information>
@@ -478,6 +478,170 @@
         <label>배경색 (이미지 없을 때)</label>
         <type>COLOR</type>
         <default>#5b4b8a</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 5">
+      <variable>
+        <name>bm5-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm5-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm5-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm5-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm5-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm5-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#8a5b4b</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 6">
+      <variable>
+        <name>bm6-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm6-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm6-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm6-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm6-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm6-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#3a7d7a</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 7">
+      <variable>
+        <name>bm7-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm7-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm7-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm7-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm7-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm7-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#8a6f2f</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 8">
+      <variable>
+        <name>bm8-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm8-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm8-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm8-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm8-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm8-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#7a3f52</default>
       </variable>
     </variablegroup>
 

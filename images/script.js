@@ -602,6 +602,8 @@
       box.style.display = 'none';
       if (sec) sec.style.display = 'none';
     }
+    // 카드가 5장 이상이면 모바일에서 조금 촘촘하게 (style.css 20번 섹션)
+    box.classList.toggle('bm-many', alive > 4);
   })();
 
   /* ===================================================================

@@ -15,3 +15,6 @@ __pycache__/
 .vscode/
 .idea/
 *.swp
+
+# 로컬 푸시용 스크립트 (저장소에는 올리지 않습니다)
+push.command

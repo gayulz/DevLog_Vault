@@ -837,9 +837,10 @@ body#tt-body-guestbook .ad-list { display: none !important; }
    ========================================================================== */
 /* 홈 전용 블록 노출 규칙은 파일 맨 아래 '16. 홈 전용 노출' 참고 */
 
-/* --- ① 북마크 카드 --- */
-/* 항상 4열 기준. 카드가 1~3장이면 왼쪽부터 채우고 오른쪽은 비워 둔다.
-   (auto-fit 은 카드가 적을 때 한 장이 통째로 늘어나거나 넘쳐서 쓰지 않는다) */
+/* --- ① 북마크 카드 (최대 8장) --- */
+/* 항상 4열 기준. 8장이면 두 줄, 그보다 적으면 왼쪽부터 채우고 오른쪽은 비워 둔다.
+   (auto-fit 은 카드가 적을 때 한 장이 통째로 늘어나거나 넘쳐서 쓰지 않는다)
+   카드가 5장 이상이면 script.js 가 .bm-many 를 붙인다 → 모바일에서 조금 촘촘하게. */
 .bm {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2265,7 +2266,8 @@ body#tt-body-index .list-header { display: none !important; }
 /* --- 좌측 사이드바를 서랍으로 --- */
 @media (max-width: 1000px) {
   .app { grid-template-columns: var(--ribbon-w) minmax(0, 1fr); }
-  .bm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* 이 구간은 사이드바가 빠져 본문이 넓다 → 북마크는 4열을 그대로 유지한다
+     (2열로 떨어뜨리면 카드가 8장일 때 네 줄이 되어 홈이 너무 길어진다) */
   .side-l {
     position: fixed; top: 0; left: var(--ribbon-w); bottom: 0; z-index: 66;
     width: min(86vw, 320px); max-height: 100vh; overflow-y: auto;
@@ -2336,6 +2338,16 @@ body#tt-body-index .list-header { display: none !important; }
 
   .bm { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .bm-img { aspect-ratio: 16 / 10; font-size: 15px; }
+
+  /* 카드가 5장 이상이면 세로로 너무 길어져서 한 칸씩 줄인다 */
+  .bm.bm-many { gap: 8px; }
+  .bm.bm-many .bm-img { aspect-ratio: 16 / 9; font-size: 13px; }
+  .bm.bm-many .bm-b { padding: 7px 8px 9px; }
+  .bm.bm-many .bm-t { font-size: 12.5px; }
+  .bm.bm-many .bm-d {
+    font-size: 11px; margin-top: 1px;
+    display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+  }
 
   .pn { grid-template-columns: 1fr; }
   .pn .r { text-align: left; }
