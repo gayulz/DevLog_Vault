@@ -1151,8 +1151,14 @@
     }
 
     var ctx = canvas.getContext('2d');
-    var MAX_NODES = 220;
-    var CACHE_KEY = 'devlog-graph-v1';
+    /* 노드 상한 — RSS 50개 기준으로 글 50 + 고유 태그 292 = 342 개가 처음부터 들어온다.
+       점을 눌러 펼칠 자리를 200 개쯤 남겨 550 으로 둔다.
+       tick() 의 밀어내기가 모든 점 쌍을 도는 O(n^2) 라 550 이면 한 프레임에 15만 쌍인데,
+       loop() 이 alpha 0.03 아래에서 멈추므로 상시가 아니라 조작 뒤 3초 정도만 돈다.
+       이보다 더 키울 거면 화면을 격자로 나눠 가까운 쌍만 계산하도록 바꿔야 한다. */
+    var MAX_NODES = 550;
+    /* RSS 개수를 바꾸면 예전 캐시가 하루 동안 옛 그래프를 붙잡는다 → 키를 올려 한 번에 버린다 */
+    var CACHE_KEY = 'devlog-graph-v2';
     var CACHE_TTL = 24 * 60 * 60 * 1000;
 
     var nodes = [], links = [], byId = {}, linkSet = {};
@@ -1616,10 +1622,20 @@
       kick(1);
     }
 
-    var cached = cacheGet();
-    if (cached) {
-      start(cached);
-    } else {
+    /* ---------- 지연 로드 ----------
+       RSS 는 글 본문까지 담고 있어서 공개 개수를 50 으로 올리면 2MB 안팎이 된다.
+       그래프가 쓰는 것은 제목·링크·태그뿐이라, 첫 화면을 그리는 동안 이 요청이 끼어들 이유가 없다.
+       그래프 자리가 화면에 들어올 때(조금 못 미쳤을 때부터) 한 번만 읽고,
+       처음부터 화면에 있더라도 브라우저가 한가해진 뒤로 미룬다.
+       IntersectionObserver 가 없는 브라우저에서는 예전처럼 바로 읽는다. */
+    var booted = false;
+    function boot() {
+      if (booted) return;
+      booted = true;
+
+      var cached = cacheGet();
+      if (cached) { start(cached); return; }
+
       fetch('/rss', { credentials: 'same-origin' })
         .then(function (r) { return r.ok ? r.text() : Promise.reject(new Error(r.status)); })
         .then(function (text) {
@@ -1631,6 +1647,22 @@
           start(null);
           if (!nodes.length) msg.textContent = '그래프를 불러오지 못했습니다.';
         });
+    }
+
+    function bootWhenIdle() {
+      if (window.requestIdleCallback) requestIdleCallback(boot, { timeout: 2000 });
+      else setTimeout(boot, 300);
+    }
+
+    if (window.IntersectionObserver) {
+      var io = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) { io.disconnect(); bootWhenIdle(); return; }
+        }
+      }, { rootMargin: '200px' });      // 화면에 조금 못 미쳤을 때 미리 시작한다
+      io.observe(pane);
+    } else {
+      bootWhenIdle();
     }
 
     window.addEventListener('resize', resize);
