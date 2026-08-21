@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+  <information>
+    <name>DevLog Vault</name>
+    <version>3.8.3</version>
+    <description>Obsidian 스타일 3컬럼 개발자 블로그 스킨 — 파일 탐색기형 카테고리, 탭 바, 프로퍼티, 콜아웃, 백링크, 개요(TOC), 다크/라이트 모드. 홈 북마크·고정글·기술 스택·외부 연동을 모두 스킨 편집에서 설정합니다. HTML을 고칠 필요가 없습니다.</description>
+    <license>All Rights Reserved</license>
+  </information>
+
+  <author>
+    <name>DevLog Vault</name>
+    <homepage></homepage>
+    <email></email>
+  </author>
+
+  <default>
+    <recentEntries>10</recentEntries>
+    <recentComments>10</recentComments>
+    <lengthOfRecentEntry>100</lengthOfRecentEntry>
+    <lengthOfRecentComment>60</lengthOfRecentComment>
+    <recentTrackbacks>0</recentTrackbacks>
+    <expandComment>1</expandComment>
+    <expandTrackback>0</expandTrackback>
+    <contentWidth>900</contentWidth>
+    <showListOnCategory>1</showListOnCategory>
+    <tree>
+      <color>9a9a9a</color>
+      <bgColor>transparent</bgColor>
+      <activeColor>8b6cef</activeColor>
+      <activeBgColor>transparent</activeBgColor>
+      <labelLength>60</labelLength>
+      <showValue>1</showValue>
+    </tree>
+  </default>
+
+  <variables>
+
+    <!-- ================= 디자인 ================= -->
+    <variablegroup name="디자인">
+      <variable>
+        <name>accent-color</name>
+        <label>강조 색상</label>
+        <description>링크 · 태그 · 버튼 · 현재 위치 표시에 쓰이는 색입니다.</description>
+        <type>COLOR</type>
+        <default>#8b6cef</default>
+      </variable>
+      <variable>
+        <name>bg-primary</name>
+        <label>본문 배경 (다크 모드)</label>
+        <description>글이 표시되는 가운데 패널의 배경색입니다.</description>
+        <type>COLOR</type>
+        <default>#1e1e1e</default>
+      </variable>
+      <variable>
+        <name>bg-secondary</name>
+        <label>사이드바 배경 (다크 모드)</label>
+        <description>좌우 사이드바와 탭 바의 배경색입니다.</description>
+        <type>COLOR</type>
+        <default>#161616</default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 홈 소개 ====== -->
+    <variablegroup name="홈 — 소개">
+      <variable>
+        <name>about-text</name>
+        <label>about 한 줄 소개</label>
+        <description>블로그 제목 아래 "about" 줄에 표시할 문장입니다. 왼쪽 프로필의 설명(블로그 설정의 소개글)과는 별개로, 여기에 적은 내용이 그대로 나옵니다. 비워두면 about 줄 자체가 사라집니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 홈 기술 스택 ====== -->
+    <variablegroup name="홈 — 기술 스택">
+      <variable>
+        <name>stack1</name>
+        <label>태그 1</label>
+        <description>블로그 제목 아래 "stack" 줄에 표시할 태그입니다. 내 블로그에 실제로 존재하는 태그명을 그대로 적으세요(대소문자·한글까지 일치해야 하며, 없는 태그는 404가 납니다). 리본의 # 버튼에서 태그 목록을 확인할 수 있습니다. 1번을 비우면 stack 줄 자체가 사라집니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>stack2</name>
+        <label>태그 2</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>stack3</name>
+        <label>태그 3</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>stack4</name>
+        <label>태그 4</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>stack5</name>
+        <label>태그 5</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>stack6</name>
+        <label>태그 6</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 홈 본문 글 목록 ====== -->
+    <variablegroup name="홈 — 본문 글 목록">
+      <variable>
+        <name>home-recent</name>
+        <label>최근 글 목록 표시</label>
+        <description>홈 본문에 최근 글 목록과 페이지 번호를 노출합니다. 노출 개수는 위 "홈 설정 &gt; 홈 화면 글 수"에서 조절합니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>home-popular</name>
+        <label>인기 글 목록 표시</label>
+        <description>홈 본문에 인기 글 목록을 노출합니다. 인기 글이 아직 없으면 자동으로 숨겨집니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>home-popular-count</name>
+        <label>인기 글 개수</label>
+        <description>홈 본문에 표시할 인기 글 수입니다.</description>
+        <type>SELECT</type>
+        <option><![CDATA[
+          [
+            {"name":"3", "label":"3개", "value":"3"},
+            {"name":"5", "label":"5개", "value":"5"},
+            {"name":"7", "label":"7개", "value":"7"},
+            {"name":"10", "label":"10개", "value":"10"}
+          ]
+        ]]></option>
+        <default>5</default>
+      </variable>
+      <variable>
+        <name>popular-first</name>
+        <label>인기 글을 최근 글보다 위에 표시</label>
+        <description>끄면 최근 글이 위, 인기 글이 아래에 표시됩니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 홈 고정글 ====== -->
+    <variablegroup name="홈 — 고정글">
+      <variable>
+        <name>home-notice</name>
+        <label>고정글 표시</label>
+        <description>홈 본문 위쪽에 고정글 영역을 노출합니다. 아래 "고정글 1~3" 에 글 주소를 직접 넣거나, 티스토리에서 "공지"로 등록한 글이 자동으로 들어갑니다. 둘 다 없으면 이 영역은 통째로 사라집니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>home-notice-count</name>
+        <label>고정글 개수</label>
+        <description>홈에 표시할 고정글 수입니다. 최대 3개까지 보여줄 수 있습니다.</description>
+        <type>SELECT</type>
+        <option><![CDATA[
+          [
+            {"name":"1", "label":"1개", "value":"1"},
+            {"name":"2", "label":"2개", "value":"2"},
+            {"name":"3", "label":"3개", "value":"3"}
+          ]
+        ]]></option>
+        <default>3</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="고정글 1">
+      <variable>
+        <name>pin1-url</name>
+        <label>글 주소</label>
+        <description>고정할 글을 브라우저에서 연 뒤 주소창의 주소를 그대로 붙여넣으세요. 예) https://내블로그주소/123 · 제목과 카테고리는 그 글에서 자동으로 가져옵니다. 비워두면 이 카드는 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="고정글 2">
+      <variable>
+        <name>pin2-url</name>
+        <label>글 주소</label>
+        <description>비워두면 이 카드는 나오지 않습니다. 제목과 카테고리는 자동으로 채워집니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="고정글 3">
+      <variable>
+        <name>pin3-url</name>
+        <label>글 주소</label>
+        <description>비워두면 이 카드는 나오지 않습니다. 제목과 카테고리는 자동으로 채워집니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 태그 그래프 ====== -->
+    <variablegroup name="태그 그래프">
+      <variable>
+        <name>graph-show</name>
+        <label>그래프 표시</label>
+        <description>우측 사이드바의 달력 아래에 태그 그래프를 보여줍니다. 최근 글과 그 글에 달린 태그를 점과 선으로 잇고, 점을 누르면 연결된 글·태그가 펼쳐집니다. 데이터는 블로그의 RSS에서 읽어옵니다 — 관리 &gt; 블로그 의 RSS 공개 개수를 50개로 올리면 처음부터 더 많은 글이 그려집니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 저작권 · 콘텐츠 보호 ====== -->
+    <variablegroup name="저작권 · 콘텐츠 보호">
+      <variable>
+        <name>copyright-text</name>
+        <label>글 아래 저작권 문구</label>
+        <description>글 본문 아래에 표시할 저작권 안내입니다. 비워두면 이 영역이 나오지 않습니다. 예) 이 글의 저작권은 작성자에게 있습니다. 출처를 밝힌 인용은 자유롭게 하셔도 되며, 무단 전재·재배포·AI 학습 데이터 사용을 금합니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>copy-source</name>
+        <label>복사할 때 출처 자동 붙이기</label>
+        <description>방문자가 본문을 복사하면 붙여넣기한 글 끝에 원문 제목과 주소가 자동으로 따라붙습니다. 읽는 데는 아무 방해가 없어서 가장 부작용이 적은 방법입니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>protect-content</name>
+        <label>우클릭 · 드래그 막기</label>
+        <description>본문에서 마우스 오른쪽 버튼과 글 선택을 막습니다. 코드블록은 복사할 수 있게 예외로 둡니다. 다만 개발자도구·소스보기·인쇄로 우회할 수 있어 복사를 완전히 막지는 못하고, 방문자가 링크를 새 탭으로 열거나 번역·검색하는 것도 함께 막혀 불편해집니다. 꼭 필요할 때만 켜세요.</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 사이드바 글 목록 ====== -->
+    <variablegroup name="사이드바 — 글 목록">
+      <variable>
+        <name>show-recent</name>
+        <label>최근 글 표시</label>
+        <description>우측 사이드바에 최근 글 목록을 노출합니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>recent-count</name>
+        <label>최근 글 개수</label>
+        <description>최대 10개까지 표시할 수 있습니다.</description>
+        <type>SELECT</type>
+        <option><![CDATA[
+          [
+            {"name":"3", "label":"3개", "value":"3"},
+            {"name":"5", "label":"5개", "value":"5"},
+            {"name":"7", "label":"7개", "value":"7"},
+            {"name":"10", "label":"10개", "value":"10"}
+          ]
+        ]]></option>
+        <default>5</default>
+      </variable>
+      <variable>
+        <name>show-popular</name>
+        <label>인기 글 표시</label>
+        <description>우측 사이드바에 인기 글 목록을 노출합니다. 인기 글이 없으면 자동으로 숨겨집니다.</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>popular-count</name>
+        <label>인기 글 개수</label>
+        <description>최대 10개까지 표시할 수 있습니다.</description>
+        <type>SELECT</type>
+        <option><![CDATA[
+          [
+            {"name":"3", "label":"3개", "value":"3"},
+            {"name":"5", "label":"5개", "value":"5"},
+            {"name":"7", "label":"7개", "value":"7"},
+            {"name":"10", "label":"10개", "value":"10"}
+          ]
+        ]]></option>
+        <default>5</default>
+      </variable>
+      <variable>
+        <name>show-comments</name>
+        <label>최근 댓글 표시</label>
+        <description>우측 사이드바에 최근 댓글 목록을 노출합니다.</description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>comments-count</name>
+        <label>최근 댓글 개수</label>
+        <description>최대 10개까지 표시할 수 있습니다.</description>
+        <type>SELECT</type>
+        <option><![CDATA[
+          [
+            {"name":"3", "label":"3개", "value":"3"},
+            {"name":"5", "label":"5개", "value":"5"},
+            {"name":"7", "label":"7개", "value":"7"},
+            {"name":"10", "label":"10개", "value":"10"}
+          ]
+        ]]></option>
+        <default>5</default>
+      </variable>
+    </variablegroup>
+
+    <!-- ====== 홈 북마크 — 링크 주소가 비어 있으면 그 카드는 표시되지 않습니다 ====== -->
+    <variablegroup name="북마크 1">
+      <variable>
+        <name>bm1-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm1-title</name>
+        <label>제목</label>
+        <description>카드 아래 굵게 표시됩니다. 이미지가 없으면 카드 안에도 이 글자가 들어갑니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm1-desc</name>
+        <label>부제목</label>
+        <description>제목 아래 한 줄 설명입니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm1-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다. 예) https://github.com/아이디</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm1-image</name>
+        <label>이미지</label>
+        <description>선택하지 않으면 아래 배경색 위에 제목 글자만 표시됩니다.</description>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm1-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#24292f</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 2">
+      <variable>
+        <name>bm2-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm2-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm2-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm2-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm2-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm2-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#3b6ea5</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 3">
+      <variable>
+        <name>bm3-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm3-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm3-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm3-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm3-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm3-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#4f7a35</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="북마크 4">
+      <variable>
+        <name>bm4-on</name>
+        <label>이 북마크 사용</label>
+        <description>켜야 홈에 표시됩니다. 아래 내용을 미리 채워두고 필요할 때 켜세요. (링크 주소가 비어 있으면 켜도 나오지 않습니다)</description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>bm4-title</name>
+        <label>제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm4-desc</name>
+        <label>부제목</label>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm4-url</name>
+        <label>링크 주소</label>
+        <description>비워두면 이 카드는 화면에 나오지 않습니다.</description>
+        <type>STRING</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm4-image</name>
+        <label>이미지</label>
+        <type>IMAGE</type>
+        <default></default>
+      </variable>
+      <variable>
+        <name>bm4-color</name>
+        <label>배경색 (이미지 없을 때)</label>
+        <type>COLOR</type>
+        <default>#5b4b8a</default>
+      </variable>
+    </variablegroup>
+
+  </variables>
+</skin>

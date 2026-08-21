@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <script>
+    (function(){var t;try{t=localStorage.getItem('devlog-theme')}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}
+    document.documentElement.setAttribute('data-theme',t)})();
+  </script>
+
+  <!-- ===================================================================
+       ▼▼▼ 광고 · 분석 · 사이트 인증 코드를 여기에 붙여넣으세요 ▼▼▼
+
+       스킨 편집의 입력칸에는 <script> 를 넣을 수 없어서(티스토리가 막습니다)
+       이 자리에 직접 붙여넣는 방식입니다. 필요 없으면 그냥 비워 두세요.
+
+       · 구글 애드센스            : 애드센스가 준 <script> 코드
+       · 구글 태그 매니저(GTM)    : "<head>" 라고 적힌 쪽 코드
+                                    ("<body>" 쪽 코드는 아래 <body> 바로 밑에)
+       · 네이버 서치어드바이저    : <meta name="naver-site-verification" ...>
+       · 구글 서치콘솔            : <meta name="google-site-verification" ...>
+       · 그 외 분석 도구(GA4 등)  : 받은 코드 그대로
+       =================================================================== -->
+
+
+  <!-- ▲▲▲ 여기까지 ▲▲▲ -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>[##_page_title_##]</title>
+  <link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="[##_rss_url_##]">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 본문 서체는 style.css 의 @font-face(자연 산스)로 불러옵니다.
+       Pretendard 는 자연 산스가 없는 글자를 위한 예비 서체입니다. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- 관리자 > 꾸미기 > 스킨 편집 > "디자인" 옵션 값을 적용합니다.
+       값이 비어 있으면 이 선언은 무시되고 style.css 기본값이 그대로 쓰입니다. -->
+  <style>
+    :root {
+      --interactive-accent: [##_var_accent-color_##];
+      --interactive-accent-hover: [##_var_accent-color_##];
+      --text-accent: [##_var_accent-color_##];
+    }
+    [data-theme="dark"] {
+      --background-primary: [##_var_bg-primary_##];
+      --background-secondary: [##_var_bg-secondary_##];
+      --code-background: [##_var_bg-secondary_##];
+    }
+  </style>
+
+</head>
+<body id="[##_body_id_##]"
+      data-protect="[##_var_protect-content_##]"
+      data-copy-source="[##_var_copy-source_##]">
+<!-- ▼ 구글 태그 매니저의 "<body>" 쪽 코드(<noscript>)가 있다면 여기에 붙여넣으세요 ▼ -->
+
+<!-- ▲ 여기까지 ▲ -->
+<a class="skip-link" href="#mainContent">본문 바로가기</a>
+
+<s_t3>
+
+<!-- ===================================================================
+     홈 본문 글 목록 옵션 (스킨 편집 > "홈 — 본문 글 목록")
+     =================================================================== -->
+<s_not_var_home-recent>
+  <style>
+    body#tt-body-index .home-recent-wrap,
+    body#tt-body-index .pagination { display: none !important; }
+  </style>
+</s_not_var_home-recent>
+<s_if_var_popular-first>
+  <style>
+    .home-popular-wrap { order: 1; }
+    .home-recent-wrap  { order: 2; }
+  </style>
+</s_if_var_popular-first>
+<s_not_var_popular-first>
+  <style>
+    .home-popular-wrap { order: 2; }
+    .home-recent-wrap  { order: 1; }
+  </style>
+</s_not_var_popular-first>
+<s_not_var_home-notice>
+  <style>
+    body#tt-body-index #pinnedSec,
+    body#tt-body-index .notice-callout { display: none !important; }
+  </style>
+</s_not_var_home-notice>
+
+<!-- ===================================================================
+     아이콘 스프라이트 (Lucide 스타일) — 수정할 필요 없습니다
+     =================================================================== -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+  <symbol id="i-chevl" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chevu" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="i-chevd" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h8M8 17h5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9Z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 14a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 21V13h6v8"/></symbol>
+  <symbol id="i-rss" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 3.5-4 3 3L20 7"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16.5 4.6a3.5 3.5 0 0 1 0 6.8M18 21a7 7 0 0 0-2-4.9"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.3" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2h0a2 2 0 0 1 2 2v.2a1.7 1.7 0 0 0 2.6 1.2l.2-.1a2 2 0 0 1 2.7.7 2 2 0 0 1-.7 2.7l-.2.1a1.7 1.7 0 0 0 0 3l.2.1a2 2 0 0 1 .7 2.7 2 2 0 0 1-2.7.7l-.2-.1A1.7 1.7 0 0 0 14 19.8V20a2 2 0 0 1-4 0v-.2a1.7 1.7 0 0 0-2.6-1.2l-.2.1a2 2 0 0 1-2.7-.7 2 2 0 0 1 .7-2.7l.2-.1a1.7 1.7 0 0 0 0-3l-.2-.1a2 2 0 0 1-.7-2.7 2 2 0 0 1 2.7-.7l.2.1A1.7 1.7 0 0 0 10 4.2V4a2 2 0 0 1 2-2Z"/></symbol>
+</svg>
+
+<div class="app">
+
+  <!-- ===================================================================
+       리본 (좌측 아이콘 바)
+       =================================================================== -->
+  <nav class="ribbon" aria-label="주요 메뉴">
+    <a class="rb rb-home" href="[##_blog_link_##]" title="홈" aria-label="홈"><svg class="ic ic-lg"><use href="#i-home"/></svg></a>
+    <button class="rb" id="ribbonSearch" title="검색 (/)" aria-label="검색"><svg class="ic ic-lg"><use href="#i-search"/></svg></button>
+    <a class="rb rb-tag" href="[##_taglog_link_##]" title="태그" aria-label="태그"><svg class="ic ic-lg"><use href="#i-hash"/></svg></a>
+    <a class="rb rb-guest" href="[##_guestbook_link_##]" title="방명록" aria-label="방명록"><svg class="ic ic-lg"><use href="#i-msg"/></svg></a>
+    <div class="rb-div" aria-hidden="true"></div>
+    <a class="rb" href="[##_rss_url_##]" title="RSS" aria-label="RSS"><svg class="ic ic-lg"><use href="#i-rss"/></svg></a>
+    <button class="rb" id="themeToggle" title="테마 전환 (t)" aria-label="테마 전환">
+      <svg class="ic ic-lg theme-ic-dark"><use href="#i-moon"/></svg>
+      <svg class="ic ic-lg theme-ic-light"><use href="#i-sun"/></svg>
+    </button>
+    <div class="rb-sp"></div>
+  </nav>
+
+  <!-- ===================================================================
+       좌측 사이드바 — 관리자 > 꾸미기 > 사이드바 에서 순서 지정
+       권장 순서: 프로필 / 검색 / 카테고리 / 방문 통계
+       =================================================================== -->
+  <aside class="side side-l sidebar-left" aria-label="프로필 및 카테고리">
+    <s_sidebar>
+
+      <s_sidebar_element>
+        <!-- 프로필 -->
+        <div class="pane pane-profile">
+          <a class="vault" href="[##_blog_link_##]">
+            <span class="vault-ic"><img src="[##_image_##]" alt="[##_blogger_##]"></span>
+            <strong class="vault-nm">[##_blogger_##]</strong>
+            <span class="vault-sub">[##_desc_##]</span>
+          </a>
+          <div class="vault-links profile-links">
+            <s_link_rep>
+              <a href="[##_link_url_##]" target="_blank" rel="noopener" title="[##_link_site_##]"><svg class="ic"><use href="#i-link"/></svg></a>
+            </s_link_rep>
+          </div>
+        </div>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 검색 -->
+        <div class="pane pane-search">
+          <s_search>
+            <form class="searchbox search-box" action="#" method="get" onsubmit="[##_search_onclick_submit_##]">
+              <svg class="ic ic-sm"><use href="#i-search"/></svg>
+              <input type="text" name="[##_search_name_##]" id="[##_search_name_##]" value="[##_search_text_##]" placeholder="글 검색" aria-label="글 검색">
+              <kbd>/</kbd>
+            </form>
+          </s_search>
+        </div>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 카테고리 -->
+        <div class="pane pane-category">
+          <h2 class="pane-h">카테고리</h2>
+          <div class="widget-category">[##_category_##]</div>
+        </div>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 방문 통계 -->
+        <div class="pane pane-stats">
+          <h2 class="pane-h">방문 통계</h2>
+          <div class="stat"><svg class="ic ic-sm"><use href="#i-cal"/></svg>어제<span class="v" id="cntY">[##_count_yesterday_##]</span></div>
+          <div class="stat"><svg class="ic ic-sm"><use href="#i-chart"/></svg>오늘<span class="v today" id="cntT">[##_count_today_##]</span></div>
+          <div class="stat"><svg class="ic ic-sm"><use href="#i-users"/></svg>누적<span class="v">[##_count_total_##]</span></div>
+          <!-- 어제 대비 오늘 추이 (티스토리는 일자별 방문 데이터를 스킨에 주지 않아
+               어제/오늘 두 값으로만 그립니다. 값이 없으면 자동으로 숨겨집니다) -->
+          <div class="trend" id="visitTrend" hidden aria-hidden="true">
+            <span class="trend-bar"><i class="tb-fill"></i><b class="tb-mark"></b></span>
+            <span class="trend-d"></span>
+          </div>
+        </div>
+      </s_sidebar_element>
+
+    </s_sidebar>
+
+    <!-- ===================================================================
+         스킨 제작 표기 — 스킨에 고정된 항목입니다.
+         이 스킨을 사용하실 때 이 표기는 지우지 말아 주세요.
+         =================================================================== -->
+    <div class="pane skin-credit">
+      <p class="sc-name">DevLog Vault</p>
+      <p class="sc-by">skin by <a href="https://yurizzy.tistory.com" target="_blank" rel="noopener">YUURI</a></p>
+      <p class="sc-lic">개인 블로그에 자유롭게 사용하실 수 있습니다.<br>재배포 · 수정 배포 · 판매는 금합니다.</p>
+    </div>
+
+  </aside>
+
+  <!-- ===================================================================
+       메인 (워크스페이스 리프)
+       =================================================================== -->
+  <div class="leaf">
+
+    <div class="tabbar">
+      <a class="tab tab-home" href="[##_blog_link_##]">
+        <svg class="ic ic-sm"><use href="#i-home"/></svg><span class="tl">홈</span>
+      </a>
+      <span class="tab tab-current on">
+        <svg class="ic ic-sm"><use href="#i-file"/></svg><span class="tl" id="tabTitle">[##_page_title_##]</span>
+      </span>
+      <div class="tab-act">
+        <button class="act only-post" id="fontDecrease" aria-label="글자 작게">A-</button>
+        <button class="act only-post" id="fontIncrease" aria-label="글자 크게">A+</button>
+        <div class="only-post" id="postManage" style="position:relative;display:none">
+          <button class="act" id="postManageBtn" aria-label="글 관리" aria-expanded="false"><svg class="ic ic-sm"><use href="#i-dots"/></svg></button>
+          <div class="post-manage-menu" id="postManageMenu">
+            <a id="postEditLink" href="#"><svg class="ic ic-sm"><use href="#i-pen"/></svg> 수정</a>
+            <a id="postPrivateLink" href="#"><svg class="ic ic-sm"><use href="#i-lock"/></svg> 비공개로 변경</a>
+            <a id="postDeleteLink" href="#" class="danger"><svg class="ic ic-sm"><use href="#i-trash"/></svg> 삭제</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
+
+    <main class="leaf-body" id="mainContent">
+      <div class="pagewrap-home" id="contentWrap">
+
+        <!-- =============================================================
+             홈 헤더 — 블로그 소개
+             ============================================================= -->
+        <div class="home-only" id="homeHeader">
+          <h1 class="inline-title home"><a href="[##_blog_link_##]">[##_title_##]</a></h1>
+          <div class="props">
+            <!-- about — 스킨 편집 > "홈 — 소개" 에서 직접 적습니다.
+                 비워두면 이 줄은 나오지 않습니다. (왼쪽 프로필 설명과 별개) -->
+            <s_if_var_about-text>
+            <div class="prop">
+              <span class="prop-k"><svg class="ic ic-sm"><use href="#i-user"/></svg>about</span>
+              <span class="prop-v">[##_var_about-text_##]</span>
+            </div>
+            </s_if_var_about-text>
+            <!-- 기술 스택 — 스킨 편집 > "홈 — 기술 스택" 에서 최대 6개까지 넣습니다.
+                 실제로 존재하는 태그명을 그대로 적어야 합니다(없는 태그는 404). -->
+            <s_if_var_stack1>
+            <div class="prop">
+              <span class="prop-k"><svg class="ic ic-sm"><use href="#i-hash"/></svg>stack</span>
+              <span class="prop-v" id="stackTags">
+                <a class="tag" href="/tag/[##_var_stack1_##]">#[##_var_stack1_##]</a>
+                <s_if_var_stack2><a class="tag" href="/tag/[##_var_stack2_##]">#[##_var_stack2_##]</a></s_if_var_stack2>
+                <s_if_var_stack3><a class="tag" href="/tag/[##_var_stack3_##]">#[##_var_stack3_##]</a></s_if_var_stack3>
+                <s_if_var_stack4><a class="tag" href="/tag/[##_var_stack4_##]">#[##_var_stack4_##]</a></s_if_var_stack4>
+                <s_if_var_stack5><a class="tag" href="/tag/[##_var_stack5_##]">#[##_var_stack5_##]</a></s_if_var_stack5>
+                <s_if_var_stack6><a class="tag" href="/tag/[##_var_stack6_##]">#[##_var_stack6_##]</a></s_if_var_stack6>
+              </span>
+            </div>
+            </s_if_var_stack1>
+          </div>
+        </div>
+
+        <!-- =============================================================
+             ① 북마크 — HTML을 고칠 필요가 없습니다.
+             관리자 > 꾸미기 > 스킨 편집 의 "북마크 1~4" 에서
+             제목 · 부제목 · 링크 주소 · 이미지 · 배경색을 직접 설정하세요.
+
+             · 링크 주소를 비워두면 그 카드는 화면에 나오지 않습니다.
+             · 이미지를 고르지 않으면 배경색 위에 제목 글자만 표시됩니다.
+             · 4장을 모두 비우면 "북마크" 영역 자체가 사라집니다.
+             ============================================================= -->
+        <div class="sec home-only" id="bmSec">
+          <svg class="ic"><use href="#i-book"/></svg><h2>북마크</h2>
+        </div>
+        <div class="bm home-only is-grid">
+
+          <s_if_var_bm1-on>
+          <s_if_var_bm1-url>
+          <a class="bm-card" href="[##_var_bm1-url_##]">
+            <s_if_var_bm1-image>
+              <span class="bm-img"><img src="[##_var_bm1-image_##]" alt="[##_var_bm1-title_##]" loading="lazy"></span>
+            </s_if_var_bm1-image>
+            <s_not_var_bm1-image>
+              <span class="bm-img" style="background:[##_var_bm1-color_##]">[##_var_bm1-title_##]</span>
+            </s_not_var_bm1-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm1-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm1-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm1-url>
+          </s_if_var_bm1-on>
+
+          <s_if_var_bm2-on>
+          <s_if_var_bm2-url>
+          <a class="bm-card" href="[##_var_bm2-url_##]">
+            <s_if_var_bm2-image>
+              <span class="bm-img"><img src="[##_var_bm2-image_##]" alt="[##_var_bm2-title_##]" loading="lazy"></span>
+            </s_if_var_bm2-image>
+            <s_not_var_bm2-image>
+              <span class="bm-img" style="background:[##_var_bm2-color_##]">[##_var_bm2-title_##]</span>
+            </s_not_var_bm2-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm2-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm2-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm2-url>
+          </s_if_var_bm2-on>
+
+          <s_if_var_bm3-on>
+          <s_if_var_bm3-url>
+          <a class="bm-card" href="[##_var_bm3-url_##]">
+            <s_if_var_bm3-image>
+              <span class="bm-img"><img src="[##_var_bm3-image_##]" alt="[##_var_bm3-title_##]" loading="lazy"></span>
+            </s_if_var_bm3-image>
+            <s_not_var_bm3-image>
+              <span class="bm-img" style="background:[##_var_bm3-color_##]">[##_var_bm3-title_##]</span>
+            </s_not_var_bm3-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm3-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm3-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm3-url>
+          </s_if_var_bm3-on>
+
+          <s_if_var_bm4-on>
+          <s_if_var_bm4-url>
+          <a class="bm-card" href="[##_var_bm4-url_##]">
+            <s_if_var_bm4-image>
+              <span class="bm-img"><img src="[##_var_bm4-image_##]" alt="[##_var_bm4-title_##]" loading="lazy"></span>
+            </s_if_var_bm4-image>
+            <s_not_var_bm4-image>
+              <span class="bm-img" style="background:[##_var_bm4-color_##]">[##_var_bm4-title_##]</span>
+            </s_not_var_bm4-image>
+            <span class="bm-b">
+              <span class="bm-t">[##_var_bm4-title_##] <svg class="ic ic-sm"><use href="#i-ext"/></svg></span>
+              <span class="bm-d">[##_var_bm4-desc_##]</span>
+            </span>
+          </a>
+          </s_if_var_bm4-url>
+          </s_if_var_bm4-on>
+        </div>
+
+        <!-- =============================================================
+             홈 커버 (관리자 > 꾸미기 > 홈 화면 설정에서 커버 사용 시)
+             ============================================================= -->
+        <s_cover>
+          <s_cover_group>
+            <s_cover_rep>
+              <div class="cover-item">
+                <a href="[##_cover_item_link_##]" class="cover-link">
+                  <s_cover_item_thumbnail>
+                    <img src="[##_cover_item_thumbnail_##]" alt="[##_cover_item_title_##]" loading="lazy">
+                  </s_cover_item_thumbnail>
+                  <strong>[##_cover_item_title_##]</strong>
+                  <time class="cover-date">[##_cover_item_date_##]</time>
+                </a>
+              </div>
+            </s_cover_rep>
+          </s_cover_group>
+        </s_cover>
+
+        <!-- =============================================================
+             ③ 고정글 — 티스토리 "공지사항"으로 등록한 글이 자동 표시됩니다
+             (관리자 > 콘텐츠 > 글 관리 > 공지로 등록)
+             ============================================================= -->
+        <div class="sec home-only" id="pinnedSec" data-notice-limit="[##_var_home-notice-count_##]">
+          <svg class="ic"><use href="#i-star"/></svg><h2>고정글</h2>
+        </div>
+        <!-- 직접 지정한 고정글 (스킨 편집 > "고정글 1~3")
+             주소만 넣으면 script.js 가 그 글의 제목과 카테고리를 읽어와 채웁니다. -->
+        <s_if_var_pin1-url>
+          <a class="callout notice-callout home-only pin-auto" href="[##_var_pin1-url_##]">
+            <svg class="ic ic-sm callout-ic"><use href="#i-star"/></svg>
+            <span class="callout-t"><span class="pin-t"></span></span>
+            <span class="callout-c pin-c"></span>
+          </a>
+        </s_if_var_pin1-url>
+        <s_if_var_pin2-url>
+          <a class="callout notice-callout home-only pin-auto" href="[##_var_pin2-url_##]">
+            <svg class="ic ic-sm callout-ic"><use href="#i-star"/></svg>
+            <span class="callout-t"><span class="pin-t"></span></span>
+            <span class="callout-c pin-c"></span>
+          </a>
+        </s_if_var_pin2-url>
+        <s_if_var_pin3-url>
+          <a class="callout notice-callout home-only pin-auto" href="[##_var_pin3-url_##]">
+            <svg class="ic ic-sm callout-ic"><use href="#i-star"/></svg>
+            <span class="callout-t"><span class="pin-t"></span></span>
+            <span class="callout-c pin-c"></span>
+          </a>
+        </s_if_var_pin3-url>
+
+        <!-- 티스토리 "공지"로 등록한 글 (직접 지정한 글 뒤에 이어서 표시) -->
+        <s_notice_rep>
+          <s_index_article_rep>
+            <a class="callout notice-callout home-only" href="[##_notice_rep_link_##]">
+              <svg class="ic ic-sm callout-ic"><use href="#i-star"/></svg>
+              <span class="callout-t">
+                [##_notice_rep_title_##]
+                <time class="dt">[##_notice_rep_date_##]</time>
+              </span>
+              <span class="callout-c">[##_notice_rep_summary_##]</span>
+            </a>
+          </s_index_article_rep>
+
+          <s_permalink_article_rep>
+            <article class="note post-single">
+              <h1 class="inline-title">[##_notice_rep_title_##]</h1>
+              <div class="props">
+                <div class="prop">
+                  <span class="prop-k"><svg class="ic ic-sm"><use href="#i-star"/></svg>type</span>
+                  <span class="prop-v">공지사항</span>
+                </div>
+                <div class="prop">
+                  <span class="prop-k"><svg class="ic ic-sm"><use href="#i-cal"/></svg>date</span>
+                  <span class="prop-v">[##_notice_rep_date_##]</span>
+                </div>
+              </div>
+              <div class="post-body">[##_notice_rep_desc_##]</div>
+            </article>
+          </s_permalink_article_rep>
+        </s_notice_rep>
+
+        <!-- =============================================================
+             목록 헤더 (카테고리 / 검색 결과)
+             ============================================================= -->
+        <s_list>
+          <div class="sec list-header">
+            <svg class="ic"><use href="#i-file"/></svg>
+            <h2 class="list-title">[##_list_conform_##] <span class="list-count">[##_list_count_##]</span></h2>
+          </div>
+        </s_list>
+
+        <!-- ▼▼▼ 목록 상단 광고 자리 (홈 · 카테고리 · 태그 · 검색) ▼▼▼
+             권장 크기: 728×90 — 본문 폭에 맞습니다.
+             글 페이지에서는 자동으로 숨겨집니다. -->
+        <div class="ad-slot ad-list">
+
+        </div>
+        <!-- ▲▲▲ 여기까지 ▲▲▲ -->
+
+        <!-- =============================================================
+             홈 본문 글 목록 — 최근 글 / 인기 글
+             관리자 > 꾸미기 > 스킨 편집 의 "홈 — 본문 글 목록" 에서
+             각각의 표시 여부 · 인기 글 개수 · 순서를 설정합니다.
+             둘 다 끄면 이 영역에는 아무것도 표시되지 않습니다.
+             ============================================================= -->
+        <div class="home-lists">
+
+          <!-- 인기 글 (홈에서만) -->
+          <s_if_var_home-popular>
+          <div class="home-popular-wrap home-only" data-limit="[##_var_home-popular-count_##]">
+            <div class="sec">
+              <svg class="ic"><use href="#i-chart"/></svg><h2>인기 글</h2>
+            </div>
+            <div class="plist plist-popular">
+              <s_rctps_popular_rep>
+                <article class="pitem">
+                  <s_rctps_rep_thumbnail>
+                    <span class="pi-thumb"><img src="[##_rctps_rep_thumbnail_##]" alt="[##_rctps_rep_title_##]" loading="lazy"></span>
+                  </s_rctps_rep_thumbnail>
+                  <span class="pi-noimg"><svg class="ic"><use href="#i-file"/></svg></span>
+                  <div class="pi-main">
+                    <h3 class="pi-t"><a href="[##_rctps_rep_link_##]">[##_rctps_rep_title_##]</a></h3>
+                    <div class="pi-p"><a href="[##_rctps_rep_category_link_##]">[##_rctps_rep_category_##]</a></div>
+                  </div>
+                  <div class="pi-r"><time>[##_rctps_rep_simple_date_##]</time></div>
+                </article>
+              </s_rctps_popular_rep>
+            </div>
+          </div>
+          </s_if_var_home-popular>
+
+          <!-- 최근 글 (목록 / 본문 공용) -->
+          <div class="home-recent-wrap">
+            <div class="sec home-only">
+              <svg class="ic"><use href="#i-file"/></svg><h2>최근 글</h2>
+            </div>
+
+            [##_revenue_list_upper_##]
+
+            <div class="plist">
+            <s_article_rep>
+
+              <!-- ---------- 목록 뷰 ---------- -->
+              <s_index_article_rep>
+                <article class="pitem post-list-item">
+                  <s_article_rep_thumbnail>
+                    <span class="pi-thumb"><img src="[##_article_rep_thumbnail_url_##]" alt="[##_article_rep_title_##]" loading="lazy"></span>
+                  </s_article_rep_thumbnail>
+                  <span class="pi-noimg"><svg class="ic"><use href="#i-file"/></svg></span>
+                  <div class="pi-main">
+                    <h2 class="pi-t post-title"><a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a></h2>
+                    <p class="pi-s">[##_article_rep_summary_##]</p>
+                    <s_rp_count>
+                      <span class="pi-cmt sr-only">[##_article_rep_rp_cnt_##]</span>
+                    </s_rp_count>
+                  </div>
+                  <div class="pi-r"><time class="pi-date">[##_article_rep_date_##]</time></div>
+                </article>
+              </s_index_article_rep>
+
+              <!-- ---------- 본문 뷰 (퍼머링크) ---------- -->
+              <s_permalink_article_rep>
+                <article class="note post-single">
+
+                  <h1 class="inline-title">[##_article_rep_title_##]</h1>
+
+                  <div class="props">
+                    <div class="prop">
+                      <span class="prop-k"><svg class="ic ic-sm"><use href="#i-folder"/></svg>category</span>
+                      <span class="prop-v"><a href="[##_article_rep_category_link_##]">[##_article_rep_category_##]</a></span>
+                    </div>
+                    <div class="prop">
+                      <span class="prop-k"><svg class="ic ic-sm"><use href="#i-cal"/></svg>date</span>
+                      <span class="prop-v"><time class="post-date">[##_article_rep_date_##]</time></span>
+                    </div>
+                    <s_tag_label>
+                      <div class="prop">
+                        <span class="prop-k"><svg class="ic ic-sm"><use href="#i-hash"/></svg>tags</span>
+                        <span class="prop-v post-tags">[##_tag_label_rep_##]</span>
+                      </div>
+                    </s_tag_label>
+                    <div class="prop">
+                      <span class="prop-k"><svg class="ic ic-sm"><use href="#i-clock"/></svg>read</span>
+                      <span class="prop-v" id="readTime">—</span>
+                    </div>
+                  </div>
+
+                  <div class="post-body">[##_article_rep_desc_##]</div>
+
+                  <!-- ▼▼▼ 글 본문 아래 광고 자리 ▼▼▼
+                       권장 크기: 728×90 또는 300×250 -->
+                  <div class="ad-slot ad-post">
+
+                  </div>
+                  <!-- ▲▲▲ 여기까지 ▲▲▲ -->
+
+                  <!-- 공유 -->
+                  <s_if_var_copyright-text>
+                  <aside class="copyright">[##_var_copyright-text_##]</aside>
+                  </s_if_var_copyright-text>
+
+                  <div class="share">
+                    <span class="share-label">공유</span>
+                    <button class="share-btn" id="shareCopyUrl" title="URL 복사" aria-label="URL 복사"><svg class="ic ic-sm"><use href="#i-link"/></svg></button>
+                    <a class="share-btn" id="shareKakao" href="#" title="카카오톡" aria-label="카카오톡"><svg class="ic ic-sm"><use href="#i-msg"/></svg></a>
+                    <a class="share-btn" id="shareTwitter" href="#" target="_blank" rel="noopener" title="X">X</a>
+                    <a class="share-btn" id="shareFacebook" href="#" target="_blank" rel="noopener" title="Facebook">f</a>
+                    <a class="share-btn" id="shareLinkedin" href="#" target="_blank" rel="noopener" title="LinkedIn">in</a>
+                    <a class="share-btn" id="shareNaver" href="#" target="_blank" rel="noopener" title="네이버 블로그">N</a>
+                  </div>
+
+                  <!-- 이전 / 다음 -->
+                  <div class="pn">
+                    <s_article_prev>
+                      <a href="[##_article_prev_link_##]">
+                        <span class="lb"><svg class="ic ic-sm"><use href="#i-chevl"/></svg>이전 글</span>
+                        <span class="tt">[##_article_prev_title_##]</span>
+                      </a>
+                    </s_article_prev>
+                    <s_article_next>
+                      <a href="[##_article_next_link_##]" class="r">
+                        <span class="lb">다음 글<svg class="ic ic-sm"><use href="#i-chev"/></svg></span>
+                        <span class="tt">[##_article_next_title_##]</span>
+                      </a>
+                    </s_article_next>
+                  </div>
+
+                  <!-- 연결된 글 -->
+                  <s_article_related>
+                    <div class="backlinks">
+                      <div class="bl-h">
+                        <svg class="ic ic-sm"><use href="#i-link"/></svg>연결된 글 · [##_article_rep_category_##]
+                      </div>
+                      <s_article_related_rep>
+                        <a class="bl" href="[##_article_related_rep_link_##]">
+                          <svg class="ic ic-sm"><use href="#i-file"/></svg>
+                          <span class="bl-t">[##_article_related_rep_title_##]</span>
+                          <time class="dt">[##_article_related_rep_date_##]</time>
+                        </a>
+                      </s_article_related_rep>
+                    </div>
+                  </s_article_related>
+
+                  <!-- 댓글 -->
+                  <section class="comment-area" aria-label="댓글">
+                    <s_rp>
+                      [##_comment_group_##]
+                    </s_rp>
+                  </section>
+
+                </article>
+              </s_permalink_article_rep>
+
+            </s_article_rep>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================
+             보호글
+             ============================================================= -->
+        <s_article_protected>
+          <s_index_article_rep>
+            <article class="pitem post-list-item">
+              <span class="pi-noimg"><svg class="ic"><use href="#i-lock"/></svg></span>
+              <div class="pi-main">
+                <h2 class="pi-t post-title"><a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a></h2>
+                <p class="pi-s">보호되어 있는 글입니다.</p>
+              </div>
+              <div class="pi-r"><time class="pi-date">[##_article_rep_date_##]</time></div>
+            </article>
+          </s_index_article_rep>
+
+          <s_permalink_article_rep>
+            <article class="note post-single">
+              <h1 class="inline-title">[##_article_rep_title_##]</h1>
+              <div class="props">
+                <div class="prop">
+                  <span class="prop-k"><svg class="ic ic-sm"><use href="#i-folder"/></svg>category</span>
+                  <span class="prop-v"><a href="[##_article_rep_category_link_##]">[##_article_rep_category_##]</a></span>
+                </div>
+                <div class="prop">
+                  <span class="prop-k"><svg class="ic ic-sm"><use href="#i-cal"/></svg>date</span>
+                  <span class="prop-v">[##_article_rep_date_##]</span>
+                </div>
+              </div>
+              <div class="protected-post">
+                <svg class="ic"><use href="#i-lock"/></svg>
+                <p>보호되어 있는 글입니다.<br>내용을 보시려면 비밀번호를 입력하세요.</p>
+                <form class="protected-form" onsubmit="[##_article_dissolve_##]">
+                  <input type="password" id="[##_article_password_##]" name="[##_article_password_##]" placeholder="비밀번호" autocomplete="current-password">
+                  <button type="submit">확인</button>
+                </form>
+              </div>
+            </article>
+          </s_permalink_article_rep>
+        </s_article_protected>
+
+        <!-- =============================================================
+             페이지 (소개 등)
+             ============================================================= -->
+        <s_page_rep>
+          <s_permalink_article_rep>
+            <article class="note post-single">
+              <h1 class="inline-title">[##_article_rep_title_##]</h1>
+              <div class="post-body">[##_article_rep_desc_##]</div>
+            </article>
+          </s_permalink_article_rep>
+        </s_page_rep>
+
+        <!-- =============================================================
+             태그 페이지
+             ============================================================= -->
+        <s_tag>
+          <section class="tag-page">
+            <h1 class="inline-title home">태그</h1>
+            <div class="tagpane tag-cloud" style="padding:0">
+              <s_tag_rep>
+                <a href="[##_tag_link_##]" class="tag [##_tag_class_##]">[##_tag_name_##]</a>
+              </s_tag_rep>
+            </div>
+          </section>
+        </s_tag>
+
+        <!-- =============================================================
+             방명록
+             ============================================================= -->
+        <s_guest>
+          <section class="guestbook">
+            <h1 class="inline-title home">방명록</h1>
+            [##_guestbook_group_##]
+          </section>
+        </s_guest>
+
+        <!-- =============================================================
+             페이지네이션
+             ============================================================= -->
+        <s_paging>
+          <nav class="pagination" aria-label="페이지 탐색">
+            <a [##_prev_page_##] class="page-btn page-prev [##_no_more_prev_##]" aria-label="이전 페이지">
+              <svg class="ic ic-sm"><use href="#i-chevl"/></svg>
+            </a>
+            <span class="page-numbers">
+              <s_paging_rep>
+                <!-- class 를 적지 않습니다. 티스토리가 현재 페이지에 class="selected" 를
+                     직접 넣어 주는데, 여기에 class 를 또 쓰면 앞의 것만 남아
+                     "현재 페이지" 표시가 사라집니다. 스타일은 .page-numbers a 로 잡습니다. -->
+                <a [##_paging_rep_link_##]>[##_paging_rep_link_num_##]</a>
+              </s_paging_rep>
+            </span>
+            <a [##_next_page_##] class="page-btn page-next [##_no_more_next_##]" aria-label="다음 페이지">
+              <svg class="ic ic-sm"><use href="#i-chev"/></svg>
+            </a>
+          </nav>
+        </s_paging>
+
+        [##_revenue_list_lower_##]
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================================================================
+       우측 사이드바 — 권장 순서: 달력 / 최근 글 / 최근 댓글
+       =================================================================== -->
+  <aside class="side side-r sidebar-right" aria-label="개요 및 위젯">
+
+    <!-- 태그 그래프 — 달력 바로 아래에 고정 (순서는 style.css 의 order 로 지정) -->
+    <s_if_var_graph-show>
+    <div class="pane pane-graph" id="graphPane">
+      <h2 class="pane-h">그래프
+        <span class="sp">
+          <button class="act" id="graphReset" title="처음으로" aria-label="처음으로"><svg class="ic ic-sm"><use href="#i-home"/></svg></button>
+          <button class="act" id="graphExpand" title="크게 보기" aria-label="크게 보기"><svg class="ic ic-sm"><use href="#i-layers"/></svg></button>
+        </span>
+      </h2>
+      <div class="graph-stage" id="graphStage">
+        <canvas id="graphCanvas"></canvas>
+        <p class="graph-msg" id="graphMsg">불러오는 중…</p>
+      </div>
+      <p class="graph-hint">점을 누르면 이어진 글·태그가 펼쳐집니다. 글은 두 번 누르면 열립니다.</p>
+    </div>
+    </s_if_var_graph-show>
+
+    <!-- 개요(목차) + 사이드 광고 — 글을 읽는 동안 함께 화면에 붙어 따라옵니다 -->
+    <div class="side-sticky">
+      <div class="pane pane-toc" id="tocPane">
+        <h2 class="pane-h">개요</h2>
+        <ul class="ol" id="tocList"></ul>
+      </div>
+
+      <!-- ▼▼▼ 사이드바 광고 자리 — 광고 코드를 여기에 붙여넣으세요 ▼▼▼
+           권장 크기: 250×250 (사이드바 폭에 맞습니다)
+           비워 두면 아무것도 보이지 않습니다. -->
+      <div class="pane pane-ad ad-slot ad-side">
+
+      </div>
+      <!-- ▲▲▲ 여기까지 ▲▲▲ -->
+    </div>
+
+    <!-- ▼▼▼ 모바일 전용 사이드 광고 자리 ▼▼▼
+         권장 크기: 250×250 (정사각형)
+
+         · PC 화면에서는 나오지 않습니다. 휴대폰에서만 달력 바로 아래에 표시됩니다.
+         · 휴대폰에서는 위쪽 "사이드바 광고 자리"(세로로 긴 배너)가 대신 숨겨집니다.
+         · 비워 두면 자리 자체가 사라집니다.
+         · 카카오 애드핏을 쓴다면 PC 단위와 별개로 모바일용 단위를 하나 더 만들어 주세요. -->
+    <div class="pane pane-ad ad-slot ad-side-m">
+
+    </div>
+    <!-- ▲▲▲ 여기까지 ▲▲▲ -->
+
+    <s_sidebar>
+
+      <s_sidebar_element>
+        <!-- 달력 -->
+        <div class="pane pane-cal">
+          <h2 class="pane-h">달력</h2>
+          <div class="widget-calendar">[##_calendar_##]</div>
+        </div>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 최근 글 -->
+        <s_if_var_show-recent>
+        <div class="pane pane-recent-posts" data-limit="[##_var_recent-count_##]">
+          <h2 class="pane-h"><a href="[##_blog_link_##]">최근 글</a></h2>
+          <ul class="recent-list">
+            <s_rctps_rep>
+              <li>
+                <a href="[##_rctps_rep_link_##]">
+                  <svg class="ic ic-sm"><use href="#i-file"/></svg>
+                  <span>[##_rctps_rep_title_##]</span>
+                </a>
+              </li>
+            </s_rctps_rep>
+          </ul>
+        </div>
+        </s_if_var_show-recent>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 인기 글 -->
+        <s_if_var_show-popular>
+        <div class="pane pane-popular-posts" data-limit="[##_var_popular-count_##]">
+          <h2 class="pane-h">인기 글</h2>
+          <ul class="recent-list">
+            <s_rctps_popular_rep>
+              <li>
+                <a href="[##_rctps_rep_link_##]">
+                  <svg class="ic ic-sm"><use href="#i-chart"/></svg>
+                  <span>[##_rctps_rep_title_##]</span>
+                </a>
+              </li>
+            </s_rctps_popular_rep>
+          </ul>
+        </div>
+        </s_if_var_show-popular>
+      </s_sidebar_element>
+
+      <s_sidebar_element>
+        <!-- 최근 댓글 -->
+        <s_if_var_show-comments>
+        <div class="pane pane-recent-comments" data-limit="[##_var_comments-count_##]" data-empty="아직 등록된 댓글이 없어요">
+          <h2 class="pane-h">최근 댓글</h2>
+          <ul class="recent-list">
+            <s_rctrp_rep>
+              <li>
+                <a href="[##_rctrp_rep_link_##]">
+                  <svg class="ic ic-sm"><use href="#i-msg"/></svg>
+                  <span>[##_rctrp_rep_desc_##]</span>
+                </a>
+              </li>
+            </s_rctrp_rep>
+          </ul>
+        </div>
+        </s_if_var_show-comments>
+      </s_sidebar_element>
+
+    </s_sidebar>
+  </aside>
+
+</div>
+
+<!-- ===================================================================
+     스크롤 버튼 / 모바일
+     =================================================================== -->
+<div class="scroll-buttons" id="scrollButtons">
+  <button id="backToTop" aria-label="맨 위로"><svg class="ic ic-sm"><use href="#i-chevu"/></svg></button>
+  <button id="backToBottom" aria-label="맨 아래로"><svg class="ic ic-sm"><use href="#i-chevd"/></svg></button>
+</div>
+
+<button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="사이드바 열기" aria-expanded="false">
+  <svg class="ic ic-lg"><use href="#i-menu"/></svg>
+</button>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+</s_t3>
+<script src="./images/script.js" defer></script>
+</body>
+</html>

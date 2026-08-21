@@ -1,0 +1,2465 @@
+@charset "UTF-8";
+/* 코드블록의 영문·숫자·기호용 고정폭 — 한글은 아래 IBM Plex Sans KR 로 이어진다 */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* ==========================================================================
+   DevLog Vault — Tistory Custom Skin
+   Obsidian 앱 UI를 기반으로 한 3컬럼 개발자 블로그 스킨
+
+   [ 목차 ]
+   01. 디자인 토큰 (Obsidian 변수명 + 구 스킨 호환 별칭)
+   02. 리셋 / 베이스
+   03. 앱 셸 (리본 / 사이드바 / 워크스페이스 리프)
+   04. 사이드바 컴포넌트 (볼트 · 검색 · 카테고리 트리 · 통계)
+   05. 탭 바 / 노트 헤더 / 프로퍼티
+   06. 홈 전용 (북마크 · 고정글 콜아웃)
+   07. 글 목록 / 페이지네이션
+   08. 노트 본문 / 코드블록
+   09. 백링크 · 이전다음 · 공유
+   10. 우측 사이드바 (개요 · 태그 · 달력)
+   11. 스크롤 버튼 / 모바일
+   12. 티스토리 통합 오버라이드
+   13. 반응형 / 프린트
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   본문 서체 — 자연 산스 (Project Noonnu)
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'NaturalSans';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607201621@jayeonsans-medium/jayeonsans-medium/JayeonSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NaturalSans';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607201621@jayeonsans-medium/jayeonsans-medium/JayeonSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   코드블록 서체 — IBM Plex Sans KR (눈누)
+   한글은 이 서체, 영문·숫자·기호는 같은 가족인 IBM Plex Mono 가 맡는다.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-ExtraLight.woff') format('woff');
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Light.woff') format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Text.woff') format('woff');
+  font-weight: 450;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IbmPlexSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   고정폭 서체 — 모노플렉스KR (김양수, SIL OFL 1.1)
+   한글까지 폭이 일정해서 카테고리 트리와 코드블록의 세로줄이 맞는다.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Monoplexkr';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoplexkr';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoplexkr';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   01. 디자인 토큰
+   ========================================================================== */
+:root,
+[data-theme="dark"] {
+  /* --- Obsidian core --- */
+  --background-primary: #1e1e1e;
+  --background-primary-alt: #1a1a1a;
+  --background-secondary: #161616;
+  --background-secondary-alt: #0f0f0f;
+  --background-modifier-border: #2b2b2b;
+  --background-modifier-border-hover: #3a3a3a;
+  --background-modifier-hover: rgba(255, 255, 255, .055);
+  --background-modifier-active: rgba(139, 108, 239, .16);
+
+  --text-normal: #dadada;
+  --text-muted: #9a9a9a;
+  --text-faint: #858585;   /* 4.5:1 이상 — 날짜·힌트 글씨가 안 보인다는 지적 반영 */
+  --text-on-accent: #ffffff;
+  --text-accent: #8b6cef;
+  --text-accent-hover: #a48bf5;
+  --text-selection: rgba(139, 108, 239, .28);
+
+  --interactive-accent: #8b6cef;
+  --interactive-accent-hover: #7c5be8;
+  --accent-rgb: 139, 108, 239;
+
+  --code-background: #161616;
+  --blockquote-border: #3f3f3f;
+  --divider: #2b2b2b;
+  --scrollbar: #3a3a3a;
+
+  /* --- 본문 표 --- */
+  --table-border: #3d3d3d;
+  --table-header-bg: #2a2a2e;
+  --table-row-alt: #232326;
+  --table-row-hover: #2c2c31;
+
+  --shadow-s: 0 1px 2px rgba(0, 0, 0, .35);
+  --shadow-l: 0 12px 32px rgba(0, 0, 0, .45);
+
+  /* --- 시맨틱 컬러 (콜아웃 · 뱃지) --- */
+  --c-blue: #4d92e8;
+  --c-teal: #00bfbc;
+  --c-green: #3aa76d;
+  --c-yellow: #d6a72a;
+  --c-red: #e05252;
+  --c-purple: #8b6cef;
+  --c-orange: #d8863c;
+
+  /* --- 코드 하이라이트 --- */
+  --sx-key: #c678dd;
+  --sx-str: #98c379;
+  --sx-num: #d19a66;
+  --sx-fn: #61afef;
+  --sx-cmt: #858585;
+  --sx-ann: #e5c07b;
+  --sx-var: #e06c75;
+  --sx-type: #56b6c2;
+}
+
+[data-theme="light"] {
+  --background-primary: #ffffff;
+  --background-primary-alt: #fafafa;
+  --background-secondary: #f2f3f5;
+  --background-secondary-alt: #e9eaec;
+  --background-modifier-border: #e2e3e5;
+  --background-modifier-border-hover: #cfd0d3;
+  --background-modifier-hover: rgba(0, 0, 0, .042);
+  --background-modifier-active: rgba(112, 93, 207, .13);
+
+  --text-normal: #222222;
+  --text-muted: #5c5c5c;
+  --text-faint: #6b6f75;   /* 4.5:1 이상 */
+  --text-on-accent: #ffffff;
+  --text-accent: #705dcf;
+  --text-accent-hover: #5a48b8;
+  --text-selection: rgba(112, 93, 207, .2);
+
+  --interactive-accent: #705dcf;
+  --interactive-accent-hover: #5a48b8;
+  --accent-rgb: 112, 93, 207;
+
+  --code-background: #f4f4f6;
+  --blockquote-border: #d5d6d8;
+  --divider: #e2e3e5;
+  --scrollbar: #c9cacd;
+
+  /* --- 본문 표 --- */
+  --table-border: #d3d5da;
+  --table-header-bg: #eceef2;
+  --table-row-alt: #f7f8fa;
+  --table-row-hover: #eef0f4;
+
+  --shadow-s: 0 1px 2px rgba(16, 24, 40, .06);
+  --shadow-l: 0 12px 32px rgba(16, 24, 40, .12);
+
+  --c-blue: #2d6fd0;
+  --c-teal: #0d8f8c;
+  --c-green: #25835a;
+  --c-yellow: #a3760d;
+  --c-red: #c33d3d;
+  --c-purple: #705dcf;
+  --c-orange: #b7692a;
+
+  --sx-key: #a626a4;
+  --sx-str: #3f8f3f;
+  --sx-num: #986801;
+  --sx-fn: #3f76e0;
+  --sx-cmt: #6a6e74;
+  --sx-ann: #8a6d1f;
+  --sx-var: #b03a3a;
+  --sx-type: #0e7490;
+}
+
+:root {
+  --font-ui: 'NaturalSans', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'Monoplexkr', 'JetBrains Mono', 'D2Coding', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  /* 코드블록·인라인 코드 전용 — 나머지 UI 는 --font-mono 를 그대로 쓴다 */
+  /* 영문·숫자·기호는 IBM Plex Mono(고정폭), 한글은 IBM Plex Sans KR 로 이어진다.
+     한글까지 IBM Plex Sans KR 로 통일하고 싶으면 맨 앞의 'IBM Plex Mono' 만 지우면 된다. */
+  --font-code: 'IBM Plex Mono', 'IbmPlexSans', 'Monoplexkr', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --radius-xl: 12px;
+
+  --ribbon-w: 44px;
+  --sidebar-l: 320px;
+  --sidebar-r: 280px;
+  --shell-max: 1640px;
+  --file-line-width: 760px;
+  --home-line-width: 900px;
+
+  --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+/* --- 구 스킨 변수 호환 별칭 (티스토리 오버라이드가 그대로 동작하도록) --- */
+:root,
+[data-theme="dark"],
+[data-theme="light"] {
+  --bg-primary: var(--background-secondary);
+  --bg-secondary: var(--background-primary-alt);
+  --bg-card: var(--background-primary);
+  --bg-widget: var(--background-secondary);
+  --bg-input: var(--background-primary-alt);
+  --bg-hover: var(--background-modifier-hover);
+  --bg-code: var(--code-background);
+
+  --text-primary: var(--text-normal);
+  --text-secondary: var(--text-muted);
+  --text-link: var(--text-accent);
+
+  --accent: var(--interactive-accent);
+  --accent-light: var(--text-accent-hover);
+  --accent-bg: var(--background-modifier-active);
+  --accent-border: rgba(var(--accent-rgb), .35);
+
+  --border: var(--background-modifier-border);
+  --border-light: var(--background-modifier-border);
+  --shadow: var(--shadow-s);
+  --shadow-lg: var(--shadow-l);
+
+  --radius: var(--radius-m);
+  --radius-sm: var(--radius-s);
+  --radius-lg: var(--radius-l);
+
+  --green: var(--c-green);
+  --yellow: var(--c-yellow);
+  --red: var(--c-red);
+  --cyan: var(--c-blue);
+}
+
+/* ==========================================================================
+   02. 리셋 / 베이스
+   ========================================================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-normal);
+  background: var(--background-secondary);
+  -webkit-font-smoothing: antialiased;
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img { max-width: 100%; height: auto; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, textarea { font-family: inherit; }
+
+::selection { background: var(--text-selection); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 5px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track { background: transparent; }
+
+/* 아이콘 (인라인 SVG 스프라이트) */
+.ic {
+  width: 16px; height: 16px; flex: none;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.ic-sm { width: 13px; height: 13px; stroke-width: 2; }
+.ic-lg { width: 18px; height: 18px; }
+.sprite { display: none; }
+
+/* 스크린리더 전용 */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ==========================================================================
+   03. 앱 셸
+   ========================================================================== */
+.app {
+  display: grid;
+  grid-template-columns: var(--ribbon-w) var(--sidebar-l) minmax(0, 1fr) var(--sidebar-r);
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* --- 태그 그래프 --- */
+.graph-stage {
+  position: relative;
+  margin: 4px 6px 2px;
+  height: 240px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background: var(--background-primary-alt);
+  overflow: hidden;
+  cursor: grab;
+}
+.graph-stage.is-drag { cursor: grabbing; }
+.graph-stage canvas { display: block; width: 100%; height: 100%; }
+.graph-msg {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  padding: 0 16px; margin: 0;
+  font-size: 12px; color: var(--text-faint); text-align: center; line-height: 1.6;
+}
+.graph-msg[hidden] { display: none; }
+.graph-hint {
+  margin: 6px 8px 2px;
+  font-size: 11px; color: var(--text-faint); line-height: 1.5;
+}
+
+/* 크게 보기 */
+.graph-modal {
+  position: fixed; inset: 0; z-index: 120;
+  display: grid; place-items: center;
+  background: rgba(0, 0, 0, .55);
+  padding: 24px;
+}
+.graph-modal-inner {
+  position: relative;
+  width: min(1100px, 92vw); height: min(760px, 84vh);
+}
+.graph-modal .graph-stage {
+  margin: 0; width: 100%; height: 100%;
+  background: var(--background-primary);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+}
+.graph-close {
+  position: absolute; top: 10px; right: 12px; z-index: 2;
+  font-size: 15px; line-height: 1;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-m);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+}
+.graph-close:hover { color: var(--text-normal); background: var(--background-modifier-hover); }
+
+/* --- 광고 자리 ---
+   카카오 애드핏·애드센스는 광고 단위마다 크기가 고정이라 늘리지 않고
+   자리만 가운데로 잡아 준다. 코드를 넣지 않으면 자리 자체가 사라진다. */
+.ad-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.ad-slot:empty { display: none; margin: 0; }
+.ad-slot > ins,
+.ad-slot > div,
+.ad-slot > iframe { margin: 0 auto !important; max-width: 100% !important; }
+
+/* 모바일 전용 사이드 광고 —
+   PC 에서는 나오지 않고, 모바일에서만 달력 바로 아래에 놓인다.
+   (모바일은 세로로 긴 160×600 대신 250×250 같은 정사각형 단위가 어울린다) */
+.ad-side-m { display: none !important; }
+
+/* 사이드바 광고 — 폭에 맞춰 가운데.
+   ※ border-top 을 넣으면 바로 위 패널의 border-bottom 과 겹쳐 구분선이 두 줄로 보인다.
+      구분선은 .side-r .pane 의 border-bottom 하나로만 그린다. */
+.pane-ad {
+  margin: 4px 6px 0;
+  padding: 4px 0 0;
+  border-top: 0;
+}
+.pane-ad.ad-slot { margin: 4px 6px 0; }
+.pane-ad:empty,
+.pane-ad.ad-slot:empty { display: none; }
+
+/* 글 페이지에서는 목록용 광고를 숨긴다 (제목 위에 광고가 겹쳐 보이지 않도록) */
+body#tt-body-page .ad-list,
+body#tt-body-notice .ad-list,
+body#tt-body-guestbook .ad-list { display: none !important; }
+
+/* 본문 폭보다 넓은 배너는 좁은 화면에서 숨긴다 (가로 스크롤 방지) */
+@media (max-width: 820px) {
+  .ad-slot.ad-wide { display: none !important; }
+}
+
+/* 구글 자동 광고는 데스크톱 폭(예: 760px)으로 자리를 잡아 두는 일이 있다.
+   좁은 화면에서 그대로 두면 본문 밖으로 넘치거나 글자 위를 덮는다.
+   폭을 본문에 맞춰 가둔다. */
+.post-body ins.adsbygoogle,
+.post-body ins.adsbygoogle > div,
+.post-body ins.adsbygoogle iframe,
+.post-body .revenue_unit_wrap,
+.post-body div[id^="google_ads"],
+.post-body iframe[id^="aswift"] {
+  max-width: 100% !important;
+}
+.post-body ins.adsbygoogle { overflow: hidden; }
+
+/* 본문 바로가기 (키보드 사용자용 — 포커스될 때만 보인다) */
+.skip-link {
+  position: absolute; left: 8px; top: -60px; z-index: 200;
+  padding: 8px 14px;
+  background: var(--interactive-accent); color: var(--text-on-accent);
+  border-radius: var(--radius-m); font-size: 13px; font-weight: 600;
+  transition: top .15s var(--ease);
+}
+.skip-link:focus { top: 8px; }
+
+/* --- 리본 --- */
+.ribbon {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 10px 0;
+  background: var(--background-secondary);
+  position: sticky; top: 0; align-self: start;
+  height: 100vh;
+}
+.rb {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-m);
+  color: var(--text-faint);
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.rb:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.rb:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 1px; }
+.rb.on { color: var(--text-normal); background: var(--background-modifier-hover); }
+.rb-sp { flex: 1; }
+/* 이동 메뉴와 유틸(RSS · 테마) 사이 구분선 */
+.rb-div {
+  flex: none; width: 16px; height: 1px;
+  margin: 5px 0;
+  background: var(--background-modifier-border);
+}
+
+/* --- 사이드바 --- */
+/* 스크롤바는 항상 감춘다(막대가 여러 개로 보이지 않도록).
+   좌측 사이드바는 PC 에서 화면에 고정된다 — 아래 20번 섹션 참고.
+   긴 글을 읽으며 내려가도 카테고리와 스킨 정보가 계속 보이게 하기 위해서다. */
+.side {
+  padding: 8px 6px 40px;
+  background: var(--background-secondary);
+  scrollbar-width: none;              /* 혹시 스크롤이 생겨도 막대는 감춘다 */
+  -ms-overflow-style: none;
+}
+
+.side::-webkit-scrollbar { width: 0; height: 0; }
+
+/* --- 애드센스 자동 광고가 사이드바 맨 위에 끼어드는 문제 ---
+   구글 자동 광고는 로드 중 자리를 먼저 잡았다가(빈 상자) 채워지지 않으면 사라진다.
+   그게 프로필 위에 생기면 프로필이 아래로 밀렸다가 튀어 오르는 것처럼 보인다.
+   광고를 없애지 않고, 우리 패널을 항상 먼저 오게 해서 흔들림만 없앤다. */
+.side-l { display: flex; flex-direction: column; }
+.side-l > .pane { order: 1; }
+.side-l > *:not(.pane) { order: 9; }
+
+/* 사이드바에는 자동 광고를 아예 띄우고 싶지 않다면 아래 두 줄의 주석을 푸세요.
+   (본문 광고는 그대로 유지됩니다)
+.side .google-auto-placed,
+.side ins.adsbygoogle { display: none !important; }
+*/
+.pane { margin-bottom: 6px; padding-bottom: 8px; }
+.side-r .pane {
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 10px; padding-bottom: 12px;
+}
+.side-r .pane:last-child { border-bottom: 0; }
+
+.pane-h {
+  display: flex; align-items: center; gap: 6px;
+  min-height: 50px; padding: 0 8px;
+  font-size: 17px; font-weight: 600;
+  color: var(--text-faint);
+}
+.pane-h a { color: inherit; }
+.pane-h a:hover { color: var(--text-accent); }
+.pane-h .sp { margin-left: auto; display: flex; gap: 1px; }
+.pane-h .act {
+  width: 22px; height: 22px; display: grid; place-items: center;
+  border-radius: var(--radius-s); color: var(--text-faint);
+}
+.pane-h .act:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+
+/* --- 워크스페이스 리프 (본문 패널) --- */
+.leaf {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  margin: 8px;
+  min-height: calc(100vh - 16px);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.leaf-body { flex: 1; padding: 26px 40px 60px; }
+.pagewrap { max-width: var(--file-line-width); margin: 0 auto; }
+.pagewrap-home { max-width: var(--home-line-width); margin: 0 auto; }
+
+/* ==========================================================================
+   04. 사이드바 컴포넌트
+   ========================================================================== */
+
+/* --- 볼트(프로필) 카드 — 세로형, 원형 아바타 --- */
+.pane-profile {
+  margin: 4px 6px 50px;
+  padding: 50px 14px 28px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.vault {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0;
+}
+.vault-ic {
+  width: 150px; height: 150px; flex: none;
+  border-radius: 50%; overflow: hidden;
+  background: var(--interactive-accent);
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 1px var(--background-modifier-border), 0 4px 14px rgba(0, 0, 0, .18);
+  transition: box-shadow .2s var(--ease), transform .2s var(--ease);
+}
+.vault:hover .vault-ic {
+  box-shadow: 0 0 0 2px var(--interactive-accent), 0 6px 18px rgba(0, 0, 0, .24);
+  transform: translateY(-1px);
+}
+.vault-ic img { width: 100%; height: 100%; object-fit: cover; }
+.vault-nm {
+  display: block; margin-top: 20px;
+  font-size: 16px; font-weight: 700; line-height: 1.35;
+  color: var(--text-normal); word-break: keep-all;
+}
+.vault:hover .vault-nm { color: var(--text-accent); }
+/* 블로그 설명 — 관리자 > 블로그 설정에 입력한 줄바꿈·들여쓰기를 그대로 살린다.
+   3줄 높이를 미리 잡아 두어 아래 아이콘 줄이 들썩이지 않게 한다. */
+.vault-sub {
+  display: block; margin-top: 16px;
+  width: 100%;
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.6;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: keep-all; overflow-wrap: anywhere;
+  min-height: calc(1.6em * 3);
+  max-height: calc(1.6em * 6);
+  overflow: hidden;
+}
+
+/* --- 프로필 링크 (아바타 아래 가운데) --- */
+.vault-links {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 6px; margin-top: 20px;
+}
+.vault-links a {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-m);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-faint);
+  transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+}
+.vault-links a:hover {
+  background: var(--background-modifier-active);
+  border-color: rgba(var(--accent-rgb), .35);
+  color: var(--text-accent);
+}
+.vault-links:empty { display: none; }
+
+/* --- 스킨 제작 표기 --- */
+.skin-credit {
+  margin: 18px 6px 6px;
+  padding: 14px 10px 4px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.skin-credit p { margin: 0; }
+.sc-name {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .02em;
+  color: var(--text-muted);
+}
+.sc-by { margin-top: 2px !important; font-size: 11.5px; color: var(--text-faint); }
+.sc-by a { color: var(--text-accent); }
+.sc-by a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.sc-lic {
+  margin-top: 7px !important;
+  font-size: 10.5px; line-height: 1.6; color: var(--text-faint);
+}
+
+/* --- 검색 --- */
+.searchbox {
+  display: flex; align-items: center; gap: 7px;
+  margin: 0 6px 10px; padding: 5px 9px;
+  background: var(--background-primary-alt);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-faint);
+  transition: border-color .15s var(--ease), box-shadow .15s var(--ease);
+}
+.searchbox:focus-within {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px var(--text-selection);
+}
+.searchbox input {
+  flex: 1; min-width: 0;
+  border: 0; background: none; outline: 0;
+  color: var(--text-normal); font-size: 13.5px;
+}
+.searchbox input::placeholder { color: var(--text-faint); }
+.searchbox button { display: grid; place-items: center; color: var(--text-faint); }
+.searchbox button:hover { color: var(--text-accent); }
+.searchbox kbd {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 3px; padding: 0 4px; line-height: 1.5;
+}
+
+/* --- 방문 통계 --- */
+.stat {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 8px; font-size: 12.5px; color: var(--text-muted);
+}
+.stat .ic { color: var(--text-faint); }
+.stat .v {
+  margin-left: auto; color: var(--text-normal);
+  font-variant-numeric: tabular-nums; font-weight: 500;
+}
+.stat .v.today { color: var(--text-accent); }
+
+/* 목록이 비었을 때 안내 (예: 아직 댓글이 없는 경우) */
+.empty-note {
+  padding: 6px 8px 10px;
+  font-size: 12px; color: var(--text-faint);
+  line-height: 1.5;
+}
+
+/* 어제 대비 오늘 추이 — 막대는 오늘, 눈금은 어제 수준 */
+.trend { display: flex; align-items: center; gap: 9px; padding: 6px 8px 2px; }
+.trend[hidden] { display: none; }
+.trend-bar {
+  position: relative; flex: 1; height: 6px;
+  border-radius: 3px;
+  background: var(--background-modifier-border);
+}
+.trend-bar .tb-fill {
+  display: block; height: 100%; width: 0;
+  border-radius: 3px;
+  background: var(--interactive-accent);
+  transition: width .4s var(--ease);
+}
+.trend-bar .tb-mark {
+  position: absolute; top: -3px; bottom: -3px; width: 2px;
+  border-radius: 1px;
+  background: var(--text-faint);
+  opacity: .7;
+}
+.trend-d {
+  font-size: 11.5px; white-space: nowrap;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.trend-d.up { color: var(--text-accent); }
+
+/* ==========================================================================
+   05. 탭 바 / 노트 헤더 / 프로퍼티
+   ========================================================================== */
+.tabbar {
+  display: flex; align-items: center; gap: 2px;
+  height: 38px; padding: 0 6px; flex: none;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+}
+.tab {
+  display: flex; align-items: center; gap: 7px;
+  height: 30px; padding: 0 10px;
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+  font-size: 13px; color: var(--text-faint);
+  max-width: 300px; min-width: 0;
+}
+.tab:hover { color: var(--text-muted); }
+.tab .tl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tab.on {
+  background: var(--background-primary);
+  color: var(--text-normal);
+  box-shadow: inset 0 1px 0 var(--background-modifier-border),
+              inset 1px 0 0 var(--background-modifier-border),
+              inset -1px 0 0 var(--background-modifier-border);
+}
+.tab-act { margin-left: auto; display: flex; align-items: center; gap: 1px; position: relative; }
+.tab-act .act {
+  min-width: 26px; height: 26px; padding: 0 6px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-s); color: var(--text-faint);
+  font-size: 12px; font-weight: 600;
+}
+.tab-act .act:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+
+/* 글 관리 드롭다운 */
+.post-manage-menu {
+  display: none; position: absolute; right: 0; top: 30px; z-index: 60;
+  min-width: 170px; padding: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-l);
+}
+.post-manage-menu.open { display: block; }
+.post-manage-menu a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: var(--radius-s);
+  font-size: 13px; color: var(--text-muted);
+}
+.post-manage-menu a:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.post-manage-menu a.danger { color: var(--c-red); }
+
+/* 읽기 진행 바 */
+.reading-progress { height: 2px; background: transparent; flex: none; }
+.reading-progress-fill {
+  height: 100%; width: 0;
+  background: var(--interactive-accent);
+  transition: width .1s linear;
+}
+
+/* --- 인라인 타이틀 --- */
+.inline-title {
+  font-size: 32px; font-weight: 700; line-height: 1.28;
+  letter-spacing: -.02em; color: var(--text-normal);
+  margin-bottom: 14px; word-break: keep-all;
+}
+.inline-title.home { font-size: 26px; }
+.inline-title a { color: inherit; }
+
+/* --- 프로퍼티 (프론트매터) --- */
+.props {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 14px; margin-bottom: 22px;
+}
+.prop { display: flex; align-items: flex-start; gap: 8px; padding: 3px 0; font-size: 13.5px; }
+.prop-k {
+  display: flex; align-items: center; gap: 6px;
+  width: 104px; flex: none; color: var(--text-faint);
+  padding-top: 1px;
+}
+.prop-v {
+  color: var(--text-muted); min-width: 0;
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+}
+.prop-v a:not(.tag) { color: var(--text-accent); }
+.prop-v a:not(.tag):hover { text-decoration: underline; }
+.prop-sep { color: var(--text-faint); }
+
+/* --- 태그 pill --- */
+.tag,
+.post-tags a,
+.tag-cloud a {
+  display: inline-flex; align-items: center;
+  font-size: 12px; line-height: 1.7;
+  padding: 0 8px; border-radius: 99px;
+  color: var(--text-accent);
+  background: var(--background-modifier-active);
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.tag:hover,
+.post-tags a:hover,
+.tag-cloud a:hover {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* --- 섹션 헤더 --- */
+.sec { display: flex; align-items: center; gap: 8px; margin: 34px 0 12px; }
+.sec:first-child { margin-top: 0; }
+.sec h2, .sec h3 { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+.sec > .ic { color: var(--text-faint); }
+.sec .more {
+  margin-left: auto; display: flex; align-items: center; gap: 3px;
+  font-size: 12.5px; color: var(--text-faint);
+}
+.sec .more:hover { color: var(--text-accent); }
+
+/* ==========================================================================
+   06. 홈 전용 블록
+   ========================================================================== */
+/* 홈 전용 블록 노출 규칙은 파일 맨 아래 '16. 홈 전용 노출' 참고 */
+
+/* --- ① 북마크 카드 --- */
+/* 항상 4열 기준. 카드가 1~3장이면 왼쪽부터 채우고 오른쪽은 비워 둔다.
+   (auto-fit 은 카드가 적을 때 한 장이 통째로 늘어나거나 넘쳐서 쓰지 않는다) */
+.bm {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.bm-card {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: var(--background-primary-alt);
+  transition: background .16s var(--ease), border-color .16s var(--ease);
+}
+.bm-card:hover {
+  border-color: var(--background-modifier-border-hover);
+  background: var(--background-modifier-hover);
+}
+.bm-img {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 17px; letter-spacing: -.02em;
+  color: #fff; overflow: hidden;
+}
+.bm-img img { width: 100%; height: 100%; object-fit: cover; }
+.bm-b { display: block; padding: 9px 11px 11px; text-align: center; }
+.bm-t { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 13.5px; font-weight: 600; color: var(--text-normal); }
+/* 외부 링크 아이콘은 항상 보인다.
+   숨겨 두면 제목 줄의 가운데가 아이콘 자리만큼 밀려서, 아래 부제목과 어긋나 보인다. */
+.bm-t .ic { color: var(--text-faint); opacity: 1; transition: color .16s var(--ease); }
+.bm-card:hover .bm-t .ic { color: var(--text-accent); }
+.bm-d { display: block; font-size: 12px; color: var(--text-faint); margin-top: 2px; line-height: 1.45; }
+.bm-d:empty { display: none; }
+
+/* --- ② 콜아웃 (고정글 · 시리즈 안내) --- */
+.callout {
+  --cc: var(--accent-rgb);
+  display: block;
+  background: rgba(var(--cc), .09);
+  border: 1px solid rgba(var(--cc), .2);
+  border-radius: var(--radius-m);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  transition: background .15s var(--ease);
+}
+a.callout:hover { background: rgba(var(--cc), .15); }
+.callout-t {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13.5px; font-weight: 700;
+  color: rgb(var(--cc));
+  margin-bottom: 5px;
+}
+.callout-t .dt { margin-left: auto; font-weight: 400; font-size: 11.5px; color: var(--text-faint); }
+.callout-c { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+.callout-c:empty { display: none; }
+.callout-c strong { color: var(--text-normal); }
+.callout.info { --cc: 77, 146, 232; }
+.callout.tip { --cc: 0, 191, 188; }
+.callout.warn { --cc: 214, 167, 42; }
+.callout.danger { --cc: 224, 82, 82; }
+[data-theme="light"] .callout.info { --cc: 45, 111, 208; }
+[data-theme="light"] .callout.tip { --cc: 13, 143, 140; }
+[data-theme="light"] .callout.warn { --cc: 163, 118, 13; }
+[data-theme="light"] .callout.danger { --cc: 195, 61, 61; }
+
+/* 고정글 — 강조(포인트) 색을 진하게 쓰고 왼쪽에 포인트 바를 둔다.
+   본문 콜아웃보다 채도를 올려서 같은 색 계열 안에서 눈에 띄게 한다.
+
+   배치: 별은 왼쪽에서 **전체 높이의 가운데**에 고정하고,
+        제목과 카테고리는 오른쪽 한 칸에 위아래로 쌓아 **같은 선에서 왼쪽 정렬**한다.
+        (제목이 두 줄로 접혀도 카테고리 시작점이 제목과 어긋나지 않는다) */
+.notice-callout {
+  background: rgba(var(--cc), .16);
+  border-color: rgba(var(--cc), .32);
+  border-left: 3px solid rgb(var(--cc));
+  padding-left: 12px;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  /* 행을 명시해야 아래 grid-row: 1 / -1 이 두 줄을 걸친다
+     (행을 안 적으면 -1 이 첫 줄을 가리켜 별이 제목 줄에만 머문다) */
+  grid-template-rows: auto auto;
+  column-gap: 9px;
+  align-items: center;
+}
+.notice-callout > .callout-ic {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: center;
+  color: rgb(var(--cc));
+}
+.notice-callout > .callout-t,
+.notice-callout > .callout-c { grid-column: 2; min-width: 0; }
+.notice-callout > .callout-t { margin-bottom: 3px; }
+/* 카테고리·요약이 비어 있으면 제목만 한 줄로 남고, 별은 그 줄의 가운데에 온다 */
+.notice-callout > .callout-c:empty { display: none; }
+a.notice-callout:hover { background: rgba(var(--cc), .24); }
+
+/* ==========================================================================
+   07. 글 목록 / 페이지네이션
+   ========================================================================== */
+.plist { display: flex; flex-direction: column; gap: 4px; }
+
+.pitem {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px; align-items: stretch;
+  padding: 18px 14px;
+  border-radius: var(--radius-m);
+  transition: background .13s var(--ease);
+}
+.pitem:hover { background: var(--background-modifier-hover); }
+
+/* 대표 이미지가 없는 글 — 썸네일과 같은 크기의 빈 슬롯 (제목 시작선을 맞춘다) */
+.pi-noimg {
+  width: 148px; min-height: 108px;
+  align-self: stretch;
+  display: grid; place-items: center;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background: var(--background-primary-alt);
+  color: var(--text-faint);
+  transition: border-color .15s var(--ease), color .15s var(--ease);
+}
+.pitem:hover .pi-noimg {
+  color: var(--text-accent);
+  border-color: var(--background-modifier-border-hover);
+}
+/* 대표 이미지가 있으면 빈 슬롯은 숨긴다 */
+.pi-thumb + .pi-noimg { display: none; }
+
+.pi-main { min-width: 0; align-self: center; }
+.pi-t {
+  font-size: 15px; font-weight: 600; line-height: 1.45;
+  color: var(--text-normal);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  word-break: keep-all;
+}
+.pi-t a { color: inherit; }
+.pitem:hover .pi-t { color: var(--text-accent); }
+.pi-p { font-size: 11.5px; color: var(--text-faint); font-family: var(--font-mono); margin-top: 2px; }
+.pi-p a { color: inherit; }
+.pi-s {
+  font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 9px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  word-break: keep-all;
+}
+.pi-m {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 7px;
+  font-size: 11.5px; color: var(--text-faint); align-items: center;
+}
+.pi-m > * { display: flex; align-items: center; gap: 4px; }
+.pi-r {
+  font-size: 11.5px; color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  align-self: start; padding-top: 3px; white-space: nowrap;
+}
+/* 글 대표 이미지 — 행 높이를 꽉 채운다 */
+.pi-thumb {
+  width: 148px; min-height: 108px;
+  align-self: stretch;
+  border-radius: var(--radius-m); overflow: hidden;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary-alt);
+  transition: border-color .15s var(--ease);
+}
+.pi-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.pitem:hover .pi-thumb { border-color: var(--background-modifier-border-hover); }
+
+/* NEW / HOT 뱃지 */
+.pill, .new-badge, .hot-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  padding: 1px 5px; border-radius: 3px; line-height: 1.6;
+  white-space: nowrap;
+}
+.pill.new, .new-badge { color: var(--c-green); background: rgba(58, 167, 109, .14); }
+.pill.hot, .hot-badge { color: var(--c-orange); background: rgba(216, 134, 60, .14); }
+
+/* 리스트 헤더 */
+.list-header { margin-bottom: 4px; }
+.list-count { color: var(--text-faint); font-weight: 400; }
+
+/* --- 페이지네이션 ---
+   ※ 티스토리는 "현재 페이지" 번호를 <a class="selected"> 로 직접 내보낸다.
+      스킨이 <a ... class="page-num"> 처럼 class 를 또 적으면 HTML 규칙상
+      앞의 class 만 살아남아 page-num 이 통째로 사라진다.
+      그래서 클래스가 아니라 태그(.page-numbers a)로 잡는다. */
+.pagination {
+  display: flex; justify-content: center; align-items: center;
+  gap: 4px; margin-top: 26px; flex-wrap: wrap;
+}
+.page-numbers { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; justify-content: center; }
+.page-btn,
+.page-numbers a,
+.page-numbers .page-num {
+  min-width: 32px; height: 32px; padding: 0 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  font-size: 13px; color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: background .14s var(--ease), color .14s var(--ease),
+              border-color .14s var(--ease);
+}
+.page-btn:hover,
+.page-numbers a:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+.page-btn:focus-visible,
+.page-numbers a:focus-visible {
+  outline: 2px solid var(--interactive-accent); outline-offset: 1px;
+}
+/* 더 갈 곳이 없는 화살표 (티스토리가 no_more_prev / no_more_next 를 넣어 준다) */
+.page-btn.no_more,
+.page-btn.no_more_prev,
+.page-btn.no_more_next {
+  opacity: .28; pointer-events: none;
+}
+/* 현재 페이지
+   ※ 실제 티스토리 출력을 확인한 결과:
+        <a href="/?page=7"><span class="selected">7</span></a>   ← 현재 페이지
+        <a href="/?page=8"><span class="">8</span></a>           ← 나머지
+        <a><span class="">···</span></a>                          ← 생략 표시(href 없음)
+      즉 "selected" 는 <a> 가 아니라 **안쪽 <span>** 에 붙는다.
+      script.js 가 이 클래스를 <a> 로 올려 주고(주 경로),
+      아래 :has() 규칙은 JS 가 없을 때를 위한 예비다. */
+.page-numbers a.selected,
+.page-numbers a:has(> .selected) {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+  font-weight: 700; pointer-events: none;
+  box-shadow: 0 1px 6px rgba(var(--accent-rgb), .35);
+}
+.page-numbers a.selected > span,
+.page-numbers a:has(> .selected) > span { color: inherit; font-weight: inherit; }
+
+/* 생략 표시(···) — 주소가 없으므로 누를 수 없게, 옅게 */
+.page-numbers a:not([href]),
+.page-numbers a.is-gap {
+  color: var(--text-faint);
+  pointer-events: none;
+  min-width: 20px; padding: 0 2px;
+  letter-spacing: .08em;
+}
+.page-numbers a:not([href]):hover,
+.page-numbers a.is-gap:hover { background: none; border-color: transparent; }
+
+/* 링크가 아니라 텍스트로만 나오는 경우(구형 치환자) 대비 */
+.page-numbers > span.selected {
+  min-width: 32px; height: 32px; padding: 0 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-m);
+  background: var(--interactive-accent); color: var(--text-on-accent);
+  font-size: 13px; font-weight: 700;
+}
+
+/* ==========================================================================
+   08. 노트 본문 / 코드블록
+   ========================================================================== */
+.post-body {
+  font-size: 16px; line-height: 1.72;
+  color: var(--text-normal);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.post-body p { margin: 0 0 16px; }
+.post-body h1 { font-size: 25px; font-weight: 700; margin: 34px 0 14px; letter-spacing: -.01em; }
+.post-body h2 { font-size: 22px; font-weight: 700; margin: 32px 0 12px; letter-spacing: -.01em; }
+.post-body h3 { font-size: 18px; font-weight: 600; margin: 26px 0 10px; }
+.post-body h4 { font-size: 16px; font-weight: 600; margin: 22px 0 8px; }
+.post-body h1, .post-body h2, .post-body h3, .post-body h4 { color: var(--text-normal); scroll-margin-top: 60px; }
+.post-body strong, .post-body b { font-weight: 700; color: var(--text-normal); }
+
+/* --- 제목 형광펜 --- */
+/* h1 노랑 · h2 살구 · h3 연두. 글자 폭만큼만 칠해지도록 inline-block 으로 둔다. */
+.post-body h1, .post-body h2, .post-body h3 {
+  display: inline-block; max-width: 100%;
+  padding: 0;                 /* 글자 너비에 딱 맞게 */
+  border-radius: 0;           /* 모서리를 둥글리지 않는다 */
+  line-height: 1.3;           /* 줄 높이만큼만 칠해지도록 바짝 */
+  background-image: linear-gradient(var(--hl), var(--hl));
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 100% 100%;
+}
+.post-body h1 { --hl: rgba(255, 210, 138, .5); }
+.post-body h2 { --hl: rgba(255, 171, 140, .5); }
+.post-body h3 { --hl: rgba(166, 227, 161, .5); }
+/* 다크모드 — 반투명이면 배경과 섞여 칙칙해 보인다.
+   진짜 형광펜처럼 불투명하게 칠하고, 그 위 글자는 검정으로 둔다. */
+[data-theme="dark"] .post-body h1 { --hl: #ffd28a; }
+[data-theme="dark"] .post-body h2 { --hl: #ffab8c; }
+[data-theme="dark"] .post-body h3 { --hl: #a6e3a1; }
+[data-theme="dark"] .post-body h1,
+[data-theme="dark"] .post-body h2,
+[data-theme="dark"] .post-body h3 {
+  color: #17181b;
+  /* 형광펜이 다 그어진 뒤에 글자색이 바뀌도록 살짝 늦춘다 */
+  transition: color .25s var(--ease) .45s;
+}
+/* 제목 안의 링크·강조·인라인 코드도 같은 색을 따라간다 */
+[data-theme="dark"] .post-body h1 *,
+[data-theme="dark"] .post-body h2 *,
+[data-theme="dark"] .post-body h3 * { color: inherit !important; }
+[data-theme="dark"] .post-body h1 code,
+[data-theme="dark"] .post-body h2 code,
+[data-theme="dark"] .post-body h3 code { background: rgba(0, 0, 0, .14); }
+/* 형광펜이 아직 그어지지 않은 동안에는 원래 글자색 (검은 글자가 어둠에 묻히지 않도록) */
+[data-theme="dark"].js-hl .post-body h1:not(.hl-on),
+[data-theme="dark"].js-hl .post-body h2:not(.hl-on),
+[data-theme="dark"].js-hl .post-body h3:not(.hl-on) { color: var(--text-normal); }
+[data-theme="dark"].js-hl .post-body h1:not(.hl-on) *,
+[data-theme="dark"].js-hl .post-body h2:not(.hl-on) *,
+[data-theme="dark"].js-hl .post-body h3:not(.hl-on) * { color: inherit !important; }
+
+/* 화면에 들어올 때 형광펜이 그어지는 효과 (script.js 가 .js-hl 을 붙일 때만) */
+.js-hl .post-body h1,
+.js-hl .post-body h2,
+.js-hl .post-body h3 {
+  background-size: 0 100%;
+  transition: background-size .6s var(--ease);
+}
+.js-hl .post-body h1.hl-on,
+.js-hl .post-body h2.hl-on,
+.js-hl .post-body h3.hl-on { background-size: 100% 100%; }
+
+/* --- 저작권 안내 --- */
+.copyright {
+  margin-top: 28px; padding: 14px 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background: var(--background-primary-alt);
+  font-size: 12.5px; line-height: 1.7; color: var(--text-muted);
+  white-space: pre-wrap;
+}
+.copyright:empty { display: none; }
+.copyright strong { color: var(--text-normal); }
+.copyright a { color: var(--text-accent); }
+
+/* --- 콘텐츠 보호가 켜졌을 때 --- */
+.no-copy .post-body { -webkit-user-select: none; user-select: none; }
+.no-copy .post-body .cb,
+.no-copy .post-body pre,
+.no-copy .post-body code { -webkit-user-select: text; user-select: text; }
+.no-copy .post-body img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+.post-body a { color: var(--text-accent); }
+.post-body a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.post-body img { border-radius: var(--radius-m); margin: 16px auto; }
+.post-body hr { border: 0; border-top: 1px solid var(--background-modifier-border); margin: 28px 0; }
+
+.post-body blockquote {
+  border-left: 3px solid var(--blockquote-border);
+  padding: 2px 0 2px 16px;
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.post-body ul, .post-body ol { margin: 0 0 16px; padding-left: 22px; }
+.post-body ul { list-style: disc; }
+.post-body ol { list-style: decimal; }
+.post-body li { margin-bottom: 5px; }
+.post-body li::marker { color: var(--text-faint); }
+
+/* --- 본문 표 ---
+   티스토리 에디터는 머리글을 켜지 않으면 표 전체를 <td> 로만 내보낸다.
+   그래서 머리글 색만으로는 줄이 구분되지 않는다 → 줄무늬 + 또렷한 테두리로 나눈다.
+   (JS가 표를 .table-wrap 으로 감싸 좁은 화면에서 가로로 넘겨 볼 수 있게 한다) */
+.table-wrap {
+  margin: 18px 0;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-m);
+}
+.post-body table {
+  width: 100%;
+  /* 에디터가 표에 border-collapse:collapse 를 직접 박아 두면 바깥 테두리와
+     둥근 모서리가 사라진다. 그래서 !important 로 되돌린다. */
+  border-collapse: separate !important; border-spacing: 0 !important;
+  margin: 18px 0;
+  font-size: 14px; table-layout: fixed; word-break: break-word;
+  background: var(--background-primary);
+  border: 1px solid var(--table-border);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+.table-wrap > table { margin: 0; }
+.post-body th, .post-body td {
+  /* 셀 테두리도 에디터 인라인 값을 덮어써서 표 전체가 한 가지 규칙으로 보이게 한다 */
+  border-width: 0 1px 1px 0 !important;
+  border-style: solid !important;
+  border-color: var(--table-border) !important;
+  padding: 10px 13px; text-align: left; vertical-align: top;
+  line-height: 1.65;
+}
+.post-body tr > *:last-child { border-right-width: 0 !important; }
+.post-body tbody tr:last-child > *,
+.post-body table > tr:last-child > * { border-bottom-width: 0 !important; }
+
+/* 머리글 행 — <thead> 또는 <th> 가 있을 때 */
+.post-body thead th,
+.post-body thead td,
+.post-body tr > th {
+  background: var(--table-header-bg);
+  font-weight: 600; color: var(--text-normal);
+  border-bottom: 2px solid var(--table-border);
+}
+/* 머리글이 없는 표(<td>만 있는 표)는 JS가 .no-head 를 붙인다 —
+   첫 줄을 머리글처럼 칠하지 않고 줄무늬만으로 구분한다 */
+.post-body tbody tr:nth-child(even) { background: var(--table-row-alt); }
+.post-body tbody tr:hover { background: var(--table-row-hover); }
+.post-body table.no-head tbody tr:first-child { font-weight: 500; }
+/* 좁은 화면에서는 칸이 뭉개지지 않도록 표를 넓게 두고 가로로 넘긴다 */
+.table-wrap.is-scroll > table { table-layout: auto; min-width: 520px; }
+.table-wrap.is-scroll { border: 0; }
+
+/* 인라인 코드 */
+.post-body :not(pre) > code {
+  font-family: var(--font-code); font-size: .86em;
+  background: var(--code-background);
+  border-radius: var(--radius-s);
+  padding: 2px 5px;
+  color: var(--text-normal);
+}
+
+/* --- 코드블록 (JS가 .cb로 감싸고 .cb-h를 삽입) --- */
+.cb {
+  position: relative;
+  background: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  margin: 0 0 18px;
+  overflow: hidden;
+}
+.cb-h {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 5px 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.cb-lang { font-family: var(--font-code); font-size: 11px; color: var(--text-faint); }
+.cb-copy {
+  margin-left: auto; display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--text-faint);
+  padding: 2px 7px; border-radius: var(--radius-s);
+  transition: background .14s var(--ease), color .14s var(--ease);
+}
+.cb-copy:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+
+.post-body pre {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  background: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  overflow-x: auto;
+  font-family: var(--font-code);
+  font-size: 13.5px; line-height: 1.7;
+  color: var(--text-normal);
+}
+.cb .post-body pre, .cb > pre {
+  margin: 0; border: 0; border-radius: 0; background: transparent;
+}
+.post-body pre code {
+  display: block;
+  font-family: var(--font-code);
+  background: none; padding: 0; border: 0;
+  color: inherit;
+  white-space: pre;
+}
+
+/* ==========================================================================
+   09. 백링크 · 이전다음 · 공유
+   ========================================================================== */
+.backlinks {
+  margin-top: 36px;
+  border-top: 1px solid var(--background-modifier-border);
+  padding-top: 18px;
+}
+.bl-h {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.bl-h .ic { color: var(--text-faint); }
+.bl-h .ct { margin-left: auto; font-size: 11.5px; color: var(--text-faint); font-weight: 400; }
+.bl {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 9px; border-radius: var(--radius-m);
+  font-size: 13.5px; color: var(--text-muted);
+  transition: background .13s var(--ease), color .13s var(--ease);
+}
+.bl:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.bl .ic { color: var(--text-faint); }
+.bl .bl-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bl .dt { margin-left: auto; font-size: 11.5px; color: var(--text-faint); flex: none; }
+.bl-thumb {
+  width: 28px; height: 21px; flex: none; border-radius: 3px;
+  overflow: hidden; border: 1px solid var(--background-modifier-border);
+}
+.bl-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 이전 / 다음 */
+.pn { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
+.pn a {
+  padding: 11px 13px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  transition: background .15s var(--ease), border-color .15s var(--ease);
+  min-width: 0;
+}
+.pn a:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(--background-modifier-border-hover);
+}
+.pn .lb {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11.5px; color: var(--text-faint); margin-bottom: 3px;
+}
+.pn .tt {
+  display: block; font-size: 13.5px; color: var(--text-normal); line-height: 1.45;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pn .r { text-align: right; }
+.pn .r .lb { justify-content: flex-end; }
+
+/* 공유 */
+.share {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 26px; padding-top: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.share-label { font-size: 12px; color: var(--text-faint); margin-right: 4px; }
+.share-btn {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-muted);
+  font-size: 12px; font-weight: 700;
+  transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+}
+.share-btn:hover {
+  background: var(--background-modifier-active);
+  color: var(--text-accent);
+  border-color: rgba(var(--accent-rgb), .35);
+}
+
+/* 태그 목록 (본문 하단) */
+.post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+.post-tags .tag_label { display: contents; }
+
+/* ==========================================================================
+   10. 우측 사이드바
+   ========================================================================== */
+/* 개요(TOC) */
+.ol li {
+  font-size: 13px; color: var(--text-muted);
+  padding: 4px 8px; border-radius: var(--radius-s);
+  line-height: 1.45;
+  transition: background .13s var(--ease), color .13s var(--ease);
+}
+.ol li a { display: block; color: inherit; }
+.ol li:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.ol li.toc-active { color: var(--text-accent); background: var(--background-modifier-active); }
+.ol li.d2 { padding-left: 20px; font-size: 12.5px; }
+.pane-toc { display: none; }
+.pane-toc.has-items { display: block; }
+
+/* 태그 패널 */
+.tagpane { display: flex; flex-wrap: wrap; gap: 5px; padding: 2px 8px; }
+
+/* 최근 글 · 최근 댓글 */
+.recent-list li a {
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 8px; border-radius: var(--radius-s);
+  font-size: 13px; color: var(--text-muted);
+  transition: background .13s var(--ease), color .13s var(--ease);
+}
+.recent-list li a:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.recent-list .ic { color: var(--text-faint); flex: none; }
+.recent-list span {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+
+/* ==========================================================================
+   11. 스크롤 버튼 / 모바일
+   ========================================================================== */
+.scroll-buttons {
+  position: fixed; right: 16px; bottom: 40px; z-index: 55;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.scroll-buttons button {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-faint);
+  box-shadow: var(--shadow-s);
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.scroll-buttons button:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+
+/* 모바일 사이드바 토글 */
+.mobile-sidebar-toggle {
+  display: none;
+  position: fixed; left: 14px; bottom: 40px; z-index: 70;
+  width: 40px; height: 40px;
+  place-items: center;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-l);
+}
+.mobile-overlay {
+  display: none; position: fixed; inset: 0; z-index: 65;
+  background: rgba(0, 0, 0, .5);
+}
+.mobile-overlay.active { display: block; }
+
+/* 보호글 */
+.protected-post {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 48px 20px; text-align: center; color: var(--text-muted);
+}
+.protected-post .ic { width: 30px; height: 30px; color: var(--text-faint); }
+.protected-form { display: flex; gap: 6px; }
+.protected-form input {
+  padding: 8px 12px;
+  background: var(--background-primary-alt);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-normal); outline: 0;
+}
+.protected-form input:focus { border-color: var(--interactive-accent); }
+.protected-form button {
+  padding: 8px 18px;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-radius: var(--radius-m); font-weight: 600; font-size: 14px;
+}
+.protected-form button:hover { background: var(--interactive-accent-hover); }
+
+/* 커버 (티스토리 홈 커버 기능 사용 시) */
+.cover-item {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  overflow: hidden; margin-bottom: 10px;
+  background: var(--background-primary-alt);
+}
+.cover-item:hover { border-color: var(--background-modifier-border-hover); }
+.cover-link img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.cover-link strong { display: block; padding: 10px 14px 2px; font-size: 14px; }
+.cover-date { display: block; padding: 0 14px 12px; font-size: 11.5px; color: var(--text-faint); }
+
+/* ==========================================================================
+   12. 티스토리 통합 오버라이드
+   ========================================================================== */
+
+/* --- 카테고리 트리 (티스토리는 table + 인라인 스타일로 렌더링) --- */
+/* 카테고리 트리는 고정폭 서체 — 이름 길이가 달라도 세로줄이 맞는다 */
+.widget-category { font-size: 13px; padding: 0 2px; font-family: var(--font-mono); }
+
+.widget-category div[id$="_children"] { display: block !important; }
+
+.widget-category table,
+.widget-category table table { background-color: transparent !important; }
+
+.widget-category #treeComponent { width: 100% !important; }
+.widget-category table { border-collapse: collapse; width: 100% !important; }
+
+/* 트리 아이콘 셀 제거 */
+.widget-category td.ib,
+.widget-category td[style*="width:39px"],
+.widget-category td[style*="navi_back"] {
+  width: 0 !important; padding: 0 !important;
+  font-size: 0 !important; line-height: 0 !important;
+  background-image: none !important;
+}
+.widget-category .ib img,
+.widget-category img[src*="tree/base/"],
+.widget-category img[src*="new_ico"] { display: none !important; }
+
+/* 카테고리 행 */
+.widget-category td.branch3,
+.widget-category td[onclick],
+.widget-category table[onclick] { cursor: pointer; }
+
+.widget-category div[id^="text_"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  min-height: 26px !important;
+  padding: 0 8px 0 6px !important;
+  border-radius: var(--radius-s) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  color: var(--text-muted) !important;
+  transition: background .12s var(--ease), color .12s var(--ease);
+}
+
+/* 폴더 아이콘 (SVG를 쓸 수 없으므로 CSS 마스크 대신 문자 사용) */
+.widget-category div[id^="text_"]::before {
+  content: '';
+  width: 13px; height: 13px; flex: none;
+  background-color: currentColor;
+  opacity: .55;
+  -webkit-mask: var(--folder-mask) center / contain no-repeat;
+  mask: var(--folder-mask) center / contain no-repeat;
+}
+:root {
+  --folder-mask: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z'/%3E%3C/svg%3E");
+}
+
+.widget-category td:hover > div[id^="text_"],
+.widget-category td.branch3:hover div[id^="text_"] {
+  background: var(--background-modifier-hover) !important;
+  color: var(--text-normal) !important;
+}
+
+/* 최상위(분류 전체보기) */
+#category_0 div[id="text_0"] {
+  font-weight: 600 !important;
+  color: var(--text-normal) !important;
+}
+
+/* 하위 카테고리 */
+.widget-category div[id$="_children"] {
+  margin: 0 0 4px 13px !important;
+  padding-left: 9px !important;
+  border-left: 1px solid var(--background-modifier-border);
+}
+.widget-category div[id$="_children"] div[id^="text_"] {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--text-muted) !important;
+}
+.widget-category div[id$="_children"] div[id^="text_"]::before { opacity: .4; }
+
+/* 글 수 */
+.widget-category .c_cnt {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--text-faint) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 달력 --- */
+.widget-calendar { overflow: hidden; padding: 0 6px; }
+.widget-calendar table {
+  width: 100%; table-layout: fixed; border-collapse: collapse;
+  font-size: 12px; text-align: center;
+}
+.widget-calendar caption {
+  font-weight: 600; font-size: 13px; padding: 0 0 8px;
+  color: var(--text-normal);
+}
+.widget-calendar caption a { color: var(--text-faint); }
+.widget-calendar caption a:hover { color: var(--text-accent); }
+.widget-calendar th {
+  padding: 3px 0; font-weight: 500; font-size: 11px;
+  color: var(--text-faint);
+}
+.widget-calendar td { padding: 2px 0; color: var(--text-muted); font-size: 12px; }
+.widget-calendar td a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: var(--radius-s);
+  color: var(--text-accent); font-weight: 600;
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.widget-calendar td a:hover { background: var(--interactive-accent); color: var(--text-on-accent); }
+.widget-calendar .cal_day_today {
+  background: var(--background-modifier-active);
+  border-radius: var(--radius-s); font-weight: 700;
+  color: var(--text-accent);
+}
+
+/* --- 댓글 영역 --- */
+.comment-area {
+  margin-top: 36px; padding-top: 20px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.comment-area .tt_comment_cont { margin: 0; }
+.comment-area .tt_txt_g {
+  font-size: 14px; font-weight: 600; color: var(--text-normal); margin-bottom: 12px;
+}
+.comment-area .tt_box_total { font-size: 13px; color: var(--text-faint); }
+.comment-area .tt_list_comment > li {
+  padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border);
+}
+.comment-area .tt_desc_reply,
+.comment-area .tt_p_content {
+  color: var(--text-muted); font-size: 14px; line-height: 1.6;
+}
+.comment-area .tt_link_user { font-weight: 600; color: var(--text-normal); }
+.comment-area .tt_date { font-size: 12px; color: var(--text-faint); }
+
+.comment-area .tt_area_reply textarea,
+.comment-area .tt_area_write textarea {
+  width: 100%; min-height: 80px; padding: 12px;
+  background: var(--background-primary-alt);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-normal);
+  font-family: inherit; font-size: 14px;
+  resize: vertical; outline: none;
+}
+.comment-area .tt_area_reply input[type="text"],
+.comment-area .tt_area_reply input[type="password"],
+.comment-area .tt_area_write input[type="text"],
+.comment-area .tt_area_write input[type="password"] {
+  padding: 8px 12px;
+  background: var(--background-primary-alt);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  color: var(--text-normal);
+  font-family: inherit; font-size: 14px; outline: none;
+}
+.comment-area .tt_btn_submit,
+.comment-area .tt_btn_register,
+.comment-area .tt-btn-register,
+.guestbook .tt_btn_submit,
+.guestbook .tt_btn_register,
+.guestbook .tt-btn-register {
+  padding: 8px 18px;
+  background: var(--interactive-accent) !important;
+  color: var(--text-on-accent) !important;
+  border: 1px solid var(--interactive-accent) !important;
+  border-radius: var(--radius-m);
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+}
+.comment-area .tt_btn_submit:hover,
+.comment-area .tt_btn_register:hover,
+.comment-area .tt-btn-register:hover,
+.guestbook .tt_btn_submit:hover,
+.guestbook .tt_btn_register:hover,
+.guestbook .tt-btn-register:hover {
+  background: var(--interactive-accent-hover) !important;
+  border-color: var(--interactive-accent-hover) !important;
+}
+
+/* --- 티스토리 네임카드 (구독 박스) --- */
+.comment-area .tt_box_namecard {
+  min-height: auto !important;
+  padding: 16px !important;
+  margin: 12px 0 !important;
+  background: var(--background-primary-alt) !important;
+  border: 1px solid var(--background-modifier-border) !important;
+  border-radius: var(--radius-l) !important;
+}
+.comment-area .tt_box_namecard .tt_cont { padding: 12px 0 0 16px !important; }
+.comment-area .tt_box_namecard .tt_tit_cont,
+.comment-area .tt_box_namecard .tt_tit_cont a {
+  font-size: 15px !important; color: var(--text-normal) !important;
+}
+.comment-area .tt_box_namecard .tt_desc {
+  color: var(--text-muted) !important; font-size: 13px !important;
+}
+/* 네임카드 썸네일 — 56×56 안에 이미지가 꽉 차게.
+   티스토리 기본 스타일이 안쪽 여백과 작은 고정 크기를 걸어 두어 이미지가
+   왼쪽 아래로 쏠려 보이므로 전부 덮어쓴다. */
+.comment-area .tt_box_namecard .tt_wrap_thumb {
+  display: block !important;
+  width: 56px !important; height: 56px !important;
+  min-width: 56px !important; min-height: 56px !important;
+  padding: 0 !important; margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 50% !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  flex: none !important;
+}
+.comment-area .tt_box_namecard .tt_wrap_thumb > *,
+.comment-area .tt_box_namecard .tt_wrap_thumb img {
+  display: block !important;
+  width: 100% !important; height: 100% !important;
+  min-width: 0 !important; min-height: 0 !important;
+  max-width: none !important; max-height: none !important;
+  margin: 0 !important; padding: 0 !important;
+  top: auto !important; left: auto !important; right: auto !important; bottom: auto !important;
+  position: static !important;
+  transform: none !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+.tt_box_namecard .tt_btn_subscribe {
+  display: inline-flex !important; align-items: center !important;
+  justify-content: center !important; gap: 4px !important;
+  padding: 6px 14px !important;
+  background: var(--interactive-accent) !important;
+  color: var(--text-on-accent) !important;
+  border: 2px solid var(--interactive-accent) !important;
+  border-radius: var(--radius-m) !important;
+  font-size: 13px !important; font-weight: 600 !important;
+  font-family: inherit !important; cursor: pointer !important;
+  line-height: 1.4 !important; white-space: nowrap !important;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.tt_box_namecard .tt_btn_subscribe:hover {
+  background: var(--interactive-accent-hover) !important;
+  border-color: var(--interactive-accent-hover) !important;
+}
+.tt_box_namecard .tt_btn_subscribe * {
+  color: var(--text-on-accent) !important;
+  font-size: inherit !important; line-height: 1 !important;
+  margin: 0 !important; padding: 0 !important; vertical-align: middle !important;
+}
+.container_postbtn .btn_subscription { display: none !important; }
+
+/* --- 티스토리 React 댓글 다크모드 --- */
+[data-theme="dark"] .comment-area .tt-comment-cont,
+[data-theme="dark"] .comment-area .tt-comment-cont * { color: var(--text-muted) !important; }
+[data-theme="dark"] .comment-area .tt-comment-cont a { color: var(--text-accent) !important; }
+[data-theme="dark"] .comment-area .tt-box-total { border-color: var(--background-modifier-border) !important; }
+[data-theme="dark"] .comment-area .tt-box-total a,
+[data-theme="dark"] .comment-area .tt-box-total .tt_txt_g,
+[data-theme="dark"] .comment-area .tt-box-total .tt_num_g,
+[data-theme="dark"] .comment-area .tt-link-comment .tt_tit_g,
+[data-theme="dark"] .comment-area .tt-link-comment strong,
+[data-theme="dark"] .comment-area .tt_link_user { color: var(--text-normal) !important; }
+[data-theme="dark"] .comment-area .tt-link-comment .tt_desc_g,
+[data-theme="dark"] .comment-area .tt_desc_reply,
+[data-theme="dark"] .comment-area .tt_p_content { color: var(--text-muted) !important; }
+[data-theme="dark"] .comment-area .tt-link-comment .tt_date,
+[data-theme="dark"] .comment-area .tt_date,
+[data-theme="dark"] .comment-area .tt-wrap-link-comment .tt_txt_g { color: var(--text-faint) !important; }
+[data-theme="dark"] .comment-area .tt-item-reply,
+[data-theme="dark"] .comment-area .tt-list-reply-comment > li { border-color: var(--background-modifier-border) !important; }
+[data-theme="dark"] .comment-area .tt-box-textarea .tt-inner-g,
+[data-theme="dark"] .comment-area .tt-area-write .tt-box-account input {
+  background: var(--background-primary-alt) !important;
+  border-color: var(--background-modifier-border) !important;
+  color: var(--text-normal) !important;
+}
+[data-theme="dark"] .comment-area .tt-area-write .tt-box-account input::placeholder { color: var(--text-faint) !important; }
+[data-theme="dark"] .comment-area .tt_box_namecard,
+[data-theme="dark"] .comment-area .tt_box_namecard * { color: var(--text-muted) !important; }
+[data-theme="dark"] .comment-area .tt_box_namecard .tt_tit_cont,
+[data-theme="dark"] .comment-area .tt_box_namecard .tt_tit_cont a { color: var(--text-normal) !important; }
+
+/* --- 방명록 --- */
+.guestbook { margin-top: 8px; }
+.guestbook .tt-list-cmt > li,
+.guestbook .tt_list_comment > li {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 16px 0;
+}
+.guestbook .tt-area-write,
+.guestbook .tt-box-write,
+.guestbook .tt-wrap-write,
+.guestbook .tt-comment-cont { border: none !important; box-shadow: none !important; }
+.guestbook textarea,
+.guestbook input[type="text"],
+.guestbook input[type="password"] { font-family: inherit; font-size: 14px; }
+.guestbook textarea { border: none !important; background: transparent !important; }
+.guestbook .tt-link-comment,
+.guestbook .tt_date { font-size: 12.5px; }
+
+[data-theme="dark"] .guestbook .tt_txt_g,
+[data-theme="dark"] .guestbook .tt-comment-cont,
+[data-theme="dark"] .guestbook .tt-comment-cont p,
+[data-theme="dark"] .guestbook .tt_desc { color: var(--text-muted) !important; }
+[data-theme="dark"] .guestbook .tt-wrap-cmt,
+[data-theme="dark"] .guestbook .tt-box-total,
+[data-theme="dark"] .guestbook .tt_box_total,
+[data-theme="dark"] .guestbook .tt-comment-area { background: transparent !important; }
+[data-theme="dark"] .guestbook .tt-area-write,
+[data-theme="dark"] .guestbook .tt-box-write,
+[data-theme="dark"] .guestbook .tt-wrap-write,
+[data-theme="dark"] .guestbook .tt-comment-cont { background: transparent !important; }
+[data-theme="dark"] .guestbook .tt-box-account,
+[data-theme="dark"] .guestbook .tt-box-textarea,
+[data-theme="dark"] .guestbook .tt-box-textarea .tt-inner-g {
+  background: var(--background-primary-alt) !important;
+  border: 1px solid var(--background-modifier-border) !important;
+  color: var(--text-normal) !important;
+}
+[data-theme="dark"] .guestbook .tt-wrap-reply,
+[data-theme="dark"] .guestbook .tt-list-reply,
+[data-theme="dark"] .guestbook .tt-item-reply,
+[data-theme="dark"] .guestbook .tt-box-reply {
+  background: transparent !important;
+  border-color: var(--background-modifier-border) !important;
+}
+[data-theme="dark"] .guestbook .tt-btn-basic,
+[data-theme="dark"] .guestbook .tt-link-comment { color: var(--text-muted) !important; }
+[data-theme="dark"] .guestbook .tt-link-comment:hover { color: var(--text-accent) !important; }
+[data-theme="dark"] .guestbook .tt-txt-nickname,
+[data-theme="dark"] .guestbook .tt_link_user,
+[data-theme="dark"] .guestbook .tt-link-user,
+[data-theme="dark"] .guestbook .tt-link-comment .tt_tit_g,
+[data-theme="dark"] .guestbook .tt-link-comment strong,
+[data-theme="dark"] .guestbook .tt-wrap-info a,
+[data-theme="dark"] .guestbook .tt-wrap-info span,
+[data-theme="dark"] .guestbook .tt-box-meta a,
+[data-theme="dark"] .guestbook .tt-box-meta span,
+[data-theme="dark"] .guestbook .tt_nickname,
+[data-theme="dark"] .guestbook .tt-item-comment .tt-wrap-info *,
+[data-theme="dark"] .guestbook .tt-wrap-cmt .tt-wrap-info * { color: var(--text-normal) !important; }
+[data-theme="dark"] .guestbook .tt-comment-cont .tt_date,
+[data-theme="dark"] .guestbook .tt_date { color: var(--text-faint) !important; }
+[data-theme="dark"] .guestbook input {
+  background: var(--background-primary-alt) !important;
+  border: 1px solid var(--background-modifier-border) !important;
+  color: var(--text-normal) !important;
+}
+[data-theme="dark"] .guestbook textarea {
+  background: transparent !important; border: none !important;
+  color: var(--text-normal) !important;
+}
+[data-theme="dark"] .guestbook .tt-area-write,
+[data-theme="dark"] .guestbook .tt-area-write *,
+[data-theme="dark"] .guestbook .tt-comment-cont textarea,
+[data-theme="dark"] .guestbook .tt-comment-cont input,
+[data-theme="dark"] .guestbook .tt-box-textarea,
+[data-theme="dark"] .guestbook .tt-box-textarea * { color: var(--text-normal) !important; }
+[data-theme="dark"] .guestbook .tt-box-modify,
+[data-theme="dark"] .guestbook .tt-box-modify button {
+  background: var(--background-primary) !important;
+  border-color: var(--background-modifier-border) !important;
+  color: var(--text-muted) !important;
+}
+[data-theme="dark"] .guestbook .tt-box-modify button:hover {
+  background: var(--background-modifier-hover) !important;
+  color: var(--text-normal) !important;
+}
+
+/* --- 에디터 인라인 스타일 다크모드 보정 ---
+   배경색(형광펜)이 지정된 글자는 여기서 건드리지 않는다.
+   밝은 형광펜 위에 밝은 글자색을 덮어써서 글씨가 안 보이던 문제가 있었다.
+   그런 글자는 script.js 의 명암 보정이 배경 밝기를 재서 직접 색을 정한다. */
+[data-theme="dark"] .post-body [style]:not([style*="background"]) { color: var(--text-normal) !important; }
+[data-theme="dark"] .post-body a[style] { color: var(--text-accent) !important; }
+[data-theme="dark"] .post-body blockquote[data-ke-style="style3"] {
+  background: var(--background-primary-alt) !important;
+  border-color: var(--background-modifier-border) !important;
+  color: var(--text-muted) !important;
+}
+[data-theme="dark"] .post-body blockquote[data-ke-style="style3"] * {
+  color: var(--text-muted) !important; background: transparent !important;
+}
+[data-theme="dark"] .post-body pre,
+[data-theme="dark"] .post-body pre[style] {
+  background-color: var(--code-background) !important;
+  color: var(--text-normal) !important;
+}
+/* 표 — 에디터가 셀에 박아 둔 흰 배경만 걷어내고, 줄무늬는 스킨이 그린다.
+   (줄무늬는 tr 에 있고 여기서 비우는 건 셀이라 서로 부딪히지 않는다) */
+[data-theme="dark"] .post-body table,
+[data-theme="dark"] .post-body table td,
+[data-theme="dark"] .post-body table th {
+  background-color: transparent !important;
+  color: var(--text-normal) !important;
+  border-color: var(--table-border) !important;
+}
+[data-theme="dark"] .post-body table { background-color: var(--background-primary) !important; }
+[data-theme="dark"] .post-body table tr[style] { background-color: transparent !important; }
+[data-theme="dark"] .post-body tbody tr:nth-child(even) { background-color: var(--table-row-alt) !important; }
+[data-theme="dark"] .post-body tbody tr:hover { background-color: var(--table-row-hover) !important; }
+[data-theme="dark"] .post-body thead th,
+[data-theme="dark"] .post-body thead td,
+[data-theme="dark"] .post-body table tr > th {
+  background-color: var(--table-header-bg) !important;
+  color: var(--text-normal) !important;
+}
+
+/* --- 링크 미리보기(OG) · 첨부파일 --- */
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"],
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"] > a,
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"] .og-text,
+[data-theme="dark"] .post-body .og-text {
+  background: var(--background-primary-alt) !important;
+  border-color: var(--background-modifier-border) !important;
+}
+[data-theme="dark"] .post-body .og-text .og-title,
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"] .og-title { color: var(--text-normal) !important; }
+[data-theme="dark"] .post-body .og-text .og-desc,
+[data-theme="dark"] .post-body .og-text .og-host,
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"] .og-desc,
+[data-theme="dark"] .post-body figure[data-ke-type="opengraph"] .og-host { color: var(--text-faint) !important; }
+
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"],
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] a {
+  background: var(--background-primary-alt) !important;
+  border-color: var(--background-modifier-border) !important;
+  color: var(--text-normal) !important;
+}
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .filename { color: var(--text-normal) !important; }
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .size,
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .name,
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .btn_download { color: var(--text-muted) !important; }
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .image,
+[data-theme="dark"] .post-body figure[data-ke-type="fileBlock"] .ico_file { filter: invert(.8); }
+
+/* --- 티스토리 기본 UI --- */
+.another_category { display: none !important; }
+#tt-body-page .post-body img { cursor: zoom-in; }
+.container_postbtn { border-color: var(--background-modifier-border) !important; }
+.container_postbtn .btn_post { color: var(--text-muted) !important; }
+.container_postbtn .btn_post:hover { color: var(--text-accent) !important; }
+.layer_post,
+.layer_tooltip {
+  background: var(--background-primary) !important;
+  border: 1px solid var(--background-modifier-border) !important;
+  box-shadow: var(--shadow-l) !important;
+  border-radius: var(--radius-m) !important;
+}
+.layer_post .btn_mark { color: var(--text-muted) !important; }
+.layer_post .btn_mark:hover {
+  background: var(--background-modifier-hover) !important;
+  color: var(--text-normal) !important;
+}
+.layer_tooltip .desc_g { color: var(--text-muted) !important; }
+
+/* 광고 오버플로 방지 */
+iframe, ins, .revenue_unit_wrap, .adsbygoogle, [data-ad-unit-id],
+.post-body iframe, .post-body ins {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* --- 문법 하이라이트 --- */
+.post-body pre code .hljs-keyword,
+.post-body pre code .hljs-selector-tag,
+.post-body pre code .hljs-built_in { color: var(--sx-key); }
+.post-body pre code .hljs-string,
+.post-body pre code .hljs-attr,
+.post-body pre code .hljs-addition { color: var(--sx-str); }
+.post-body pre code .hljs-comment,
+.post-body pre code .hljs-quote { color: var(--sx-cmt); font-style: italic; }
+.post-body pre code .hljs-function,
+.post-body pre code .hljs-title { color: var(--sx-fn); }
+.post-body pre code .hljs-number,
+.post-body pre code .hljs-literal,
+.post-body pre code .hljs-boolean { color: var(--sx-num); }
+.post-body pre code .hljs-variable,
+.post-body pre code .hljs-params { color: var(--sx-var); }
+.post-body pre code .hljs-type,
+.post-body pre code .hljs-class .hljs-title { color: var(--sx-type); }
+.post-body pre code .hljs-meta,
+.post-body pre code .hljs-symbol { color: var(--sx-ann); }
+.post-body pre code .hljs-deletion { color: var(--c-red); background: rgba(224, 82, 82, .1); }
+
+/* ==========================================================================
+   13. 프린트 / 모션 축소
+   (반응형 규칙은 파일 맨 끝 20번 섹션에 모아 두었습니다 —
+    뒤쪽 섹션이 .side-r 같은 display 값을 다시 덮어써서 화면 폭에 따라
+    레이아웃이 깨지던 문제가 있었기 때문입니다.)
+   ========================================================================== */
+
+@media print {
+  .ribbon, .side, .tabbar, .scroll-buttons,
+  .mobile-sidebar-toggle, .share, .pn, .backlinks, .props,
+  .comment-area, .reading-progress { display: none !important; }
+  .app { display: block; max-width: none; }
+  .leaf { border: 0; margin: 0; background: #fff; }
+  .leaf-body { padding: 0; }
+  .pagewrap { max-width: none; }
+  body { background: #fff; color: #000; }
+  .post-body { color: #000; font-size: 12pt; }
+  .post-body a { color: #000; text-decoration: underline; }
+  .cb { break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   14. 페이지 컨텍스트별 표시 제어
+   ========================================================================== */
+/* 탭: 홈에서는 "홈" 탭이 활성, 나머지는 현재 글 탭이 활성 */
+body#tt-body-index .tab-current { display: none; }
+body#tt-body-index .tab-home {
+  background: var(--background-primary);
+  color: var(--text-normal);
+  box-shadow: inset 0 1px 0 var(--background-modifier-border),
+              inset 1px 0 0 var(--background-modifier-border),
+              inset -1px 0 0 var(--background-modifier-border);
+}
+
+/* 글자 크기 · 글 관리 버튼은 글 본문에서만 */
+.tab-act .only-post { display: none; }
+body#tt-body-page .tab-act .only-post,
+body#tt-body-notice .tab-act .only-post { display: grid; }
+/* 글 관리는 JS가 소유자일 때만 인라인 스타일로 표시 */
+
+/* 읽기 진행 바는 본문에서만 */
+.reading-progress { display: none; }
+body#tt-body-page .reading-progress { display: block; }
+
+/* 본문 폭: 글 상세는 좁게, 목록/홈은 넓게 */
+body#tt-body-page .pagewrap-home,
+body#tt-body-notice .pagewrap-home { max-width: var(--file-line-width); }
+
+/* 테마 아이콘 토글 */
+[data-theme="dark"] .theme-ic-dark { display: none; }
+[data-theme="light"] .theme-ic-light { display: none; }
+
+/* 현재 페이지 리본 활성 표시 */
+body#tt-body-index .rb-home,
+body#tt-body-tag .rb-tag,
+body#tt-body-guestbook .rb-guest {
+  color: var(--text-normal);
+  background: var(--background-modifier-hover);
+}
+
+/* ==========================================================================
+   15. 블로그 메뉴 (티스토리 메뉴바)
+   ========================================================================== */
+.menu-list ul { display: flex; flex-direction: column; gap: 1px; }
+.menu-list li { min-width: 0; }
+.menu-list a {
+  display: block;
+  padding: 5px 8px;
+  border-radius: var(--radius-s);
+  font-size: 13.5px;
+  color: var(--text-muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: background .13s var(--ease), color .13s var(--ease);
+}
+.menu-list a:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.menu-list .selected > a,
+.menu-list li.on > a { color: var(--text-accent); background: var(--background-modifier-active); }
+
+/* 노트 컨테이너 */
+.note { min-width: 0; }
+.tag-page .inline-title,
+.guestbook .inline-title { margin-bottom: 18px; }
+.list-title { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+
+
+/* ==========================================================================
+   16. 홈 전용 노출 (가장 마지막에 선언 — 다른 display 규칙을 확실히 덮는다)
+   ========================================================================== */
+.home-only { display: none; }
+body#tt-body-index .home-only { display: block; }
+body#tt-body-index .sec.home-only { display: flex; }
+body#tt-body-index .bm.home-only { display: grid; }
+/* 고정글 콜아웃은 격자 배치(별 세로 가운데 + 제목·카테고리 왼쪽 정렬)를 지켜야 한다.
+   위 .home-only 규칙이 id 선택자라 명시도가 높아서, 여기서 다시 잡아 준다. */
+body#tt-body-index .notice-callout.home-only { display: grid; }
+/* 2페이지 이후에는 숨김 (script.js가 body에 클래스를 붙임) */
+body.not-first-page .home-only { display: none !important; }
+
+
+/* ==========================================================================
+   17. 우측 사이드바 순서 — 달력 → 그래프 → 개요 → 최근 글 → 인기 글 → 최근 댓글
+   ========================================================================== */
+.side-r { display: flex; flex-direction: column; }
+.side-r > * { order: 9; }
+.side-r > .pane-cal { order: 1; }
+.side-r > .pane-graph { order: 2; }
+.side-r > .pane-toc { order: 3; }
+.side-r > .pane-recent-posts { order: 4; }
+.side-r > .pane-popular-posts { order: 5; }
+.side-r > .pane-recent-comments { order: 6; }
+
+/* 글을 읽을 때 우측 사이드바는 달력 · 그래프 · 개요만 남긴다.
+   개요가 화면에 붙어 따라다니는데 그 아래 목록이 남아 있으면 글자가 겹친다.
+   (홈에서는 최근 글 · 인기 글 · 최근 댓글이 그대로 나온다) */
+body#tt-body-page .side-r > .pane-recent-posts,
+body#tt-body-page .side-r > .pane-popular-posts,
+body#tt-body-page .side-r > .pane-recent-comments,
+body#tt-body-notice .side-r > .pane-recent-posts,
+body#tt-body-notice .side-r > .pane-popular-posts,
+body#tt-body-notice .side-r > .pane-recent-comments { display: none !important; }
+
+/* 개요 + 사이드 광고 묶음.
+   · 글 페이지  : 개요 바로 아래(순서 3)에서 화면에 붙어 따라온다
+   · 그 외(홈·카테고리·태그·검색) : 개요가 비어 있으므로 광고만 남는다.
+     이때 그래프 바로 밑에 광고가 붙으면 어색해서 **맨 아래(최근 댓글 다음)** 로 내린다. */
+.side-r > .side-sticky { order: 10; display: block; }
+body#tt-body-page .side-r > .side-sticky,
+body#tt-body-notice .side-r > .side-sticky {
+  order: 3;
+  position: sticky; top: 10px;
+  margin-top: 24px;
+}
+
+/* 광고가 맨 아래로 갈 때만 위쪽 구분선을 하나 그린다.
+   (바로 위 패널은 DOM 상 마지막 자식이라 border-bottom 이 없다 → 선이 겹치지 않는다) */
+.side-r > .side-sticky .pane-ad:not(:empty) {
+  border-top: 1px solid var(--background-modifier-border);
+  margin-top: 14px; padding-top: 14px;
+}
+body#tt-body-page .side-r > .side-sticky .pane-ad:not(:empty),
+body#tt-body-notice .side-r > .side-sticky .pane-ad:not(:empty) {
+  border-top: 0; margin-top: 4px; padding-top: 4px;
+}
+/* 목차가 길어도 광고 자리를 밀어내지 않도록 목차 안에서만 스크롤한다 */
+body#tt-body-page .side-sticky .ol,
+body#tt-body-notice .side-sticky .ol {
+  max-height: 42vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+body#tt-body-page .side-sticky .ol::-webkit-scrollbar,
+body#tt-body-notice .side-sticky .ol::-webkit-scrollbar { width: 0; }
+
+/* 본문 페이지에서 접히는 패널 (최근 글 · 인기 글 · 최근 댓글)
+   script.js 가 .collapsible 과 .collapsed 를 붙인다. */
+.pane.collapsible > .pane-h {
+  cursor: pointer;
+  -webkit-user-select: none; user-select: none;
+}
+.pane.collapsible > .pane-h .pane-toggle {
+  margin-left: auto;
+  display: flex; align-items: center;
+  color: var(--text-faint);
+  transform: rotate(90deg);
+  transition: transform .18s var(--ease), color .18s var(--ease);
+}
+.pane.collapsible > .pane-h:hover .pane-toggle { color: var(--text-normal); }
+.pane.collapsible.collapsed > .pane-h .pane-toggle { transform: rotate(0deg); }
+.pane.collapsible.collapsed > *:not(.pane-h) { display: none !important; }
+
+/* ==========================================================================
+   18. 홈 본문 글 목록 (최근 글 / 인기 글)
+   ========================================================================== */
+.home-lists { display: flex; flex-direction: column; }
+/* 북마크 ↔ 고정글 ↔ 인기 글 ↔ 최근 글 사이를 넉넉히 띄워 구분감을 준다 */
+body#tt-body-index .home-lists .sec { margin-top: 52px; }
+body#tt-body-index #pinnedSec { margin-top: 44px; }
+.home-popular-wrap { order: 2; }
+.home-recent-wrap { order: 1; }
+
+/* 홈에서는 "전체 글 000" 헤더를 숨긴다 (바로 아래 "최근 글" 과 중복) */
+body#tt-body-index .list-header { display: none !important; }
+
+/* 인기 글 순위 표시 */
+.plist-popular { counter-reset: rank; }
+.plist-popular .pitem { counter-increment: rank; }
+.plist-popular .pi-t::before {
+  content: counter(rank);
+  flex: none;
+  min-width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-s);
+  background: var(--background-modifier-active);
+  color: var(--text-accent);
+  font-size: 11px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.plist-popular .pitem:nth-child(-n+3) .pi-t::before {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+
+/* ==========================================================================
+   19. 본문 표 · 형광펜 글자 가독성 보정
+   (script.js 가 배경 밝기를 재서 붙이는 클래스)
+   ========================================================================== */
+/* 에디터에서 배경색(형광펜)을 칠한 글자는 배경 밝기에 맞춰 글자색을 정한다.
+   밝은 형광펜 + 밝은 글자색 조합이라 글씨가 안 보이던 문제를 막는다.
+   (script.js 가 인라인 style 로 직접 지정하므로 여기는 예비용) */
+.post-body .ink-dark,
+.post-body .ink-dark * { color: #17181b !important; }
+.post-body .ink-light,
+.post-body .ink-light * { color: #f0f0f2 !important; }
+
+
+/* ==========================================================================
+   20. 반응형 — 가장 마지막에 선언한다
+   앞 섹션들이 .side-r { display:flex } 처럼 같은 속성을 다시 선언하기 때문에,
+   반응형 규칙이 위쪽에 있으면 화면을 줄여도 적용되지 않는다.
+   (우측 사이드바가 안 숨겨져 본문 아래로 밀려 내려가면서
+    페이지 하단에 빈 여백이 생기고 그래프가 납작해지던 원인)
+
+   폭 구간
+     1501px~        리본 + 좌 사이드바 + 본문 + 우 사이드바 (4열)
+     1181 ~ 1500px  좌 사이드바를 조금 줄인 4열
+     1001 ~ 1180px  우 사이드바를 접은 3열
+      761 ~ 1000px  좌 사이드바를 서랍으로 (리본 + 본문)
+      ~ 760px       모바일 — 리본이 상단 바, 우 사이드바는 본문 아래로
+   ========================================================================== */
+
+/* --- 좌 사이드바 폭만 줄인다. 우 사이드바(280px)는 광고 규격 때문에 고정 --- */
+@media (max-width: 1500px) {
+  :root { --sidebar-l: 292px; }
+}
+@media (max-width: 1340px) {
+  :root { --sidebar-l: 264px; }
+  .leaf-body { padding: 24px 30px 56px; }
+}
+
+/* --- 우측 사이드바(달력 · 그래프 · 개요)를 접는다 --- */
+@media (max-width: 1180px) {
+  .app { grid-template-columns: var(--ribbon-w) var(--sidebar-l) minmax(0, 1fr); }
+  .side-r { display: none !important; }
+}
+
+/* --- 좌측 사이드바를 서랍으로 --- */
+@media (max-width: 1000px) {
+  .app { grid-template-columns: var(--ribbon-w) minmax(0, 1fr); }
+  .bm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .side-l {
+    position: fixed; top: 0; left: var(--ribbon-w); bottom: 0; z-index: 66;
+    width: min(86vw, 320px); max-height: 100vh; overflow-y: auto;
+    transform: translateX(calc(-100% - var(--ribbon-w)));
+    transition: transform .22s var(--ease);
+    border-right: 1px solid var(--background-modifier-border);
+    display: flex;
+  }
+  .side-l.open { transform: translateX(0); }
+  .mobile-sidebar-toggle { display: grid; }
+  .leaf-body { padding: 24px 26px 56px; }
+}
+
+/* ==========================================================================
+   모바일 (~760px)
+   ※ 티스토리 관리자 > 꾸미기 > 모바일 에서 "모바일 웹 자동 연결" 을 꺼야
+     휴대폰에서도 이 스킨이 그대로 보입니다.
+   ========================================================================== */
+@media (max-width: 760px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+
+  /* 리본 → 상단 바. 사이드바 열기 버튼도 이 안으로 들어온다(script.js) */
+  .ribbon {
+    flex-direction: row; height: auto; width: 100%;
+    justify-content: flex-start; align-items: center; gap: 2px;
+    padding: 5px 8px;
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+    position: sticky; top: 0; z-index: 80;
+    border-bottom: 1px solid var(--background-modifier-border);
+    overflow-x: auto; overflow-y: hidden;
+    scrollbar-width: none;
+  }
+  .ribbon::-webkit-scrollbar { height: 0; }
+  .rb { width: 38px; height: 38px; }           /* 손가락으로 누를 수 있는 크기 */
+  .rb-sp { flex: 1; }
+  .rb-div { width: 1px; height: 18px; margin: 0 6px; align-self: center; }
+
+  /* 상단 바 안으로 들어온 사이드바 버튼 */
+  .ribbon > .mobile-sidebar-toggle {
+    position: static; display: grid;
+    width: 38px; height: 38px; margin: 0 2px 0 0;
+    background: transparent; border: 0; box-shadow: none;
+    color: var(--text-normal);
+  }
+
+  .side-l { left: 0; transform: translateX(-100%); width: min(88vw, 330px); }
+  .pane-profile { padding: 24px 14px 20px; margin: 4px 6px 16px; }
+
+  .leaf {
+    margin: 6px;
+    margin-left: max(6px, env(safe-area-inset-left));
+    margin-right: max(6px, env(safe-area-inset-right));
+    border-radius: var(--radius-m); min-height: auto;
+  }
+  .leaf-body { padding: 20px 16px 48px; }
+
+  .tabbar { height: 36px; }
+  .tab { max-width: 62vw; }
+
+  .inline-title { font-size: 25px; }
+  .inline-title.home { font-size: 22px; }
+  .post-body { font-size: 15.5px; }
+  .post-body h1 { font-size: 22px; }
+  .post-body h2 { font-size: 20px; }
+  .post-body h3 { font-size: 17px; }
+  .post-body pre { font-size: 12.5px; }
+
+  .bm { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .bm-img { aspect-ratio: 16 / 10; font-size: 15px; }
+
+  .pn { grid-template-columns: 1fr; }
+  .pn .r { text-align: left; }
+  .pn .r .lb { justify-content: flex-start; }
+  .prop { flex-direction: column; gap: 2px; }
+  .prop-k { width: auto; }
+
+  /* 페이지 번호를 손가락으로 누를 수 있게 */
+  .page-btn,
+  .page-numbers a,
+  .page-numbers .page-num { min-width: 38px; height: 38px; font-size: 14px; }
+
+  /* 떠 있는 버튼 — 노치 · 홈 인디케이터 영역을 피한다 */
+  .scroll-buttons {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .scroll-buttons button { width: 38px; height: 38px; }
+  .mobile-sidebar-toggle {
+    left: max(12px, env(safe-area-inset-left));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  /* --- 우측 사이드바를 본문 아래에 쌓아 보여 준다 (모바일 전용 배치) --- */
+  .side-r {
+    display: flex !important;
+    padding: 4px 6px calc(28px + env(safe-area-inset-bottom));
+    background: transparent;
+  }
+  .side-r > .pane,
+  .side-r > .side-sticky > .pane {
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--radius-m);
+    margin: 0 0 8px; padding: 0 4px 10px;
+  }
+  .side-r .pane-h { min-height: 42px; font-size: 15px; }
+  /* 그래프는 손가락 드래그가 페이지 스크롤과 겹쳐서 모바일에서는 접는다 */
+  .side-r > .pane-graph { display: none !important; }
+  /* 개요(목차)는 본문을 이미 지나온 뒤라 모바일에서는 접는다 */
+  .side-r #tocPane { display: none !important; }
+  body#tt-body-page .side-r > .side-sticky,
+  body#tt-body-notice .side-r > .side-sticky {
+    position: static; margin-top: 0;
+  }
+  body#tt-body-page .side-sticky .ol,
+  body#tt-body-notice .side-sticky .ol { max-height: none; }
+  .pane-ad { border-top: 0; padding-top: 0; margin: 0 0 8px; }
+
+  /* 표는 가로로 넘겨 본다 */
+  .table-wrap.is-scroll > table { min-width: 480px; }
+
+  /* 인기 글 순위 번호(1~5)는 모바일에서 숨긴다 —
+     제목이 두 줄로 접히면서 번호와 겹쳐 보인다 */
+  .plist-popular .pi-t::before { display: none !important; }
+
+  /* 광고 —
+     · 세로로 긴 PC 사이드 광고(개요 묶음)는 모바일에서 내리지 않는다
+     · 대신 모바일 전용 정사각형 광고를 달력 바로 아래에 둔다 */
+  .side-r > .side-sticky { display: none !important; }
+  .side-r > .ad-side-m:not(:empty) {
+    display: flex !important;
+    order: 2;
+  }
+}
+
+@media (max-width: 430px) {
+  /* 카드를 한 줄에 하나씩 두면 홈이 너무 길어져서 두 개씩 유지한다 */
+  .bm { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .bm-img { aspect-ratio: 16 / 10; font-size: 14px; }
+  .bm-b { padding: 8px 8px 10px; }
+  .bm-t { font-size: 12.5px; }
+  .bm-d { font-size: 11px; }
+
+  /* 글 목록 — 좁은 화면에서는 날짜가 제목 아래(2행)로 내려간다.
+     이때 대표 이미지가 1행에만 머물면 오른쪽 글보다 짧아져 아래가 비어 보인다.
+     이미지를 두 행에 걸치게 해서 행 높이를 꽉 채운다. */
+  .pitem {
+    padding: 14px 10px; gap: 12px;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;      /* 1행 = 제목·요약, 2행 = 날짜 */
+  }
+  .pi-thumb, .pi-noimg {
+    width: 104px; min-height: 78px;
+    grid-row: 1 / -1;                   /* 두 행을 걸쳐 행 높이를 꽉 채운다 */
+    align-self: stretch;
+  }
+  .pi-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pi-r { grid-column: 2; padding-top: 2px; }
+  .share { flex-wrap: wrap; }
+  .leaf-body { padding: 18px 13px 44px; }
+  .inline-title { font-size: 22px; }
+}
+
+
+/* ==========================================================================
+   21. 좌측 사이드바 고정 (PC 전용)
+   긴 글을 읽으며 내려갈 때 왼쪽이 텅 비어 보이던 문제를 없앤다.
+   사이드바를 화면에 붙여 두고, 내용이 화면보다 길면 사이드바 안에서만 스크롤한다.
+   (스크롤 막대는 위 .side 규칙에서 감춰 두었다)
+   좌측 사이드바가 서랍으로 바뀌는 1000px 이하에서는 적용하지 않는다.
+   ========================================================================== */
+@media (min-width: 1001px) {
+  .side-l {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    height: 100dvh;
+    /* 내용이 화면보다 길면 사이드바 안에서 스크롤한다 (막대는 감춰져 있다) */
+    overflow-y: auto;
+  }
+
+  .side-l > .pane { flex: none; }
+
+  /* 스크롤을 시작하면
+     · 프로필을 가로형으로 접고
+     · 남는 공간을 카테고리가 가져가고
+     · 방문 통계와 스킨 정보가 아래에 그대로 남는다
+     → 글을 읽으며 내려가도 왼쪽이 비지 않는다.
+     (맨 위에서는 원래 배치 그대로 두어 프로필이 크게 보인다) */
+  .is-scrolled .side-l > .pane-category {
+    flex: 1 1 auto;
+    min-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .is-scrolled .side-l > .pane-category::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* 스크롤을 시작하면 프로필을 가로형으로 접어 카테고리에 자리를 내준다.
+     (script.js 가 <html> 에 .is-scrolled 를 붙인다) */
+  .side-l > .pane-profile {
+    transition: margin .25s var(--ease), padding .25s var(--ease);
+  }
+  .is-scrolled .side-l > .pane-profile {
+    margin-bottom: 14px;
+    padding: 12px 10px 12px;
+  }
+  .is-scrolled .side-l .vault {
+    flex-direction: row; align-items: center;
+    text-align: left; gap: 10px;
+  }
+  .is-scrolled .side-l .vault-ic { width: 42px; height: 42px; }
+  .is-scrolled .side-l .vault-nm { margin-top: 0; font-size: 14.5px; }
+  .is-scrolled .side-l .vault-sub { display: none; }
+  .is-scrolled .side-l .profile-links { margin-top: 10px; }
+}

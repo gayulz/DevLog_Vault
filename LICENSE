@@ -1,0 +1,51 @@
+DevLog Vault — 티스토리 스킨
+Copyright (c) 2026 YUURI (https://yurizzy.tistory.com)
+
+All Rights Reserved.
+
+
+■ 하실 수 있는 것
+
+  · 개인 블로그에 자유롭게 설치해서 사용하실 수 있습니다. 무료입니다.
+  · 본인 블로그에 맞게 색 · 서체 · 문구 · 배치를 고쳐 쓰셔도 됩니다.
+  · 저장소를 내려받거나 fork 해서 본인이 쓸 목적으로 보관하셔도 됩니다.
+
+
+■ 하실 수 없는 것
+
+  · 재배포 — 이 스킨(또는 그 일부)을 다른 곳에 올려 나눠 주는 것
+  · 수정 배포 — 고친 버전을 자기 스킨으로 배포하거나 공개하는 것
+  · 판매 — 유료로 팔거나, 유료 상품·서비스에 끼워 제공하는 것
+  · 스킨 제작 표기(.skin-credit)를 지우거나 다른 이름으로 바꾸는 것
+
+  기업 · 단체 블로그나 상업적 이용을 원하시면 먼저 문의해 주세요.
+
+
+■ 스킨 제작 표기
+
+  왼쪽 사이드바 아래에 아래 표기가 들어 있습니다.
+  이 스킨을 쓰실 때 지우지 말아 주세요.
+
+      DevLog Vault
+      skin by YUURI
+      개인 블로그에 자유롭게 사용하실 수 있습니다.
+      재배포 · 수정 배포 · 판매는 금합니다.
+
+
+■ 보증하지 않음
+
+  이 스킨은 "있는 그대로" 제공됩니다.
+  사용으로 생긴 어떤 손해에 대해서도 제작자는 책임지지 않습니다.
+
+
+■ 포함된 서체 · 자료
+
+  이 스킨은 아래 서체를 CDN 으로 불러옵니다. 각 서체의 라이선스는 배포처를 따릅니다.
+
+    · 자연 산스 (Project Noonnu)
+    · 모노플렉스KR — 김양수, SIL Open Font License 1.1
+    · IBM Plex Mono / IBM Plex Sans KR — SIL Open Font License 1.1
+    · Pretendard — SIL Open Font License 1.1
+    · JetBrains Mono — SIL Open Font License 1.1
+
+  아이콘은 Lucide 스타일로 직접 그린 SVG 이며 이 스킨의 일부입니다.
