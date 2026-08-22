@@ -2170,6 +2170,9 @@ body#tt-body-notice .side-r > .side-sticky {
   order: 3;
   position: sticky; top: 10px;
   margin-top: 24px;
+  /* 화면 높이를 넘지 않게 묶어 둔다. 남는 세로 공간은 아래 규칙에서 목차가 가져간다. */
+  max-height: calc(100vh - 20px);
+  display: flex; flex-direction: column;
 }
 
 /* 광고가 맨 아래로 갈 때만 위쪽 구분선을 하나 그린다.
@@ -2182,15 +2185,34 @@ body#tt-body-page .side-r > .side-sticky .pane-ad:not(:empty),
 body#tt-body-notice .side-r > .side-sticky .pane-ad:not(:empty) {
   border-top: 0; margin-top: 4px; padding-top: 4px;
 }
-/* 목차가 길어도 광고 자리를 밀어내지 않도록 목차 안에서만 스크롤한다 */
+/* 목차 높이는 고정하지 않는다.
+   · 다 들어가면   → 목차가 통째로 보인다 (스크롤 없음)
+   · 화면을 넘치면 → 광고는 그대로 두고 목차만 줄어들어 목차 안에서만 스크롤된다
+   광고를 flex: none 으로 묶어 두는 게 핵심이다. 광고가 잘리면 애드핏 정책 위반이다. */
+body#tt-body-page .side-sticky .pane-toc.has-items,
+body#tt-body-notice .side-sticky .pane-toc.has-items {
+  display: flex; flex-direction: column;
+  min-height: 0;                 /* 내용 높이 밑으로도 줄어들 수 있게 */
+}
+body#tt-body-page .side-sticky .pane-ad,
+body#tt-body-notice .side-sticky .pane-ad { flex: none; }
 body#tt-body-page .side-sticky .ol,
 body#tt-body-notice .side-sticky .ol {
-  max-height: 42vh;
+  flex: 1 1 auto;
+  min-height: 120px;             /* 화면이 낮아도 목차가 사라지지는 않게 */
   overflow-y: auto;
-  scrollbar-width: none;
+  overscroll-behavior: contain;  /* 목차 끝에서 본문이 딸려 스크롤되지 않게 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--background-modifier-border) transparent;
 }
+/* 넘칠 때만 얇은 막대가 보인다 — 아래에 더 있다는 표시 */
 body#tt-body-page .side-sticky .ol::-webkit-scrollbar,
-body#tt-body-notice .side-sticky .ol::-webkit-scrollbar { width: 0; }
+body#tt-body-notice .side-sticky .ol::-webkit-scrollbar { width: 6px; }
+body#tt-body-page .side-sticky .ol::-webkit-scrollbar-thumb,
+body#tt-body-notice .side-sticky .ol::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 3px;
+}
 
 /* 본문 페이지에서 접히는 패널 (최근 글 · 인기 글 · 최근 댓글)
    script.js 가 .collapsible 과 .collapsed 를 붙인다. */
@@ -2414,9 +2436,10 @@ body#tt-body-index .list-header { display: none !important; }
   body#tt-body-page .side-r > .side-sticky,
   body#tt-body-notice .side-r > .side-sticky {
     position: static; margin-top: 0;
+    max-height: none; display: block;
   }
   body#tt-body-page .side-sticky .ol,
-  body#tt-body-notice .side-sticky .ol { max-height: none; }
+  body#tt-body-notice .side-sticky .ol { flex: none; min-height: 0; }
   .pane-ad { border-top: 0; padding-top: 0; margin: 0 0 8px; }
 
   /* 표는 가로로 넘겨 본다 */

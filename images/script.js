@@ -486,12 +486,24 @@
     pane.classList.add('has-items');
 
     var items = $$('li', list);
+    var lastActive = -1;
     function spy() {
       var active = 0;
       for (var i = 0; i < headings.length; i++) {
         if (headings[i].getBoundingClientRect().top <= 90) active = i;
       }
+      if (active === lastActive) return;   // 항목이 바뀔 때만 손댄다 (사용자가 목차를 직접 굴린 건 그대로 둔다)
+      lastActive = active;
       items.forEach(function (li, i) { li.classList.toggle('toc-active', i === active); });
+
+      // 목차가 화면보다 길면 지금 읽는 항목이 잘린 쪽으로 넘어간다.
+      // 목차 안에서만 살짝 굴려 현재 항목이 늘 보이게 한다 (본문은 움직이지 않는다).
+      var cur = items[active];
+      if (!cur || list.scrollHeight <= list.clientHeight) return;
+      var r = cur.getBoundingClientRect();
+      var box = list.getBoundingClientRect();
+      if (r.top < box.top) list.scrollTop += r.top - box.top;
+      else if (r.bottom > box.bottom) list.scrollTop += r.bottom - box.bottom;
     }
     window.addEventListener('scroll', spy, { passive: true });
     spy();
