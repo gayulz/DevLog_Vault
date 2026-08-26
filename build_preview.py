@@ -289,6 +289,7 @@ VARS = {
     'copyright-text': '이 글의 저작권은 작성자에게 있습니다.\n출처를 밝힌 인용은 자유롭게 하셔도 되며, 무단 전재·재배포·AI 학습 데이터 사용을 금합니다.',
     'copy-source': 'true', 'protect-content': '',
     'graph-show': 'true',
+    'privacy-url': '/privacy', 'contact-url': '/contact',
     'pin1-url': '/123', 'pin2-url': '', 'pin3-url': '',
     'home-popular-count': '5', 'popular-first': 'true',
     'show-recent': 'true', 'recent-count': '5',

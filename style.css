@@ -616,6 +616,29 @@ body#tt-body-guestbook .ad-list { display: none !important; }
 .vault-links:empty { display: none; }
 
 /* --- 스킨 제작 표기 --- */
+/* 사이트 정보 — 개인정보처리방침 · 문의 (스킨 편집에서 주소를 넣으면 나온다)
+   두 주소를 모두 비우면 링크가 하나도 없으므로 이 줄 자체를 숨긴다. */
+.site-legal {
+  margin: 16px 6px 0;
+  padding: 0 10px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.site-legal:not(:has(a)) { display: none; }
+.site-legal a { color: var(--text-faint); }
+.site-legal a:hover {
+  color: var(--text-accent);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+/* 링크가 둘 다 있을 때만 가운뎃점을 넣는다.
+   inline-block 이라 부모 링크의 밑줄이 구분자까지 번지지 않는다. */
+.site-legal a + a::before {
+  content: "·";
+  display: inline-block;
+  margin: 0 5px;
+  color: var(--text-faint);
+}
+
 .skin-credit {
   margin: 18px 6px 6px;
   padding: 14px 10px 4px;
