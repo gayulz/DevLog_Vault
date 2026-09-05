@@ -18,3 +18,7 @@ __pycache__/
 
 # 로컬 푸시용 스크립트 (저장소에는 올리지 않습니다)
 push.command
+
+# 블로그 발행용 산출물 (저장소에는 올리지 않습니다)
+docs/html/
+docs/images/post/
