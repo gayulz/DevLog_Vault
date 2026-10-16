@@ -120,7 +120,7 @@ POST_BODY = '''
 <li>같은 클래스 내부 호출은 프록시를 우회하므로 애초에 적용되지 않는다</li>
 </ul>
 
-<table>
+<table id="preview-plain-three">
 <thead><tr><th>전파 속성</th><th>기존 트랜잭션이 있을 때</th><th>없을 때</th></tr></thead>
 <tbody>
 <tr><td>REQUIRED</td><td>참여</td><td>새로 생성</td></tr>
@@ -129,7 +129,7 @@ POST_BODY = '''
 </tbody></table>
 
 <h3>에디터가 만든 표 (머리글 없이 td 로만 나온다)</h3>
-<table style="border-collapse: collapse; width: 100%;">
+<table id="preview-plain-two" style="border-collapse: collapse; width: 100%;">
 <tbody>
 <tr><td style="width: 24%; background-color: rgb(255, 255, 255);">pyproject.toml 도입 배경</td>
     <td style="width: 76%; background-color: rgb(255, 255, 255);">과거 파이썬 패키징은 주로 setup.py 파일을 사용했다.
@@ -138,6 +138,33 @@ POST_BODY = '''
     <td style="width: 76%; background-color: rgb(255, 255, 255);">패키지 빌드 및 설치 과정은 일반적으로 '프론트엔드'(설치 도구)와 '백엔드'(실제 빌드 도구)의 상호작용으로 진행된다.</td></tr>
 <tr><td style="width: 24%; background-color: rgb(255, 255, 255);">PEP 517 / 518</td>
     <td style="width: 76%; background-color: rgb(255, 255, 255);">PEP 518 에서 빌드 시스템의 요구사항을, PEP 517 에서 빌드 시스템과 설치 도구의 상호작용 방식을 정의했다.</td></tr>
+</tbody></table>
+
+<h3>모바일 카드 표 — 5열 · 인라인 최소 폭 · 기존 스크롤 영역</h3>
+<div class="table-wrap" style="overflow-x: auto;">
+<p>미리보기용 가상 매장입니다.</p>
+<table id="preview-store-five" data-mobile-cards="true" style="width: 100%; min-width: 640px; height: 20px;">
+<colgroup><col style="width: 25%;"><col style="width: 30%;"><col style="width: 20%;"><col style="width: 15%;"><col style="width: 10%;"></colgroup>
+<thead><tr><th>매장명</th><th>주소</th><th>연락처</th><th>운영시간</th><th>안내</th></tr></thead>
+<tbody>
+<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 가</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 1 가상 테스트 건물 지하 1층 안내데스크 옆</td><td style="height: 20px;"><a href="tel:000-0000-0000">000-0000-0000</a></td><td style="height: 20px;">10:00~22:00</td><td style="height: 20px;"><a href="#preview-store-five">매장 안내</a></td></tr>
+<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 나</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 2 2층</td><td style="height: 20px;">000-0000-0001</td><td style="height: 20px;">확인 필요</td><td style="height: 20px;">준비 중</td></tr>
+</tbody></table>
+</div>
+
+<h3>모바일 카드 표 — 3열 · td 머리글</h3>
+<table id="preview-store-three" data-mobile-cards="true" style="width: 100%; min-width: 640px;">
+<tbody>
+<tr><td><strong>매장명</strong></td><td><strong>주소</strong></td><td><strong>연락처</strong></td></tr>
+<tr><td>샘플 매장 다</td><td>샘플시 예시구 테스트로 3</td><td>000-0000-0002</td></tr>
+</tbody></table>
+
+<h3>카드 변환 제외 — 첫 행 병합</h3>
+<table id="preview-merged" data-mobile-cards="true" style="min-width: 640px;">
+<tbody>
+<tr><th colspan="3">모바일에서도 가로로 넘겨 보는 일반 표</th></tr>
+<tr><th>항목</th><th>기준</th><th>설명</th></tr>
+<tr><td>샘플 A</td><td>일반 표 유지</td><td>병합 셀이 있는 표는 카드로 바꾸지 않습니다.</td></tr>
 </tbody></table>
 
 <h3>다른 곳에서 복사해 붙여넣어 색·투명도가 따라온 글 (가독성 가드 시험)</h3>
@@ -395,6 +422,46 @@ try {
 } catch (e) {}
 </script>"""
 
+TABLE_CHECK = """<script>
+/* 미리보기 전용 — 화면 폭을 바꾸면 표 동작을 다시 검사한다. */
+function checkPreviewTables() {
+  var failures = 0;
+  function check(condition, message) {
+    if (!condition) failures += 1;
+    console.assert(condition, message);
+  }
+  var mobile = window.matchMedia('(max-width: 760px)').matches;
+  ['preview-store-five', 'preview-store-three'].forEach(function (id) {
+    var table = document.getElementById(id);
+    check(table.closest('.table-wrap').classList.contains('is-cards') === mobile,
+      id + ': 모바일 카드와 PC 표 전환');
+    check(mobile || getComputedStyle(table).display === 'table', id + ': PC 표 유지');
+    if (mobile) table.querySelectorAll('tr:not(.table-card-header), tr:not(.table-card-header) > *').forEach(function (el) {
+      check(el.scrollHeight <= el.clientHeight + 1, id + ': 인라인 높이에 카드 내용이 잘리지 않음');
+    });
+  });
+  ['preview-plain-three', 'preview-plain-two', 'preview-merged'].forEach(function (id) {
+    check(!document.getElementById(id).classList.contains('mobile-cards'), id + ': 일반 표 유지');
+  });
+  document.querySelectorAll('.post-body .table-wrap').forEach(function (wrap) {
+    var overflow = wrap.scrollWidth > wrap.clientWidth + 1;
+    check(wrap.classList.contains('has-overflow') === overflow, '실제 가로 넘침만 안내');
+    check(wrap.querySelector('.table-scroll-hint').hidden === !overflow, '가로 스크롤 안내 표시');
+    check((wrap.getAttribute('tabindex') === '0') === overflow, '가로 스크롤 키보드 접근');
+  });
+  check(document.querySelector('#preview-store-five colgroup').children.length === 5,
+    'PC 표의 열 폭 정보 보존');
+  check(document.querySelector('#preview-store-five a[href="tel:000-0000-0000"]'),
+    '카드의 전화 링크 보존');
+  check(document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1,
+    '표가 페이지 전체에 가로 넘침을 만들지 않음');
+  document.body.dataset.previewChecks = failures ? 'failed' : 'passed';
+  document.body.dataset.previewFailures = String(failures);
+}
+window.addEventListener('load', function () { requestAnimationFrame(checkPreviewTables); });
+window.addEventListener('resize', function () { requestAnimationFrame(checkPreviewTables); });
+</script>"""
+
 def common_pass(h):
     h = h.replace('[##_category_##]', CATEGORY_HTML)
     h = h.replace('[##_calendar_##]', CALENDAR_HTML)
@@ -497,6 +564,7 @@ def build_post():
     h = common_pass(h)
     h = h.replace('[##_page_title_##]', post['article_rep_title'])
     h = h.replace('>yuuri.log</span>', '>' + post['article_rep_title'] + '</span>')
+    h = h.replace('</body>', TABLE_CHECK + '\n</body>')
     return h
 
 

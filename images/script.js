@@ -875,33 +875,114 @@
       });
     })();
 
-    tables.forEach(function (t) {
+    function ensureId(el, id) {
+      if (el.id) return el.id;
+      while (d.getElementById(id)) id += '-next';
+      el.id = id;
+      return id;
+    }
+
+    function prepareCards(t, index) {
+      if (t.getAttribute('data-mobile-cards') !== 'true' || t.classList.contains('mobile-cards')) return;
+      var rows = Array.prototype.slice.call(t.rows);
+      var head = rows[0];
+      if (!head || rows.length < 2 || head.cells.length < 2 || t.tFoot ||
+          (t.tHead && t.tHead.rows.length !== 1) || t.querySelector('table')) return;
+      var headers = Array.prototype.slice.call(head.cells);
+      var regular = rows.every(function (row) {
+        return row.cells.length === headers.length && Array.prototype.every.call(row.cells, function (cell) {
+          return cell.colSpan === 1 && cell.rowSpan === 1;
+        });
+      });
+      if (!regular || headers.some(function (cell) { return !cell.textContent.trim(); })) return;
+
+      t.classList.add('mobile-cards');
+      t.setAttribute('role', 'table');
+      $$('thead, tbody', t).forEach(function (group) { group.setAttribute('role', 'rowgroup'); });
+      head.classList.add('table-card-header');
+      headers.forEach(function (cell, col) {
+        cell.setAttribute('role', 'columnheader');
+        ensureId(cell, 'dv-table-' + index + '-col-' + col);
+      });
+      rows.forEach(function (row, rowIndex) {
+        row.setAttribute('role', 'row');
+        if (!rowIndex) return;
+        var title = row.cells[0];
+        title.classList.add('table-card-title');
+        ensureId(title, 'dv-table-' + index + '-row-' + rowIndex);
+        Array.prototype.forEach.call(row.cells, function (cell, col) {
+          cell.setAttribute('role', col ? 'cell' : 'rowheader');
+          cell.setAttribute('headers', ((cell.getAttribute('headers') || '') + ' ' + headers[col].id +
+            (col ? ' ' + title.id : '')).trim());
+          if (!col) return;
+          var label = d.createElement('span');
+          label.className = 'table-card-label';
+          label.setAttribute('aria-hidden', 'true');
+          label.textContent = headers[col].textContent.trim();
+          cell.insertBefore(label, cell.firstChild);
+        });
+      });
+    }
+
+    var wraps = tables.map(function (t, index) {
       // 머리글이 없는 표(<th> 가 하나도 없는 표) 표시 — 줄무늬로만 구분한다
       if (!t.querySelector('th')) t.classList.add('no-head');
-
-      // 카카오 에디터가 표를 감싸 둔 figure 안이면 그대로 둔다
       var parent = t.parentNode;
-      if (parent && parent.classList && parent.classList.contains('table-wrap')) return;
-
-      var wrap = d.createElement('div');
-      wrap.className = 'table-wrap';
-      parent.insertBefore(wrap, t);
-      wrap.appendChild(t);
+      var wrap = parent;
+      if (!parent.classList || !parent.classList.contains('table-wrap')) {
+        wrap = d.createElement('div');
+        wrap.className = 'table-wrap';
+        parent.insertBefore(wrap, t);
+        wrap.appendChild(t);
+      }
+      prepareCards(t, index);
+      var hint = d.createElement('p');
+      hint.className = 'table-scroll-hint';
+      hint.textContent = '표를 좌우로 밀어 전체 내용을 확인하세요';
+      hint.hidden = true;
+      ensureId(hint, 'dv-table-scroll-' + index);
+      wrap.insertBefore(hint, wrap.firstChild);
+      var original = {};
+      ['tabindex', 'role', 'aria-label', 'aria-describedby'].forEach(function (attr) {
+        original[attr] = wrap.getAttribute(attr);
+      });
+      return { wrap: wrap, table: t, hint: hint, original: original };
     });
 
     function syncScroll() {
-      $$('.table-wrap').forEach(function (w) {
-        var t = w.firstElementChild;
-        if (!t) return;
+      var mobile = window.matchMedia('(max-width: 760px)').matches;
+      wraps.forEach(function (item) {
+        var w = item.wrap;
+        var t = item.table;
+        var cards = mobile && t.classList.contains('mobile-cards');
+        w.classList.toggle('is-cards', cards);
         // 칸이 3개 이상인 표만 가로 스크롤로 바꾼다 (2칸 표는 접혀도 읽을 만하다)
         var firstRow = t.rows && t.rows[0];
-        var cols = firstRow ? firstRow.cells.length : 0;
-        var narrow = w.clientWidth < 520 && cols >= 3;
+        var cols = firstRow ? Array.prototype.reduce.call(firstRow.cells, function (count, cell) {
+          return count + cell.colSpan;
+        }, 0) : 0;
+        var narrow = !cards && w.clientWidth < 520 && cols >= 3;
         w.classList.toggle('is-scroll', narrow);
+        var overflow = !cards && w.scrollWidth > w.clientWidth + 1;
+        w.classList.toggle('has-overflow', overflow);
+        item.hint.hidden = !overflow;
+        var attrs = overflow ? {
+          tabindex: '0', role: 'region', 'aria-label': '가로로 스크롤할 수 있는 표',
+          'aria-describedby': ((item.original['aria-describedby'] || '') + ' ' + item.hint.id).trim()
+        } : item.original;
+        Object.keys(attrs).forEach(function (attr) {
+          if (attrs[attr] === null) w.removeAttribute(attr);
+          else w.setAttribute(attr, attrs[attr]);
+        });
       });
     }
     syncScroll();
     window.addEventListener('resize', syncScroll);
+    window.addEventListener('load', syncScroll);
+    if (window.ResizeObserver) {
+      var observer = new ResizeObserver(syncScroll);
+      wraps.forEach(function (item) { observer.observe(item.wrap); observer.observe(item.table); });
+    }
   })();
 
   /* ===================================================================

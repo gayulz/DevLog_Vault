@@ -1313,6 +1313,16 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 /* 좁은 화면에서는 칸이 뭉개지지 않도록 표를 넓게 두고 가로로 넘긴다 */
 .table-wrap.is-scroll > table { table-layout: auto; min-width: 520px; }
 .table-wrap.is-scroll { border: 0; }
+.post-body .table-scroll-hint {
+  position: sticky; left: 0;
+  margin: 0; padding: 9px 12px;
+  color: var(--text-muted); background: var(--background-primary-alt);
+  font-size: 13px; line-height: 1.6;
+}
+.table-scroll-hint[hidden], .table-card-label { display: none; }
+.table-wrap.has-overflow:focus-visible {
+  outline: 2px solid var(--text-accent); outline-offset: 3px;
+}
 
 /* 인라인 코드 */
 .post-body :not(pre) > code {
@@ -2475,6 +2485,53 @@ body#tt-body-index .list-header { display: none !important; }
 
   /* 표는 가로로 넘겨 본다 */
   .table-wrap.is-scroll > table { min-width: 480px; }
+
+  /* 명시적으로 선택한 매장 표만 행 단위 카드로 보여 준다. */
+  .table-wrap.is-cards { overflow: visible; border-radius: 0; }
+  .post-body .table-wrap.is-cards > table {
+    display: block;
+    width: 100% !important; min-width: 0 !important; max-width: 100% !important;
+    height: auto !important; min-height: 0 !important; max-height: none !important;
+    table-layout: auto !important; overflow: visible;
+    border: 0; border-radius: 0; background: transparent !important;
+  }
+  .table-wrap.is-cards > table > colgroup { display: none; }
+  .table-wrap.is-cards > table > thead,
+  .table-wrap.is-cards > table > tbody { display: block; width: 100%; }
+  /* 머리글은 보조기기에서 계속 읽을 수 있게 유지한다. */
+  .table-wrap.is-cards .table-card-header {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .post-body .table-wrap.is-cards > table tr:not(.table-card-header) {
+    display: block; width: auto !important; min-width: 0 !important;
+    height: auto !important; min-height: 0 !important; max-height: none !important;
+    margin: 0 0 14px; padding: 13px 15px;
+    border: 1px solid var(--table-border); border-radius: var(--radius-m);
+    background: var(--background-primary) !important;
+  }
+  .post-body .table-wrap.is-cards > table tr:not(.table-card-header) > * {
+    display: block;
+    width: auto !important; min-width: 0 !important; max-width: 100% !important;
+    height: auto !important; min-height: 0 !important; max-height: none !important;
+    padding: 6px 0 !important; border: 0 !important;
+    background: transparent !important; white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+  .post-body .table-wrap.is-cards > table tr:not(.table-card-header) > .table-card-title {
+    padding: 0 0 10px !important; margin-bottom: 5px;
+    border-bottom: 1px solid var(--table-border) !important;
+    font-size: 17px; font-weight: 600;
+  }
+  .table-wrap.is-cards .table-card-label {
+    display: block; margin-bottom: 2px;
+    color: var(--text-muted); font-size: 12px; font-weight: 500;
+  }
+  .table-wrap.is-cards td a, .table-wrap.is-cards th a {
+    display: inline-flex; align-items: center;
+    min-width: 44px; min-height: 44px; max-width: 100%; padding: 3px 6px;
+    margin: 2px 3px 2px 0;
+  }
 
   /* 인기 글 순위 번호(1~5)는 모바일에서 숨긴다 —
      제목이 두 줄로 접히면서 번호와 겹쳐 보인다 */
