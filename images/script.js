@@ -1243,7 +1243,7 @@
      · 처음에는 RSS 한 번만 읽어서 최근 글과 그 태그를 그린다.
        (관리 > 블로그 의 RSS 공개 개수를 올리면 더 많이 그려진다)
      · 점을 누르면 그때 한 번만 더 읽어서 이어진 글·태그를 붙인다.
-     · 읽은 내용은 하루 동안 브라우저에 저장해 다시 읽지 않는다.
+     · 저장한 내용으로 먼저 그리고 RSS를 다시 확인해 바뀐 글·태그를 반영한다.
      · 외부 라이브러리 없이 canvas 와 간단한 힘 계산으로 그린다.
      =================================================================== */
   (function () {
@@ -1265,9 +1265,9 @@
        loop() 이 alpha 0.03 아래에서 멈추므로 상시가 아니라 조작 뒤 3초 정도만 돈다.
        이보다 더 키울 거면 화면을 격자로 나눠 가까운 쌍만 계산하도록 바꿔야 한다. */
     var MAX_NODES = 550;
-    /* RSS 개수를 바꾸면 예전 캐시가 하루 동안 옛 그래프를 붙잡는다 → 키를 올려 한 번에 버린다 */
     var CACHE_KEY = 'devlog-graph-v2';
     var CACHE_TTL = 24 * 60 * 60 * 1000;
+    var RECHECK_INTERVAL = 60 * 1000;
 
     var nodes = [], links = [], byId = {}, linkSet = {};
     var view = { x: 0, y: 0, k: 1 };
@@ -1533,6 +1533,9 @@
 
     function fromRss(text) {
       var doc = new DOMParser().parseFromString(text, 'application/xml');
+      if (doc.querySelector('parsererror') || !doc.querySelector('rss > channel')) {
+        throw new Error('Invalid RSS');
+      }
       var items = [].slice.call(doc.querySelectorAll('item'));
       return items.map(function (it) {
         var cats = [].slice.call(it.querySelectorAll('category'))
@@ -1559,13 +1562,34 @@
       });
     }
 
+    function updateCounts() {
+      pane.setAttribute('data-post-count', nodes.filter(function (n) { return n.type === 'post'; }).length);
+      pane.setAttribute('data-tag-count', nodes.filter(function (n) { return n.type === 'tag'; }).length);
+    }
+
+    function cacheClear() {
+      try { localStorage.removeItem(CACHE_KEY); } catch (e) {}
+    }
+    function validPosts(posts) {
+      return Array.isArray(posts) && posts.length > 0 && posts.every(function (p) {
+        return p && typeof p.title === 'string' && p.title.trim() &&
+          typeof p.link === 'string' && typeof p.cat === 'string' &&
+          Array.isArray(p.tags) && p.tags.length > 0 && p.tags.every(function (tag) {
+            return typeof tag === 'string' && tag.trim();
+          });
+      });
+    }
     function cacheGet() {
       try {
         var v = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-        return (v && v.at && (Date.now() - v.at) < CACHE_TTL) ? v.posts : null;
-      } catch (e) { return null; }
+        if (v && typeof v.at === 'number' && v.at > 0 && v.at <= Date.now() &&
+            (Date.now() - v.at) < CACHE_TTL && validPosts(v.posts)) return v.posts;
+      } catch (e) {}
+      cacheClear();
+      return null;
     }
     function cacheSet(posts) {
+      if (!posts.length) { cacheClear(); return; }
       try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), posts: posts })); } catch (e) {}
     }
 
@@ -1579,6 +1603,7 @@
       fetch(url, { credentials: 'same-origin' })
         .then(function (r) { return r.ok ? r.text() : Promise.reject(new Error(r.status)); })
         .then(function (html) {
+          if (byId[n.id] !== n) return;
           var doc = new DOMParser().parseFromString(html, 'text/html');
           if (n.type === 'tag') {
             [].slice.call(doc.querySelectorAll('.plist .pi-t a')).slice(0, 12)
@@ -1592,6 +1617,7 @@
                 addLink(n, addNode('tag', name, a.getAttribute('href')));
               });
           }
+          updateCounts();
           kick(1);
         })
         .catch(function () { /* 못 읽으면 그대로 둔다 */ });
@@ -1701,7 +1727,23 @@
     });
 
     /* ---------- 시작 ---------- */
+    var renderedPosts = null;
     function start(posts) {
+      posts = posts || [];
+      msg.textContent = '아직 표시할 태그가 없습니다. 글에 태그를 달면 여기에 나타납니다.';
+      var signature = JSON.stringify(posts);
+      if (signature === renderedPosts) return;
+      renderedPosts = signature;
+      if (raf) cancelAnimationFrame(raf);
+      raf = null; alpha = 0; fitted = false;
+      nodes = []; links = []; byId = {}; linkSet = {};
+      groupIdx = {}; groupN = 0;
+      hover = focus = dragNode = lastPt = null;
+      panning = false; moved = 0;
+      view = { x: 0, y: 0, k: 1 };
+      stage.classList.remove('is-drag');
+      stage.style.cursor = '';
+
       // 지금 보고 있는 글을 중심에 둔다 (옵시디언의 로컬 그래프처럼)
       if (body.id === 'tt-body-page' || body.id === 'tt-body-notice') {
         var t = $('.post-single .inline-title');
@@ -1718,15 +1760,13 @@
           }
         }
       }
-      build(posts || []);
-
-      if (!nodes.length) {
-        msg.textContent = '아직 표시할 태그가 없습니다. 글에 태그를 달면 여기에 나타납니다.';
-        return;
-      }
-      msg.hidden = true;
+      build(posts);
+      updateCounts();
+      msg.hidden = nodes.length > 0;
       readColors();
       resize();
+
+      if (!nodes.length) return;
       kick(1);
     }
 
@@ -1737,24 +1777,40 @@
        처음부터 화면에 있더라도 브라우저가 한가해진 뒤로 미룬다.
        IntersectionObserver 가 없는 브라우저에서는 예전처럼 바로 읽는다. */
     var booted = false;
-    function boot() {
-      if (booted) return;
-      booted = true;
-
-      var cached = cacheGet();
-      if (cached) { start(cached); return; }
-
-      fetch('/rss', { credentials: 'same-origin' })
+    var refreshing = false, lastRequest = 0;
+    function refresh() {
+      if (refreshing) return;
+      refreshing = true;
+      lastRequest = Date.now();
+      pane.setAttribute('data-fetch-state', 'loading');
+      fetch('/rss', { credentials: 'same-origin', cache: 'no-cache' })
         .then(function (r) { return r.ok ? r.text() : Promise.reject(new Error(r.status)); })
         .then(function (text) {
           var posts = fromRss(text);
           cacheSet(posts);
           start(posts);
+          pane.setAttribute('data-graph-source', 'rss');
+          pane.setAttribute('data-fetch-state', 'ready');
         })
         .catch(function () {
-          start(null);
+          if (renderedPosts === null) {
+            start(null);
+            pane.setAttribute('data-graph-source', 'local');
+          }
+          pane.setAttribute('data-fetch-state', 'error');
           if (!nodes.length) msg.textContent = '그래프를 불러오지 못했습니다.';
-        });
+        })
+        .then(function () { refreshing = false; });
+    }
+    function boot() {
+      if (booted) return;
+      booted = true;
+      var cached = cacheGet();
+      if (cached) {
+        start(cached);
+        pane.setAttribute('data-graph-source', 'cache');
+      }
+      refresh();
     }
 
     function bootWhenIdle() {
@@ -1772,6 +1828,12 @@
     } else {
       bootWhenIdle();
     }
+
+    d.addEventListener('visibilitychange', function () {
+      if (!booted || d.hidden || Date.now() - lastRequest < RECHECK_INTERVAL) return;
+      var r = pane.getBoundingClientRect();
+      if (r.width && r.height && r.bottom > 0 && r.top < window.innerHeight) refresh();
+    });
 
     window.addEventListener('resize', resize);
 
