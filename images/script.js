@@ -896,6 +896,15 @@
       });
       if (!regular || headers.some(function (cell) { return !cell.textContent.trim(); })) return;
 
+      var actionCols = (t.getAttribute('data-mobile-actions') || '').split(',').map(function (col) {
+        return /^\s*\d+\s*$/.test(col) ? Number(col) - 1 : -1;
+      });
+      var hasActions = actionCols.length === 2 && actionCols[0] !== actionCols[1] && actionCols.every(function (col) {
+        return col > 0 && col < headers.length && rows.slice(1).every(function (row) {
+          return row.cells[col].querySelectorAll('a[href]').length === 1;
+        });
+      });
+
       t.classList.add('mobile-cards');
       t.setAttribute('role', 'table');
       $$('thead, tbody', t).forEach(function (group) { group.setAttribute('role', 'rowgroup'); });
@@ -907,6 +916,7 @@
       rows.forEach(function (row, rowIndex) {
         row.setAttribute('role', 'row');
         if (!rowIndex) return;
+        if (hasActions) row.classList.add('table-card-actions');
         var title = row.cells[0];
         title.classList.add('table-card-title');
         ensureId(title, 'dv-table-' + index + '-row-' + rowIndex);
@@ -917,9 +927,14 @@
           if (!col) return;
           var label = d.createElement('span');
           label.className = 'table-card-label';
-          label.setAttribute('aria-hidden', 'true');
           label.textContent = headers[col].textContent.trim();
-          cell.insertBefore(label, cell.firstChild);
+          if (hasActions && actionCols.indexOf(col) !== -1) {
+            cell.classList.add('table-card-action');
+            cell.querySelector('a[href]').appendChild(label);
+          } else {
+            label.setAttribute('aria-hidden', 'true');
+            cell.insertBefore(label, cell.firstChild);
+          }
         });
       });
     }

@@ -71,7 +71,21 @@ MENU_HTML = '''<ul><li class="selected"><a href="/">홈</a></li>
 <li><a href="/tag">태그</a></li>
 <li><a href="/guestbook">방명록</a></li></ul>'''
 
-POST_BODY = '''
+RESPONSIVE_AD_SAMPLE = '''
+<ins id="__AD_ID__" class="adsbygoogle" data-ad-format="auto" data-full-width-responsive="true" style="display: block; width: 100%; height: 90px;">
+<div style="width: 100%; height: 90px;"><iframe title="반응형 광고 배치 시험" srcdoc="<style>body{margin:0;background:#3a3f4b;color:#c9ccd4;display:grid;place-items:center;height:90px;font:12px sans-serif}</style>네트워크 없는 반응형 광고 모형" style="display: block; width: 100%; height: 90px; border: 0;"></iframe></div>
+</ins>
+<script>
+/* 실제 광고 요청 직전의 속성을 기록하는 모형이다. */
+document.getElementById('__AD_ID__').dataset.requestFullwidth =
+  document.getElementById('__AD_ID__').getAttribute('data-full-width-responsive');
+</script>
+'''
+
+POST_BODY = RESPONSIVE_AD_SAMPLE.replace('__AD_ID__', 'preview-responsive-body') + '''
+<ins id="preview-fixed-ad" class="adsbygoogle" data-full-width-responsive="true" style="display: block; width: 250px; height: 250px;">
+<iframe title="고정 크기 광고 배치 시험" srcdoc="<style>body{margin:0;background:#3a3f4b;color:#c9ccd4;display:grid;place-items:center;height:250px;font:12px sans-serif}</style>네트워크 없는 250×250 광고 모형" style="display: block; width: 250px; height: 250px; border: 0;"></iframe>
+</ins>
 <p>고도화 프로젝트에서 주문 저장 로직에 로그 테이블 적재를 붙이는 작업을 하다가,
 <code>REQUIRES_NEW</code>를 분명히 붙였는데도 상위 트랜잭션이 롤백되면 로그까지 같이
 사라지는 현상을 만났습니다.</p>
@@ -143,12 +157,12 @@ POST_BODY = '''
 <h3>모바일 카드 표 — 5열 · 인라인 최소 폭 · 기존 스크롤 영역</h3>
 <div class="table-wrap" style="overflow-x: auto;">
 <p>미리보기용 가상 매장입니다.</p>
-<table id="preview-store-five" data-mobile-cards="true" style="width: 100%; min-width: 640px; height: 20px;">
+<table id="preview-store-five" data-mobile-cards="true" data-mobile-actions="4,5" style="width: 100%; min-width: 640px; height: 20px;">
 <colgroup><col style="width: 25%;"><col style="width: 30%;"><col style="width: 20%;"><col style="width: 15%;"><col style="width: 10%;"></colgroup>
-<thead><tr><th>매장명</th><th>주소</th><th>연락처</th><th>운영시간</th><th>안내</th></tr></thead>
+<thead><tr><th>매장명</th><th>주소</th><th>연락처</th><th>골프존</th><th>네이버</th></tr></thead>
 <tbody>
-<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 가</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 1 가상 테스트 건물 지하 1층 안내데스크 옆</td><td style="height: 20px;"><a href="tel:000-0000-0000">000-0000-0000</a></td><td style="height: 20px;">10:00~22:00</td><td style="height: 20px;"><a href="#preview-store-five">매장 안내</a></td></tr>
-<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 나</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 2 2층</td><td style="height: 20px;">000-0000-0001</td><td style="height: 20px;">확인 필요</td><td style="height: 20px;">준비 중</td></tr>
+<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 가</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 1 가상 테스트 건물 지하 1층 안내데스크 옆</td><td style="height: 20px;"><a href="tel:000-0000-0000">000-0000-0000</a></td><td style="height: 20px;"><a href="#sample-golf-a"><span style="display: inline-block; width: 14px; height: 14px; font-size: 12px; background: #1963bd; color: #fff;">G</span></a></td><td style="height: 20px;"><a href="#sample-map-a"><span style="display: inline-block; width: 14px; height: 14px; font-size: 12px; background: #008a42; color: #fff;">N</span></a></td></tr>
+<tr style="height: 20px;"><td style="height: 20px;">샘플 매장 나</td><td style="height: 20px; max-height: 20px;">샘플시 예시구 테스트로 2 2층</td><td style="height: 20px;">000-0000-0001</td><td style="height: 20px;"><a href="#sample-golf-b"><span style="font-size: 12px;">G</span></a></td><td style="height: 20px;"><a href="#sample-map-b"><span style="font-size: 12px;">N</span></a></td></tr>
 </tbody></table>
 </div>
 
@@ -158,6 +172,12 @@ POST_BODY = '''
 <tr><td><strong>매장명</strong></td><td><strong>주소</strong></td><td><strong>연락처</strong></td></tr>
 <tr><td>샘플 매장 다</td><td>샘플시 예시구 테스트로 3</td><td>000-0000-0002</td></tr>
 </tbody></table>
+
+<h3>카드 버튼 변환 제외 — 중복 열 번호</h3>
+<table id="preview-actions-invalid" data-mobile-cards="true" data-mobile-actions="4,4">
+<thead><tr><th>매장명</th><th>주소</th><th>연락처</th><th>골프존</th><th>네이버</th></tr></thead>
+<tbody><tr><td>샘플 매장 라</td><td>샘플시 예시구 테스트로 4</td><td>000-0000-0003</td><td><a href="#sample-golf-d">G</a></td><td><a href="#sample-map-d">N</a></td></tr></tbody>
+</table>
 
 <h3>카드 변환 제외 — 첫 행 병합</h3>
 <table id="preview-merged" data-mobile-cards="true" style="min-width: 640px;">
@@ -431,7 +451,7 @@ function checkPreviewTables() {
     console.assert(condition, message);
   }
   var mobile = window.matchMedia('(max-width: 760px)').matches;
-  ['preview-store-five', 'preview-store-three'].forEach(function (id) {
+  ['preview-store-five', 'preview-store-three', 'preview-actions-invalid'].forEach(function (id) {
     var table = document.getElementById(id);
     check(table.closest('.table-wrap').classList.contains('is-cards') === mobile,
       id + ': 모바일 카드와 PC 표 전환');
@@ -453,8 +473,51 @@ function checkPreviewTables() {
     'PC 표의 열 폭 정보 보존');
   check(document.querySelector('#preview-store-five a[href="tel:000-0000-0000"]'),
     '카드의 전화 링크 보존');
+  document.querySelectorAll('#preview-store-five tbody tr').forEach(function (row) {
+    var actions = row.querySelectorAll('.table-card-action');
+    check(actions.length === 2, '명시한 두 링크 열만 버튼으로 표시');
+    if (actions.length !== 2) return;
+    Array.prototype.forEach.call(actions, function (cell, i) {
+      var link = cell.querySelector('a[href]');
+      var label = link && link.querySelector('.table-card-label');
+      check(label && label.textContent === ['골프존', '네이버'][i], '작은 마크 링크 안에 서비스 이름 표시');
+      if (!mobile || !link) return;
+      var rect = link.getBoundingClientRect();
+      check(rect.width >= 44 && rect.height >= 44, '카드 버튼의 터치 영역 확보');
+      check(rect.top >= row.cells[2].getBoundingClientRect().bottom - 1,
+        '카드 버튼은 연락처 아래에 배치');
+    });
+    if (mobile) {
+      var left = actions[0].getBoundingClientRect();
+      var right = actions[1].getBoundingClientRect();
+      check(Math.abs(left.top - right.top) <= 1 && left.right <= right.left + 1,
+        '두 서비스 버튼은 카드 하단 좌우에 나란히 배치');
+    }
+  });
+  check(!document.querySelector('#preview-actions-invalid .table-card-action'),
+    '중복된 버튼 열 번호는 일반 카드로 유지');
+  check(document.querySelectorAll('#preview-actions-invalid a[href]').length === 2,
+    '잘못된 버튼 설정에서도 원래 링크 보존');
+  ['preview-responsive-body', 'preview-responsive-revenue'].forEach(function (id) {
+    var ad = document.getElementById(id);
+    check(ad.dataset.requestFullwidth === 'false', id + ': 광고 요청 직전 전체 화면 확장 해제');
+    var frame = ad.querySelector('iframe').getBoundingClientRect();
+    var parent = ad.parentElement.getBoundingClientRect();
+    check(frame.width > 0 && frame.left >= parent.left - 1 && frame.right <= parent.right + 1,
+      id + ': 반응형 광고 모형은 부모 폭 안에 표시');
+    for (var ancestor = ad.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      if (getComputedStyle(ancestor).overflowX !== 'hidden') continue;
+      var bounds = ancestor.getBoundingClientRect();
+      check(frame.left >= bounds.left - 1 && frame.right <= bounds.right + 1,
+        id + ': 광고 모형이 상위 요소에 잘리지 않음');
+    }
+  });
+  var fixed = document.getElementById('preview-fixed-ad');
+  check(fixed.getAttribute('data-full-width-responsive') === 'true' &&
+    Math.abs(fixed.querySelector('iframe').getBoundingClientRect().width - 250) <= 1,
+    '고정 크기 광고의 설정과 250px 폭 유지');
   check(document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1,
-    '표가 페이지 전체에 가로 넘침을 만들지 않음');
+    '표와 광고가 페이지 전체에 가로 넘침을 만들지 않음');
   document.body.dataset.previewChecks = failures ? 'failed' : 'passed';
   document.body.dataset.previewFailures = String(failures);
 }
@@ -564,6 +627,10 @@ def build_post():
     h = common_pass(h)
     h = h.replace('[##_page_title_##]', post['article_rep_title'])
     h = h.replace('>yuuri.log</span>', '>' + post['article_rep_title'] + '</span>')
+    h = h.replace('<div class="ad-slot ad-post">',
+                  '<div class="revenue_unit_wrap">' +
+                  RESPONSIVE_AD_SAMPLE.replace('__AD_ID__', 'preview-responsive-revenue') +
+                  '</div>\n<div class="ad-slot ad-post">', 1)
     h = h.replace('</body>', TABLE_CHECK + '\n</body>')
     return h
 

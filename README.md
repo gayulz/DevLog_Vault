@@ -110,9 +110,35 @@
 
 붙여넣고 적용을 누르면 끝입니다. `index.xml`은 이 방법에서는 쓰지 않아요.
 
-**v3.10.2로 업데이트할 때는 CSS 탭의 `style.css`와 파일업로드의 `images/script.js`만
-교체하면 됩니다.** `skin.html`과 스킨 옵션은 바뀌지 않았으므로 HTML을 덮어쓰거나
-`index.xml`을 다시 등록할 필요가 없습니다. 기존 광고 코드와 옵션 값을 그대로 유지할 수 있어요.
+**v3.10.3으로 업데이트할 때는 `style.css`·`images/script.js` 교체와 HTML 일부 추가가
+필요합니다.** 현재 HTML을 먼저 백업하고, 아래 광고 폭 조절 코드를 기존 `<head>` 바로
+다음에 한 번 넣으세요. `id="dv-ad-layout"` 코드가 이미 있다면 중복으로 넣지 마세요.
+개인 광고·분석·인증 코드가 들어 있는 HTML 전체를
+배포용 `skin.html`로 덮어쓰지 마세요. 스킨 옵션은 바뀌지 않아 `index.xml`을 다시 등록할
+필요가 없습니다.
+
+```html
+<script id="dv-ad-layout">
+  /* 반응형 광고가 요청되기 전에 화면 전체 폭 확장을 끈다. */
+  (function () {
+    var selector = 'ins.adsbygoogle[data-ad-format="auto"]:not([data-adsbygoogle-status])';
+    function fit(ad) { ad.setAttribute('data-full-width-responsive', 'false'); }
+    var observer = new MutationObserver(function (records) {
+      records.forEach(function (record) {
+        record.addedNodes.forEach(function (node) {
+          if (node.nodeType !== 1) return;
+          if (node.matches(selector)) fit(node);
+          node.querySelectorAll(selector).forEach(fit);
+        });
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    document.addEventListener('DOMContentLoaded', function () { observer.disconnect(); });
+  })();
+</script>
+```
+
+처음 설치할 때는 이 코드가 포함된 `skin.html`을 사용하면 됩니다.
 
 <details>
 <summary>zip으로 "스킨 등록"을 하고 싶다면</summary>
@@ -134,12 +160,13 @@ preview1600.jpg    (1600×1200)
 
 ```bash
 python3 build_release.py
-# → dist/DevLog-Vault-v3.10.2.zip
+# → dist/DevLog-Vault-v3.10.3.zip
 ```
 
 다만 이미 쓰고 있는 스킨을 업데이트하는 거라면 이 방법은 피하세요.
 `index.xml`이 같이 올라가면서 스킨 편집에 저장해 둔 값(북마크 주소 같은 것)이
-초기화될 수 있습니다. 그럴 때는 스킨 편집으로 세 파일만 갈아끼우는 쪽이 안전합니다.
+초기화될 수 있습니다. 그럴 때는 위 업데이트 방법에 따라 CSS·JS를 교체하고,
+현재 HTML에 필요한 부분만 추가하세요.
 
 </details>
 
@@ -349,6 +376,29 @@ python3 build_release.py
 셀 병합(`colspan`·`rowspan`), 중첩 표, 여러 줄 머리글, 표 하단글(`tfoot`)이 있는 표는
 자동 변환하지 않고 가로 스크롤을 유지합니다. 속성을 추가하지 않은 기존 표도 그대로입니다.
 
+골프존·네이버처럼 짧은 링크 두 개를 카드 아래 좌우 버튼으로 놓으려면
+**`data-mobile-actions="4,5"`도 추가**하세요. 숫자는 첫 열부터 센 링크 열의 위치입니다.
+각 버튼에는 원래 아이콘과 해당 열 이름이 함께 표시되며, 누를 수 있는 높이는 최소 44px입니다.
+
+```html
+<table data-mobile-cards="true" data-mobile-actions="4,5">
+  <thead>
+    <tr><th>매장 이름</th><th>주소</th><th>연락처</th><th>골프존</th><th>네이버</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>예시 매장</td><td>서울시 예시로 1</td><td>02-000-0000</td>
+      <td><a href="https://example.com/golfzon">G</a></td>
+      <td><a href="https://example.com/naver">N</a></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+첫 열을 제외한 서로 다른 두 열을 지정하고, 모든 데이터 행의 해당 셀에 링크가 하나씩
+있어야 합니다. 조건이 맞지 않으면 일반 카드 배치를 유지합니다. 이 속성도 모바일에만
+적용되므로 PC에서는 원래 표와 링크가 그대로 보입니다.
+
 ### 복사해 붙여넣은 글
 
 다른 사이트에서 글을 복사해 오면 그쪽 글자색과 투명도가 딸려옵니다. 그대로 두면
@@ -392,9 +442,21 @@ PC용 자리는 글 본문에서 개요 바로 아래, 홈이나 목록에서는
 카카오 애드핏을 쓴다면 PC용과 모바일용 광고 단위를 따로 만들어서 각 자리에 넣으세요.
 로더 스크립트(`ba.min.js`)는 페이지에 한 번만 있으면 두 자리를 모두 처리합니다.
 
-광고 크기를 CSS로 늘리지는 마세요. 애드센스와 애드핏은 단위마다 크기가 고정이라,
-자리에 맞는 크기의 단위를 새로 만드는 쪽이 맞습니다. 오른쪽 사이드바 안쪽 폭은 256px이라
-250×250이 딱 들어갑니다.
+고정 크기 광고를 CSS로 늘리거나 줄이지 마세요. 자리에 맞는 광고 단위를 선택하세요.
+오른쪽 사이드바 안쪽 폭은 256px이라 250×250이 딱 들어갑니다.
+
+### 모바일에서 본문 구글 광고가 옆으로 넘칠 때
+
+반응형 애드센스 광고는 휴대폰에서 화면 전체 폭으로 확장될 수 있습니다. v3.10.3은
+페이지의 HTML을 해석하는 동안 추가되는 `data-ad-format="auto"` 광고에 요청 전에
+`data-full-width-responsive="false"`를 설정해 본문 폭을 기준으로 크기를 정하게 합니다.
+이미 요청된 광고나 고정 크기 광고의 내부 프레임을 CSS로 강제로 줄이지 않습니다.
+HTML 해석이 끝난 뒤 동적으로 추가되는 자동 광고는 이 초기 설정의 대상이 아닙니다.
+이 설정은 [구글의 반응형 광고 코드 안내](https://support.google.com/adsense/answer/9183460?hl=en)에
+설명된 속성을 사용합니다.
+
+기존 사용자는 [설치의 v3.10.3 업데이트 안내](#1-파일-올리기)에 있는 HTML 조각도
+반영해야 합니다. CSS·JS만 바꾸면 요청 전 설정이 추가되지 않습니다.
 
 ### 업데이트하면 광고 코드가 지워집니다
 
@@ -483,9 +545,10 @@ PC용 자리는 글 본문에서 개요 바로 아래, 홈이나 목록에서는
 <details>
 <summary>업데이트하면 설정해 둔 값이 사라지나요?</summary>
 
-`skin.html`, `style.css`, `images/script.js`만 올리는 건 안전합니다.
-`index.xml`을 다시 올리면 스킨 편집에 저장된 값이 초기화될 수 있으니, 옵션이 추가된
-버전이 아니라면 올리지 마세요.
+`style.css`·`images/script.js`를 교체해도 스킨 편집 옵션은 유지됩니다.
+`skin.html` 전체를 교체하면 직접 넣은 광고·분석·인증 코드가 지워질 수 있으므로,
+기존 HTML을 백업하고 해당 버전에 필요한 부분만 추가하세요. `index.xml`을 다시 올리면
+스킨 편집에 저장된 값이 초기화될 수 있으니, 옵션이 추가된 버전이 아니라면 올리지 마세요.
 
 </details>
 

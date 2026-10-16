@@ -436,18 +436,17 @@ body#tt-body-guestbook .ad-list { display: none !important; }
   .ad-slot.ad-wide { display: none !important; }
 }
 
-/* 구글 자동 광고는 데스크톱 폭(예: 760px)으로 자리를 잡아 두는 일이 있다.
-   좁은 화면에서 그대로 두면 본문 밖으로 넘치거나 글자 위를 덮는다.
-   폭을 본문에 맞춰 가둔다. */
+/* 구글 광고는 요청 전에 부모 폭을 재도록 하고, 생성된 광고를 잘라내지 않는다. */
+.revenue_unit_wrap,
+.revenue_unit_item { min-width: 0; max-width: 100%; }
 .post-body ins.adsbygoogle,
 .post-body ins.adsbygoogle > div,
 .post-body ins.adsbygoogle iframe,
-.post-body .revenue_unit_wrap,
 .post-body div[id^="google_ads"],
 .post-body iframe[id^="aswift"] {
-  max-width: 100% !important;
+  max-width: none !important;
 }
-.post-body ins.adsbygoogle { overflow: hidden; }
+.post-body ins.adsbygoogle { overflow: visible; }
 
 /* 본문 바로가기 (키보드 사용자용 — 포커스될 때만 보인다) */
 .skip-link {
@@ -2043,8 +2042,8 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 .layer_tooltip .desc_g { color: var(--text-muted) !important; }
 
 /* 광고 오버플로 방지 */
-iframe, ins, .revenue_unit_wrap, .adsbygoogle, [data-ad-unit-id],
-.post-body iframe, .post-body ins {
+iframe:not([id^="aswift"]), ins:not(.adsbygoogle), .revenue_unit_wrap, [data-ad-unit-id],
+.post-body iframe:not([id^="aswift"]), .post-body ins:not(.adsbygoogle) {
   max-width: 100% !important;
   box-sizing: border-box;
 }
@@ -2531,6 +2530,24 @@ body#tt-body-index .list-header { display: none !important; }
     display: inline-flex; align-items: center;
     min-width: 44px; min-height: 44px; max-width: 100%; padding: 3px 6px;
     margin: 2px 3px 2px 0;
+  }
+  .post-body .table-wrap.is-cards > table tr.table-card-actions {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 10px;
+  }
+  .table-wrap.is-cards .table-card-actions > * { grid-column: 1 / -1; }
+  .table-wrap.is-cards .table-card-actions > .table-card-action { grid-column: auto; order: 1; }
+  .table-wrap.is-cards .table-card-action > a {
+    display: flex !important; align-items: center; justify-content: center; gap: 8px;
+    width: 100% !important; height: auto !important; min-width: 0; min-height: 44px;
+    margin: 0; padding: 8px !important; border: 1px solid var(--table-border);
+    border-radius: var(--radius-s); background: var(--background-primary-alt) !important;
+    color: var(--text-normal); text-decoration: none;
+  }
+  .table-wrap.is-cards .table-card-action > a > .table-card-label {
+    display: inline; margin: 0; font-size: 14px; color: inherit;
+  }
+  .table-wrap.is-cards .table-card-action > a > :not(.table-card-label) {
+    flex-shrink: 0; width: 20px !important; height: 20px !important; font-size: 14px !important;
   }
 
   /* 인기 글 순위 번호(1~5)는 모바일에서 숨긴다 —

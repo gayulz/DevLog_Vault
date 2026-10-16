@@ -7,6 +7,25 @@
     document.documentElement.setAttribute('data-theme',t)})();
   </script>
 
+  <script id="dv-ad-layout">
+    /* 반응형 광고가 요청되기 전에 화면 전체 폭 확장을 끈다. */
+    (function () {
+      var selector = 'ins.adsbygoogle[data-ad-format="auto"]:not([data-adsbygoogle-status])';
+      function fit(ad) { ad.setAttribute('data-full-width-responsive', 'false'); }
+      var observer = new MutationObserver(function (records) {
+        records.forEach(function (record) {
+          record.addedNodes.forEach(function (node) {
+            if (node.nodeType !== 1) return;
+            if (node.matches(selector)) fit(node);
+            node.querySelectorAll(selector).forEach(fit);
+          });
+        });
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+      document.addEventListener('DOMContentLoaded', function () { observer.disconnect(); });
+    })();
+  </script>
+
   <!-- ===================================================================
        ▼▼▼ 광고 · 분석 · 사이트 인증 코드를 여기에 붙여넣으세요 ▼▼▼
 
