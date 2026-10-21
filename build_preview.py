@@ -198,6 +198,26 @@ POST_BODY = RESPONSIVE_AD_SAMPLE.replace('__AD_ID__', 'preview-responsive-body')
 <p><span style="background-color: #2d5f8b;">어두운 배경에 칠한 글자도 읽혀야 한다</span></p>
 <p><span style="color: rgb(0, 0, 0);">에디터에서 검은색으로 지정한 글자</span> ·
    <span style="color: rgb(255, 255, 255); background-color: rgb(255, 241, 143);">흰 글자에 노란 형광펜</span></p>
+
+<div id="preview-headings">
+<h1 id="preview-h1-default">제목1 기본 정렬</h1>
+<h1 id="preview-h1-center" style="text-align: center;">제목1 가운데 정렬</h1>
+<h1 id="preview-h1-right" style="text-align: right;">제목1 오른쪽 정렬</h1>
+<h2 id="preview-h2-default">제목2 기본 정렬</h2>
+<h2 id="preview-h2-center" style="text-align: center;">제목2 가운데 정렬</h2>
+<h2 id="preview-h2-right" style="text-align: right;">제목2 오른쪽 정렬</h2>
+<h3 id="preview-h3-default">제목3 기본 정렬</h3>
+<h3 id="preview-h3-center" style="text-align: center;">제목3 가운데 정렬</h3>
+<h3 id="preview-h3-right" style="text-align: right;">제목3 오른쪽 정렬</h3>
+<h2 id="preview-heading-long" style="text-align: center;">긴 제목은 화면이 좁아져 여러 줄로 바뀌어도 에디터에서 선택한 가운데 정렬과 형광펜 표시를 유지합니다</h2>
+<div style="text-align: center;"><h3 id="preview-heading-inherited">부모에서 상속한 가운데 정렬</h3></div>
+<h2 id="preview-heading-adjacent">연속 제목2</h2>
+<h3 id="preview-heading-next">연속 제목3</h3>
+<h3 id="preview-heading-empty" style="text-align: center;"></h3>
+<div style="direction: rtl; text-align: start;"><h3 id="preview-heading-rtl-start">RTL 시작 정렬</h3></div>
+<div style="direction: rtl; text-align: end;"><h3 id="preview-heading-rtl-end">RTL 끝 정렬</h3></div>
+<h2 id="preview-heading-justify" style="text-align: justify;">양쪽 정렬 제목은 본문 전체 너비를 쓰며 여러 줄이 되면 마지막 줄을 제외한 각 줄의 양끝을 맞춰서 표시합니다</h2>
+</div>
 '''
 
 COMMENT_HTML = '''

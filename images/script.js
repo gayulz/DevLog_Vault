@@ -773,6 +773,14 @@
      =================================================================== */
   (function () {
     var heads = $$('.post-body h1, .post-body h2, .post-body h3');
+    // fit-content 제목 상자도 에디터의 정렬 위치를 따라가게 한다.
+    heads.forEach(function (h) {
+      var cs = getComputedStyle(h);
+      var align = cs.textAlign;
+      if (align === 'start') align = cs.direction === 'rtl' ? 'right' : 'left';
+      else if (align === 'end') align = cs.direction === 'rtl' ? 'left' : 'right';
+      h.setAttribute('data-heading-align', align);
+    });
     if (!heads.length || !window.IntersectionObserver) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 

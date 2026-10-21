@@ -1181,6 +1181,10 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
   background-position: 0 0;
   background-size: 100% 100%;
 }
+.post-body [data-heading-align="left"] { margin-left: 0; margin-right: auto; }
+.post-body [data-heading-align="center"] { margin-left: auto; margin-right: auto; }
+.post-body [data-heading-align="right"] { margin-left: auto; margin-right: 0; }
+.post-body [data-heading-align="justify"] { width: auto; }
 .post-body h1 { --hl: rgba(255, 210, 138, .5); }
 .post-body h2 { --hl: rgba(255, 171, 140, .5); }
 .post-body h3 { --hl: rgba(166, 227, 161, .5); }
