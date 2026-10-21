@@ -204,8 +204,8 @@ POST_BODY = RESPONSIVE_AD_SAMPLE.replace('__AD_ID__', 'preview-responsive-body')
 <h1 id="preview-h1-center" style="text-align: center;">제목1 가운데 정렬</h1>
 <h1 id="preview-h1-right" style="text-align: right;">제목1 오른쪽 정렬</h1>
 <h2 id="preview-h2-default">제목2 기본 정렬</h2>
-<h2 id="preview-h2-center" style="text-align: center;">제목2 가운데 정렬</h2>
-<h2 id="preview-h2-right" style="text-align: right;">제목2 오른쪽 정렬</h2>
+<h2 id="preview-h2-center" style="text-align: center; margin: 28px 0 16px;">제목2 가운데 정렬</h2>
+<h2 id="preview-h2-right" style="text-align: right; margin: 28px 0 16px;">제목2 오른쪽 정렬</h2>
 <h3 id="preview-h3-default">제목3 기본 정렬</h3>
 <h3 id="preview-h3-center" style="text-align: center;">제목3 가운데 정렬</h3>
 <h3 id="preview-h3-right" style="text-align: right;">제목3 오른쪽 정렬</h3>
