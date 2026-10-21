@@ -133,6 +133,8 @@ CSS 는 `.page-numbers a.selected` (+ `:has(> .selected)` 예비)로 잡습니�
   배경이 **스킨(테마)의 것**이면 `var(--text-normal)` 을 씁니다
   → 잘못 재더라도 색이 뒤집히지 않습니다
 - 손대기 전 인라인 값을 `data-ink` / `data-fill` / `data-unfade` 에 기억해 두고 복원합니다
+- 다크 모드의 h1·h2·h3와 그 안의 글자색은 제목 형광펜 CSS가 관리합니다.
+  그라데이션 배경은 `backgroundColor`로 측정되지 않으므로 일반 명암 보정에서 제외합니다.
 
 ---
 

@@ -217,6 +217,9 @@ POST_BODY = RESPONSIVE_AD_SAMPLE.replace('__AD_ID__', 'preview-responsive-body')
 <div style="direction: rtl; text-align: start;"><h3 id="preview-heading-rtl-start">RTL 시작 정렬</h3></div>
 <div style="direction: rtl; text-align: end;"><h3 id="preview-heading-rtl-end">RTL 끝 정렬</h3></div>
 <h2 id="preview-heading-justify" style="text-align: justify;">양쪽 정렬 제목은 본문 전체 너비를 쓰며 여러 줄이 되면 마지막 줄을 제외한 각 줄의 양끝을 맞춰서 표시합니다</h2>
+<h1 id="preview-heading-white" style="text-align: center; color: #fff;">흰색으로 저장된 제목1</h1>
+<h2 id="preview-heading-nested" style="text-align: center;"><span style="color: #ddd;"><strong>중첩 강조</strong>와 <a href="#preview-headings" style="color: blue;">제목 링크</a></span></h2>
+<h3 id="preview-heading-fill" style="text-align: center; -webkit-text-fill-color: #fff;"><span style="-webkit-text-fill-color: #fff;">텍스트 채움색이 저장된 제목3</span> · <code>inline code</code></h3>
 </div>
 '''
 

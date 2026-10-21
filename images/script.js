@@ -1130,6 +1130,7 @@
         }
 
         // ② 글자 명암
+        if (html.getAttribute('data-theme') === 'dark' && el.closest('h1, h2, h3')) return; // 다크 제목의 형광펜과 글자색은 CSS가 관리한다.
         if (!hasOwnText(el)) return;
         if (el.getAttribute('data-ink') !== null) {          // 이전 계산을 되돌리고 다시 잰다
           restore(el, 'color', 'data-ink');

@@ -1197,7 +1197,7 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 [data-theme="dark"] .post-body h1,
 [data-theme="dark"] .post-body h2,
 [data-theme="dark"] .post-body h3 {
-  color: #17181b;
+  color: #17181b !important;
   /* 형광펜이 다 그어진 뒤에 글자색이 바뀌도록 살짝 늦춘다 */
   transition: color .25s var(--ease) .45s;
 }
@@ -1205,13 +1205,15 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 [data-theme="dark"] .post-body h1 *,
 [data-theme="dark"] .post-body h2 *,
 [data-theme="dark"] .post-body h3 * { color: inherit !important; }
+[data-theme="dark"] .post-body :is(h1, h2, h3),
+[data-theme="dark"] .post-body :is(h1, h2, h3) * { -webkit-text-fill-color: currentColor !important; }
 [data-theme="dark"] .post-body h1 code,
 [data-theme="dark"] .post-body h2 code,
 [data-theme="dark"] .post-body h3 code { background: rgba(0, 0, 0, .14); }
 /* 형광펜이 아직 그어지지 않은 동안에는 원래 글자색 (검은 글자가 어둠에 묻히지 않도록) */
 [data-theme="dark"].js-hl .post-body h1:not(.hl-on),
 [data-theme="dark"].js-hl .post-body h2:not(.hl-on),
-[data-theme="dark"].js-hl .post-body h3:not(.hl-on) { color: var(--text-normal); }
+[data-theme="dark"].js-hl .post-body h3:not(.hl-on) { color: var(--text-normal) !important; }
 [data-theme="dark"].js-hl .post-body h1:not(.hl-on) *,
 [data-theme="dark"].js-hl .post-body h2:not(.hl-on) *,
 [data-theme="dark"].js-hl .post-body h3:not(.hl-on) * { color: inherit !important; }
@@ -1962,9 +1964,10 @@ a.notice-callout:hover { background: rgba(var(--cc), .24); }
 /* --- 에디터 인라인 스타일 다크모드 보정 ---
    배경색(형광펜)이 지정된 글자는 여기서 건드리지 않는다.
    밝은 형광펜 위에 밝은 글자색을 덮어써서 글씨가 안 보이던 문제가 있었다.
-   그런 글자는 script.js 의 명암 보정이 배경 밝기를 재서 직접 색을 정한다. */
-[data-theme="dark"] .post-body [style]:not([style*="background"]) { color: var(--text-normal) !important; }
-[data-theme="dark"] .post-body a[style] { color: var(--text-accent) !important; }
+   그런 글자는 script.js 의 명암 보정이 배경 밝기를 재서 직접 색을 정한다.
+   h1~h3와 그 안의 글자는 제목 형광펜 전용 색상 규칙을 따른다. */
+[data-theme="dark"] .post-body [style]:not([style*="background"]):not(h1, h2, h3, h1 *, h2 *, h3 *) { color: var(--text-normal) !important; }
+[data-theme="dark"] .post-body a[style]:not(h1 a, h2 a, h3 a) { color: var(--text-accent) !important; }
 [data-theme="dark"] .post-body blockquote[data-ke-style="style3"] {
   background: var(--background-primary-alt) !important;
   border-color: var(--background-modifier-border) !important;
